@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "postbuild": "next-sitemap",
-    "start": "NODE_ENV=production next start",
+    "start": "next start",
     "lint": "eslint ./kit/** ./components/** ./pages/** -c .eslintrc.json --ext js,jsx,ts,tsx",
     "lint-fix": "eslint ./kit/** ./components/** ./pages/** -c .eslintrc.json --fix --ext js,jsx,ts,tsx",
     "prettier": "prettier  — write ./components/**/*.{js,jsx,ts,tsx} ./kit/**/*.{js,jsx,ts,tsx} ./pages/**/*.{js,jsx,ts,tsx}"
@@ -48,7 +48,7 @@
     "mobx-react": "^7.2.1",
     "moment": "^2.29.2",
     "next": "^12.1.5",
-    "next-pwa": "^5.4.6",
+    "next-pwa": "^5.5.5",
     "next-sitemap": "^1.6.203",
     "notistack": "^2.0.3",
     "nprogress": "^0.2.0",

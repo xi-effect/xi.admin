@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import { Stack } from "@mui/material";
+// @ts-ignore
 import { inject, observer } from "mobx-react";
 import Navigation from "kit/Navigation/Navigation";
 import { Email } from "components/Email";

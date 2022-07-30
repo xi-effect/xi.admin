@@ -1,4 +1,4 @@
-FROM node:16-alpine AS builder
+FROM node:14-alpine AS builder
 
 # Alpine doesn't come with openssh or git, install them
 RUN apk add --no-cache openssh-client git
@@ -20,7 +20,7 @@ RUN npm run build
 
 
 # Base on offical Node.js Alpine image
-FROM node:16-alpine
+FROM node:14-alpine
 
 # Alpine doesn't come with openssh or git, install them
 RUN apk add --no-cache openssh-client git
@@ -32,7 +32,7 @@ WORKDIR /app
 COPY ./package*.json ./
 
 # Install dependencies
-RUN npm install --omit=dev
+RUN npm install --production
 
 # Get the built application from the first stage
 COPY --from=builder /app/.next .next

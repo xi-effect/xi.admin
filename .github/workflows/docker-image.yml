@@ -36,9 +36,9 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:nextjs-image
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:buildcache-front
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:buildcache-front,mode=max
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:admin-image
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:buildcache-admin
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:buildcache-admin,mode=max
       -
         if: github.event_name == 'pull_request'
         name: Build and push (PR)
@@ -48,9 +48,9 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:nextjs-${{ github.run_id }}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:buildcache-front-${{ github.run_id }}
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:buildcache-front-${{ github.run_id }},mode=max
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:admin-${{ github.run_id }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:buildcache-admin-${{ github.run_id }}
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/xieffect:buildcache-admin-${{ github.run_id }},mode=max
 
   deploy:
       needs: build
@@ -68,7 +68,7 @@ jobs:
           command: |
             cd ~/xieffect-core
             docker system prune -a -f
-            docker-compose pull nextjs
+            docker-compose pull admin
             docker-compose up -d
           host: ${{ secrets.SERVER_IP }}
           username: root

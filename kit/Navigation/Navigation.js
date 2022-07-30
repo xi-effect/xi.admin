@@ -124,18 +124,7 @@ const Navigation = inject(
               ml: "336px",
             }}
           >
-            {!(router.pathname.includes("/message") && !(router.pathname.includes("chat"))) && <Scrollbars
-              renderThumbHorizontal={props => <div {...props} style={{ backgroundColor: "#cccccc", borderRadius: 8, width: 4, }} />}
-              renderThumbVertical={props => <div {...props} style={{ backgroundColor: "#cccccc", borderRadius: 8, width: 4, }} />}
-              universal
-              style={{ width: "100%", height: "100%", }}
-              autoHide
-              autoHideTimeout={1000}
-              autoHideDuration={200}
-            >
-              {children}
-            </Scrollbars>}
-            {router.pathname.includes("message") || router.pathname.includes("chat") && children}
+            {children}
           </Box>
         </Box>
       );

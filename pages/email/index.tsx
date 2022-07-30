@@ -3,8 +3,9 @@ import React from "react";
 import { Stack } from "@mui/material";
 import { inject, observer } from "mobx-react";
 import Navigation from "kit/Navigation/Navigation";
+import { Email } from "components/Email";
 
-const Email: React.FC = inject()(observer(() => (
+const EmailPage: React.FC = inject()(observer(() => (
   (
     <>
       <Head>
@@ -29,11 +30,11 @@ const Email: React.FC = inject()(observer(() => (
             overflow: "hidden",
           }}
         >
-          1
+          <Email />
         </Stack>
       </Navigation>
     </>
   )
 )));
 
-export default Email;
+export default EmailPage;

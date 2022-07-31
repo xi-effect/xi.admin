@@ -23,8 +23,7 @@ class AuthorizationSt {
 
     @action logout = () => {
         this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-out/`, "POST")
-            .then((data) => {
-                console.log("data", data);
+            .then(() => {
                 Router.push("/");
             });
     };
@@ -41,7 +40,6 @@ class AuthorizationSt {
         this.setLogin("error", null);
         this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-in/`, "POST", { "username": data.username, "password": data.password })
             .then((data) => {
-                console.log("data", data);
                 if (data !== undefined) {
                     if (data.id) {
                         this.rootStore.uiSt.setLoading("loading", true);

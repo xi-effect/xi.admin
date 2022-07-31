@@ -73,8 +73,7 @@ class UserSt {
     @action saveNewSettings = () => {
         this.rootStore.fetchData(`${this.rootStore.url}/settings/`, "POST", {
             "changed": { ...this.settings, "dark-theme": this.settings.darkTheme }
-        }).then((data) => {
-            console.log(data);
+        }).then(() => {
         });
     };
 

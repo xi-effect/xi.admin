@@ -8,7 +8,7 @@ import { enableStaticRendering } from "mobx-react";
 import { useMemo } from "react";
 import Router from "next/router";
 
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import UISt from "./ui/uiSt";
 import HomeSt from "./home/homeSt";
 import UserSt from "./user/userSt";
@@ -30,13 +30,13 @@ class RootStore {
     makeObservable(this);
   }
 
-  socket = null;
+  // socket = null;
 
-  @action initSocket = () => {
-    this.socket = io('https://xieffect.ru:5000/', {
-      withCredentials: true,
-    });
-  };
+  // @action initSocket = () => {
+  //   this.socket = io('https://xieffect.ru:5000/', {
+  //     withCredentials: true,
+  //   });
+  // };
 
   @action async fetchData(url, method, data = null) {
     try {

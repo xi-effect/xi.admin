@@ -20,7 +20,7 @@ export default class MyDocument extends Document {
           <meta name="google-site-verification" content="VAN7yVAfRqd5NWFpUJlz0MVL1wcv0mdhDY-16-d48-U" />
           <meta
             name="description"
-            content="Всё, что нужно для вашего Образования"
+            content="Всё, что нужно для администрирования xieffect.ru"
           />
 
           <meta name='application-name' content="\u039effect" />

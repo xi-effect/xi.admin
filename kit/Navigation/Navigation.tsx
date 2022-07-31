@@ -46,28 +46,28 @@ const Navigation: React.FC<Props> = inject(
       </Button>
     );
 
-    React.useEffect(() => {
-      if (!rootStore.socket?.connected) {
-        rootStore.initSocket();
-      };
-      rootStore.socket.on("connect", () => {
-        console.log("SIO connect", rootStore.socket.id);
-      });
-      rootStore.socket.on("disconnect", () => {
-        console.log("SIO disconnect", rootStore.socket.id);
-      });
-      rootStore.socket.on("error", (error) => {
-        enqueueSnackbar("Ошибка соединения", {
-          persist: true,
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'center',
-          },
-          TransitionComponent: Slide,
-          action,
-        });
-      });
-    }, []);
+    // React.useEffect(() => {
+    //   if (!rootStore.socket?.connected) {
+    //     rootStore.initSocket();
+    //   };
+    //   rootStore.socket.on("connect", () => {
+    //     console.log("SIO connect", rootStore.socket.id);
+    //   });
+    //   rootStore.socket.on("disconnect", () => {
+    //     console.log("SIO disconnect", rootStore.socket.id);
+    //   });
+    //   rootStore.socket.on("error", (error) => {
+    //     enqueueSnackbar("Ошибка соединения", {
+    //       persist: true,
+    //       anchorOrigin: {
+    //         vertical: 'bottom',
+    //         horizontal: 'center',
+    //       },
+    //       TransitionComponent: Slide,
+    //       action,
+    //     });
+    //   });
+    // }, []);
 
     // @ts-ignore
     useBeforeUnload(() => {

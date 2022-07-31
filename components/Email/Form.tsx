@@ -44,19 +44,15 @@ const Form: React.FC<Props> = inject('rootStore')(
       control,
       handleSubmit,
       trigger,
-      formState: { errors },
+      // formState: { errors },
     } = useForm({
       resolver: yupResolver(schema),
     });
 
-    console.log("errors", errors);
-
     const onSubmit = (data) => {
       trigger();
-      console.log("f", data);
       rootStore.fetchData(`${rootStore.url}/mub/emailer/send/`, "POST", { "user-email": data.useremail, "tester-email": data.testeremail, "type": data.type })
         .then((data) => {
-          console.log("resp", data);
           if (data.a === "User not found") {
             enqueueSnackbar("User not found", {
               variant: "info",

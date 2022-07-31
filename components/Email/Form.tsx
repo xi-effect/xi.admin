@@ -3,23 +3,21 @@
 /* eslint-disable react/function-component-definition */
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-// import { useRouter, NextRouter } from 'next/router';
-import Image from 'next/image';
 
 import {
   Stack,
-  // Link,
   useMediaQuery,
-  Box,
   Button,
   Paper,
+  NativeSelect,
 } from '@mui/material';
 
-import { motion } from 'framer-motion';
 import { inject, observer } from 'mobx-react';
 
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSnackbar } from "notistack";
+
 import * as yup from 'yup';
 import TextFieldCustom from 'kit/TextFieldCustom';
 
@@ -35,14 +33,12 @@ type Props = {
   rootStore?: any;
 };
 
-const Form: React.FC<Props> = inject('authorizationSt')(
+const Form: React.FC<Props> = inject('rootStore')(
   observer((props) => {
     const { rootStore } = props;
     // @ts-ignore
     const mobile: boolean = useMediaQuery((theme) => theme.breakpoints.down('dl'));
-    // @ts-ignore
-    const mobileImage: boolean = useMediaQuery((theme) => theme.breakpoints.down('md'));
-    // const router: NextRouter = useRouter();
+    const { enqueueSnackbar } = useSnackbar();
 
     const {
       control,
@@ -53,11 +49,33 @@ const Form: React.FC<Props> = inject('authorizationSt')(
       resolver: yupResolver(schema),
     });
 
+    console.log("errors", errors);
+
     const onSubmit = (data) => {
       trigger();
-      rootStore.fetchData(`${rootStore.url}/mub/sign-in/`, "POST", { "user-email": data.useremail, "tester-email": data.testeremail, "type": data.type })
+      console.log("f", data);
+      rootStore.fetchData(`${rootStore.url}/mub/emailer/send/`, "POST", { "user-email": data.useremail, "tester-email": data.testeremail, "type": data.type })
         .then((data) => {
-          console.log("data", data);
+          console.log("resp", data);
+          if (data.a === "User not found") {
+            enqueueSnackbar("User not found", {
+              variant: "info",
+            });
+          }
+          else if (data.a === "Unsupported type") {
+            enqueueSnackbar("Unsupported type", {
+              variant: "info",
+            });
+          }
+          else if (data.a === "Not sufficient permissions") {
+            enqueueSnackbar("Not sufficient permissions", {
+              variant: "info",
+            });
+          } else {
+            enqueueSnackbar(`Успех! Письмо отправлено на ${data.testeremail}`, {
+              variant: "info",
+            });
+          }
         });
     };
 
@@ -72,120 +90,91 @@ const Form: React.FC<Props> = inject('authorizationSt')(
         <Paper
           elevation={24}
           sx={{
+            p: 2,
             mt: 4,
             zIndex: 500,
             bgcolor: 'grey.800',
             borderRadius: '20px',
           }}>
-          <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-            <Stack
-              component={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 1 }}
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ width: '100%' }}>
-              <Image
-                alt="alt"
-                src="/assets/auth/Login.svg"
-                quality={100}
-                width={mobileImage ? 312 : 456}
-                height={mobileImage ? 312 : 456}
-              />
-              <Stack
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                spacing={1}
-                sx={{
-                  width: '100%',
-                  maxWidth: '386px',
-                  mt: mobileImage ? '-16px' : '-32px',
-                  pr: 1,
-                  pl: 1,
-                }}>
-                <Controller
-                  name="username"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <TextFieldCustom
-                      variant="filled"
-                      error={
-                        errors?.useremail?.type
-                      }
-                      type="text"
-                      fullWidth
-                      label="user-email"
-                      helperText={`
-                      ${errors?.username?.type === 'email' ? 'Введите корректный e-mail' : ''}
-                      `}
-                      {...field}
-                    />
-                  )}
+          <Stack
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ width: '100%' }}>
+            <Controller
+              name="useremail"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextFieldCustom
+                  variant="filled"
+                  type="text"
+                  fullWidth
+                  label="useremail"
+                  {...field}
                 />
-                <Controller
-                  name="testemail"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <TextFieldCustom
-                      variant="filled"
-                      fullWidth
-                      label="Пароль"
-                      type='text'
-                      {...field}
-                    />
-                  )}
+              )}
+            />
+            <Controller
+              name="testeremail"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextFieldCustom
+                  variant="filled"
+                  fullWidth
+                  label="testeremail"
+                  type='text'
+                  {...field}
                 />
-                <Controller
-                  name="type"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <TextFieldCustom
-                      variant="filled"
-                      fullWidth
-                      label="Пароль"
-                      type='text'
-                      {...field}
-                    />
-                  )}
-                />
-                <Stack
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                  sx={{ width: '100%', pt: 2, pb: 4 }}>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    type="submit"
-                    sx={{
-                      '&.MuiButton-root': {
-                        fontFamily: 'Roboto',
-                        fontSize: '15px',
-                        lineHeight: '26px',
-                        letterSpacing: '0.46000000834465027px',
-                        width: mobile ? '196px' : '196px',
-                        height: mobile ? '42px' : '42px',
-                        color: 'text.primary',
-                        bgcolor: 'secondary.main',
-                        borderRadius: mobile ? '62px' : '88px',
-                        '&:hover': {
-                          bgcolor: 'secondary.dark',
-                        },
-                        boxShadow: 2,
-                      },
-                    }}>
-                    Отправить
-                  </Button>
-                </Stack>
-              </Stack>
-            </Stack>
-          </Box>
+              )}
+            />
+            <Controller
+              name="type"
+              control={control}
+              defaultValue="confirm"
+              render={({ field }) => (
+                <NativeSelect
+                  variant="filled"
+                  sx={{
+                    mt: 1,
+                  }}
+                  fullWidth
+                  {...field}
+                >
+                  <option value="confirm">confirm</option>
+                  <option value="password">password</option>
+                  <option value="change">change</option>
+                </NativeSelect>
+              )}
+            />
+            <Button
+              variant="contained"
+              size="large"
+              type="submit"
+              sx={{
+                '&.MuiButton-root': {
+                  fontFamily: 'Roboto',
+                  fontSize: '15px',
+                  lineHeight: '26px',
+                  letterSpacing: '0.46000000834465027px',
+                  width: mobile ? '196px' : '196px',
+                  height: mobile ? '42px' : '42px',
+                  color: 'text.primary',
+                  bgcolor: 'secondary.main',
+                  borderRadius: mobile ? '62px' : '88px',
+                  '&:hover': {
+                    bgcolor: 'secondary.dark',
+                  },
+                  boxShadow: 2,
+                  mt: 2,
+                },
+              }}>
+              Отправить
+            </Button>
+          </Stack>
         </Paper>
       </Stack>
     );

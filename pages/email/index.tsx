@@ -19,14 +19,11 @@ const EmailPage: React.FC = inject()(observer(() => (
         <Stack
           direction="column"
           justifyContent="flex-start"
-          alignItems="center"
+          alignItems="flex-start"
           spacing={0}
           sx={{
             width: "100%",
-            pt: 1,
-            ml: 0,
-            mr: 0,
-            pb: 10,
+            m: 0,
             position: "relative",
             overflow: "hidden",
           }}

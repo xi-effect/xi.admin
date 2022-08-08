@@ -1,14 +1,14 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 
-import React from "react";
-import { useRouter } from "next/router";
-import { inject, observer } from "mobx-react";
+import React from 'react';
+import { useRouter } from 'next/router';
+import { inject, observer } from 'mobx-react';
 
-import { Stack, Slide, Button, Box, useMediaQuery } from "@mui/material";
+import { Stack, Slide, Button, Box, useMediaQuery } from '@mui/material';
 import { useSessionStorage, useBeforeUnload } from 'react-use';
 import dynamic from 'next/dynamic';
-import { useSnackbar } from "notistack";
+import { useSnackbar } from 'notistack';
 
 const Sidebar = dynamic(() => import('./Sidebar/Sidebar'), { ssr: false });
 
@@ -20,14 +20,14 @@ type Props = {
 };
 
 const Navigation: React.FC<Props> = inject(
-  "rootStore",
-  "userSt",
-  "uiSt",
+  'rootStore',
+  'userSt',
+  'uiSt'
 )(
   observer(({ rootStore, userSt, uiSt, children }) => {
     const router = useRouter();
     // @ts-ignore
-    const mobile = useMediaQuery((theme) => theme.breakpoints.down("dl"));
+    const mobile = useMediaQuery((theme) => theme.breakpoints.down('dl'));
 
     const [prevPathname, setPrevPathname] = useSessionStorage('prevPathname');
 
@@ -37,11 +37,13 @@ const Navigation: React.FC<Props> = inject(
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-    const action = key => (
-      <Button onClick={() => {
-        closeSnackbar(key);
-        router.reload();
-      }}>
+    const action = (key) => (
+      <Button
+        onClick={() => {
+          closeSnackbar(key);
+          router.reload();
+        }}
+      >
         Перезагрузить страницу
       </Button>
     );
@@ -79,38 +81,38 @@ const Navigation: React.FC<Props> = inject(
       if (userSt.settings.id === null) {
         uiSt.setLoading('loading', true);
         userSt.getMainSettings();
-      };
+      }
     }, []);
 
     React.useEffect(() => {
       if (userSt.settings.code === null) {
         userSt.getAllSettings();
-      };
+      }
     }, []);
 
-    const [hoverLeftName, setHoverLeftName] = React.useState("");
+    const [hoverLeftName, setHoverLeftName] = React.useState('');
 
     return (
       <Stack
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="center"
+        direction='row'
+        justifyContent='flex-start'
+        alignItems='center'
         spacing={2}
         sx={{
           zIndex: 0,
-          backgroundColor: "background.main",
-          height: "100vh",
-          overflow: "hidden",
-          width: "100%",
+          backgroundColor: 'background.main',
+          height: '100vh',
+          overflow: 'hidden',
+          width: '100%',
         }}
       >
         <Sidebar />
         <Box
           sx={{
             zIndex: 0,
-            backgroundColor: "background.main",
-            height: "100vh",
-            overflow: "hidden",
+            backgroundColor: 'background.main',
+            height: '100vh',
+            overflow: 'hidden',
             width: `100%`,
           }}
         >

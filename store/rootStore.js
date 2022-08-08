@@ -3,18 +3,18 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
-import { action, makeObservable } from "mobx";
-import { enableStaticRendering } from "mobx-react";
-import { useMemo } from "react";
-import Router from "next/router";
+import { action, makeObservable } from 'mobx';
+import { enableStaticRendering } from 'mobx-react';
+import { useMemo } from 'react';
+import Router from 'next/router';
 
 // import { io } from 'socket.io-client';
-import UISt from "./ui/uiSt";
-import HomeSt from "./home/homeSt";
-import UserSt from "./user/userSt";
-import AuthorizationSt from "./user/authorizationSt";
+import UISt from './ui/uiSt';
+import HomeSt from './home/homeSt';
+import UserSt from './user/userSt';
+import AuthorizationSt from './user/authorizationSt';
 
-enableStaticRendering(typeof window === "undefined");
+enableStaticRendering(typeof window === 'undefined');
 
 let store;
 
@@ -44,43 +44,41 @@ class RootStore {
       if (data != null) {
         response = await fetch(url, {
           method,
-          cache: "no-cache",
-          credentials: "include",
+          cache: 'no-cache',
+          credentials: 'include',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(data),
         });
       }
       if (data == null) {
         response = await fetch(url, {
           method,
-          cache: "no-cache",
-          credentials: "include",
+          cache: 'no-cache',
+          credentials: 'include',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         });
       }
       if (response.status === 401 || response.status === 403 || response.status === 422) {
         const router = Router;
-        router.push("/");
+        router.push('/');
         return null;
       }
       if (response.ok) {
         const string = await response.text();
-        const json = string === "" ? {} : JSON.parse(string);
+        const json = string === '' ? {} : JSON.parse(string);
         return json;
       }
       const string = await response.text();
-      const json = string === "" ? {} : JSON.parse(string);
+      const json = string === '' ? {} : JSON.parse(string);
       return json;
-
     } catch (error) {
-      console.log("Возникла проблема с вашим fetch запросом: ", error.message);
+      console.log('Возникла проблема с вашим fetch запросом: ', error.message);
     }
   }
-
 }
 
 function initializeStore(initialData = null) {
@@ -92,7 +90,7 @@ function initializeStore(initialData = null) {
     _store.hydrate(initialData);
   }
   // For SSG and SSR always create a new store
-  if (typeof window === "undefined") return _store;
+  if (typeof window === 'undefined') return _store;
   // Create the store once in the client
   if (!store) store = _store;
 

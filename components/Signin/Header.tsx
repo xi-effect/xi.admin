@@ -17,14 +17,15 @@ const Header: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1, duration: 1 }}
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
+      direction='row'
+      justifyContent='space-between'
+      alignItems='center'
       sx={{
         height: mobile ? '100px' : '110px',
         p: 4,
         width: '100%',
-      }}>
+      }}
+    >
       <XiLogo />
     </Stack>
   );

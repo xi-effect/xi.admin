@@ -31,7 +31,8 @@ WORKDIR /app
 # Copy package.json and package-lock.json before other files
 COPY ./package*.json ./
 
-# Install dependencies
+# Install dependencies (without husky!)
+RUN npm set-script prepare ""
 RUN npm install --omit=dev
 
 # Get the built application from the first stage

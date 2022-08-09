@@ -5,21 +5,18 @@ import { inject, observer } from "mobx-react";
 import Navigation from "kit/Navigation/Navigation";
 import { CardWithLinks } from '../../components/CardWithLinks/CardWithLinks';
 
-
-const Home = inject()(observer(() => (
-  (
+const Home = inject()(
+  observer(() => (
     <>
       <Head>
-        <title>
-          Ξffect | Главная
-        </title>
-        <meta name="robots" content="noindex" />
+        <title>Ξffect | Главная</title>
+        <meta name='robots' content='noindex' />
       </Head>
       <Navigation>
         <Stack
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
+          direction='column'
+          justifyContent='flex-start'
+          alignItems='flex-start'
           spacing={0}
           sx={{
             width: "100%",
@@ -45,7 +42,7 @@ const Home = inject()(observer(() => (
         </Stack>
       </Navigation>
     </>
-  )
-)));
+  ))
+);
 
 export default Home;

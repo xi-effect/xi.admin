@@ -19,7 +19,6 @@ type CommunityMenuProps = {
 
 const CommunityMenu: React.FC<CommunityMenuProps> = inject('uiSt')(
   observer(({ uiSt, open, setOpen, handleClose, handleListKeyDown }) => {
-
     const onInviteClick = () => {
       uiSt.setDialogs('invite', true);
       if (setOpen) setOpen(false);
@@ -28,20 +27,20 @@ const CommunityMenu: React.FC<CommunityMenuProps> = inject('uiSt')(
     return (
       <MenuList
         autoFocusItem={open}
-        id="composition-menu"
-        aria-labelledby="composition-button"
+        id='composition-menu'
+        aria-labelledby='composition-button'
         onKeyDown={handleListKeyDown}
-        sx={{ width: '100%' }}>
-        <MenuItem
-          sx={{ width: '100%' }}
-          onClick={onInviteClick}>
+        sx={{ width: '100%' }}
+      >
+        <MenuItem sx={{ width: '100%' }} onClick={onInviteClick}>
           <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ width: '100%' }}>
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+            sx={{ width: '100%' }}
+          >
             Пригласить людей
-            <PersonAddAlt1Icon fontSize="small" />
+            <PersonAddAlt1Icon fontSize='small' />
           </Stack>
         </MenuItem>
         <MenuItem
@@ -49,14 +48,16 @@ const CommunityMenu: React.FC<CommunityMenuProps> = inject('uiSt')(
           onClick={() => {
             uiSt.setDialogs('communitySettings', true);
             uiSt.setDialogs('communityMenu', false);
-          }}>
+          }}
+        >
           <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ width: '100%' }}>
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+            sx={{ width: '100%' }}
+          >
             Настройки сообщества
-            <SettingsIcon fontSize="small" />
+            <SettingsIcon fontSize='small' />
           </Stack>
         </MenuItem>
         <Divider flexItem />
@@ -65,14 +66,16 @@ const CommunityMenu: React.FC<CommunityMenuProps> = inject('uiSt')(
           onClick={() => {
             uiSt.setDialogs('channelCreation', true);
             if (setOpen) setOpen(false);
-          }}>
+          }}
+        >
           <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ width: '100%' }}>
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+            sx={{ width: '100%' }}
+          >
             Создать канал
-            <AddCircleIcon fontSize="small" />
+            <AddCircleIcon fontSize='small' />
           </Stack>
         </MenuItem>
         <MenuItem
@@ -80,14 +83,16 @@ const CommunityMenu: React.FC<CommunityMenuProps> = inject('uiSt')(
           onClick={() => {
             uiSt.setDialogs('categoryCreation', true);
             if (setOpen) setOpen(false);
-          }}>
+          }}
+        >
           <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ width: '100%' }}>
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+            sx={{ width: '100%' }}
+          >
             Создать категорию
-            <CreateNewFolderIcon fontSize="small" />
+            <CreateNewFolderIcon fontSize='small' />
           </Stack>
         </MenuItem>
         <Divider flexItem />
@@ -95,19 +100,21 @@ const CommunityMenu: React.FC<CommunityMenuProps> = inject('uiSt')(
           sx={{ width: '100%' }}
           onClick={() => {
             if (handleClose) handleClose();
-          }}>
+          }}
+        >
           <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ width: '100%', color: 'error.main' }}>
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+            sx={{ width: '100%', color: 'error.main' }}
+          >
             Покинуть сообщество
-            <LogoutIcon sx={{ color: 'error.main' }} fontSize="small" />
+            <LogoutIcon sx={{ color: 'error.main' }} fontSize='small' />
           </Stack>
         </MenuItem>
       </MenuList>
     );
-  }),
+  })
 );
 
 export default CommunityMenu;

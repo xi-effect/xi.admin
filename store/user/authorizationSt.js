@@ -36,6 +36,8 @@ class AuthorizationSt {
   };
 
   @action clickEnterButton = (data, trigger) => {
+    const { username } = data;
+
     this.setLogin('error', null);
     this.rootStore
       .fetchData(`${this.rootStore.url}/mub/sign-in/`, 'POST', {
@@ -49,6 +51,7 @@ class AuthorizationSt {
             const { id, mode, permissions } = data;
             this.rootStore.userSt.setSettings('id', id);
             this.rootStore.userSt.setSettings('mode', mode);
+            this.rootStore.userSt.setSettings('username', username);
             this.rootStore.userSt.setSettings('permissions', permissions);
             Router.push('/home');
             setTimeout(() => {

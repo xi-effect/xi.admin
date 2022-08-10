@@ -26,7 +26,6 @@ const Home = inject()(
           }}
         >
           Главная Админки
-
           <AboutUser />
         </Stack>
       </Navigation>

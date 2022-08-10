@@ -28,21 +28,15 @@ const Home = inject()(
             overflowX: 'hidden',
           }}
         >
-          <Typography
-            p={1}
-            width='100%'
-            variant='h5'
-            textAlign='center'
-          >
+          <Typography p={1} width='100%' variant='h5' textAlign='center'>
             Главная Админки
           </Typography>
 
           <CardWithLinks />
-
         </Stack>
       </Navigation>
     </>
-  )),
+  ))
 );
 
 export default Home;

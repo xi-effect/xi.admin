@@ -3,6 +3,7 @@ import React from 'react';
 import { Stack } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import Navigation from 'kit/Navigation/Navigation';
+import AboutUser from '../../components/Home/AboutUser/AboutUser';
 
 const Home = inject()(
   observer(() => (
@@ -25,6 +26,8 @@ const Home = inject()(
           }}
         >
           Главная Админки
+
+          <AboutUser />
         </Stack>
       </Navigation>
     </>

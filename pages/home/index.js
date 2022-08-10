@@ -1,9 +1,9 @@
-import Head from "next/head";
-import React from "react";
+import Head from 'next/head';
+import React from 'react';
 import { Stack, Typography } from '@mui/material';
-import { inject, observer } from "mobx-react";
-import Navigation from "kit/Navigation/Navigation";
-import { CardWithLinks } from '../../components/CardWithLinks/CardWithLinks';
+import { inject, observer } from 'mobx-react';
+import Navigation from 'kit/Navigation/Navigation';
+import CardWithLinks from 'components/Home/CardWithLinks/CardWithLinks';
 
 const Home = inject()(
   observer(() => (
@@ -19,11 +19,11 @@ const Home = inject()(
           alignItems='flex-start'
           spacing={0}
           sx={{
-            width: "100%",
+            width: '100%',
             height: '100%',
             m: 0,
             p: '10px 0',
-            position: "relative",
+            position: 'relative',
             overflowY: 'scroll',
             overflowX: 'hidden',
           }}
@@ -42,7 +42,7 @@ const Home = inject()(
         </Stack>
       </Navigation>
     </>
-  ))
+  )),
 );
 
 export default Home;

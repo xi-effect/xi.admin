@@ -18,7 +18,7 @@ import Layout from 'kit/Layout/Layout';
 
 const Signin = inject(
   'uiSt',
-  'userSt',
+  'userSt'
 )(
   observer((props) => {
     const { uiSt, userSt } = props;
@@ -43,7 +43,7 @@ const Signin = inject(
         </Stack>
       </Layout>
     );
-  }),
+  })
 );
 
 export default Signin;

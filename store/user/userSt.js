@@ -14,7 +14,7 @@ class UserSt {
     id: null,
     username: '',
     darkTheme: true,
-    permissions: [],
+    sections: [],
   };
 
   @action setSettings = (item, value) => {

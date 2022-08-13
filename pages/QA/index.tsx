@@ -4,14 +4,14 @@ import { Stack } from '@mui/material';
 import Layout from 'kit/Layout/Layout';
 import Navigation from 'kit/Navigation/Navigation';
 import { inject, observer } from 'mobx-react';
-import { checkUserPermissions } from 'utils/checkPermissions';
+import { SectionsDataT } from 'utils/dataFormatting';
 import NotEnoughRights from 'kit/Layout/NotEnoughRights';
 
 const QAPage = inject('userSt')(
   observer(({ userSt }) => {
     const {
       settings: { sections },
-    } = userSt;
+    }: { settings: { sections: SectionsDataT } } = userSt;
 
     return (
       <Layout title='Тестирование'>
@@ -28,13 +28,13 @@ const QAPage = inject('userSt')(
               overflow: 'hidden',
             }}
           >
-            {checkUserPermissions({ sections, arg: 'emailing' }) && <Form />}
-            {!checkUserPermissions({ sections, arg: 'emailing' }) && <NotEnoughRights />}
+            {sections['quality assurance']?.emailing && <Form />}
+            {!sections['quality assurance']?.emailing && <NotEnoughRights />}
           </Stack>
         </Navigation>
       </Layout>
     );
-  })
+  }),
 );
 
 export default QAPage;

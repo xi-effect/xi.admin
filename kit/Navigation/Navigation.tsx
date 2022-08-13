@@ -9,7 +9,7 @@ import { Stack, Button, Box } from '@mui/material';
 import { useSessionStorage, useBeforeUnload } from 'react-use';
 import dynamic from 'next/dynamic';
 import { useSnackbar } from 'notistack';
-import { checkUserRole } from 'utils/checkPermissions';
+import { SectionsDataT } from 'utils/dataFormatting';
 import NotEnoughRights from '../Layout/NotEnoughRights';
 
 const Sidebar = dynamic(() => import('./Sidebar/Sidebar'), { ssr: false });
@@ -24,14 +24,14 @@ type Props = {
 const Navigation: React.FC<Props> = inject(
   'rootStore',
   'userSt',
-  'uiSt'
+  'uiSt',
 )(
   observer(({ rootStore, userSt, uiSt, children }) => {
     const router = useRouter();
 
     const {
       settings: { sections },
-    } = userSt;
+    }: { settings: { sections: SectionsDataT } } = userSt;
 
     const [prevPathname, setPrevPathname] = useSessionStorage('prevPathname');
     const [hoverLeftName, setHoverLeftName] = React.useState('');
@@ -81,7 +81,7 @@ const Navigation: React.FC<Props> = inject(
       rootStore.socket.off();
     });
 
-    if (router.pathname === '/QA' && !checkUserRole({ sections, arg: 'quality assurance' })) {
+    if (router.pathname === '/QA' && !sections['quality assurance']?.emailing) {
       return <NotEnoughRights />;
     }
 
@@ -113,7 +113,7 @@ const Navigation: React.FC<Props> = inject(
         </Box>
       </Stack>
     );
-  })
+  }),
 );
 
 export default Navigation;

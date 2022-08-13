@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Stack, Tooltip, IconButton } from '@mui/material';
 import { DeveloperMode, Logout, Home } from '@mui/icons-material';
-import { checkUserRole } from 'utils/checkPermissions';
+import { SectionsDataT } from 'utils/dataFormatting';
 import NavButton from './NavButton';
 
 type SidebarType = {
@@ -13,12 +13,12 @@ type SidebarType = {
 
 const Sidebar: React.FC<SidebarType> = inject(
   'authorizationSt',
-  'userSt'
+  'userSt',
 )(
   observer(({ authorizationSt, userSt }) => {
     const {
       settings: { sections },
-    } = userSt;
+    }: { settings: { sections: SectionsDataT } } = userSt;
 
     const logoutHandler = () => authorizationSt.logout();
 
@@ -59,7 +59,7 @@ const Sidebar: React.FC<SidebarType> = inject(
         >
           <NavButton href='/home' title='Главная' icon={<Home />} />
 
-          {checkUserRole({ sections, arg: 'quality assurance' }) && (
+          {sections['quality assurance'] && (
             <NavButton href='/QA' title='QA Engine' icon={<DeveloperMode />} />
           )}
         </Stack>
@@ -70,7 +70,7 @@ const Sidebar: React.FC<SidebarType> = inject(
         </Tooltip>
       </Stack>
     );
-  })
+  }),
 );
 
 export default Sidebar;

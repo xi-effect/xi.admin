@@ -75,8 +75,7 @@ class UserSt {
       .fetchData(`${this.rootStore.url}/settings/`, 'POST', {
         changed: { ...this.settings, 'dark-theme': this.settings.darkTheme },
       })
-      .then(() => {
-      });
+      .then(() => {});
   };
 
   @action logout = () => {

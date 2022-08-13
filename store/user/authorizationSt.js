@@ -14,22 +14,48 @@ class AuthorizationSt {
     makeObservable(this);
   }
 
+  @observable auth = undefined;
+
   @observable newPasswordReset = {
     emailResetOk: false,
+  };
+
+  @observable login = {
+    error: null,
   };
 
   @action setNewPasswordReset = (name, value) => {
     this.newPasswordReset[name] = value;
   };
 
+  @action getSettings = async () => {
+    try {
+      this.rootStore.uiSt.setLoading('loading', true);
+
+      const data = await this.rootStore.fetchData(`${this.rootStore.url}/mub/my-settings/`, 'GET');
+
+      if (data !== undefined) {
+        const { id, mode, sections } = data;
+
+        this.rootStore.auth = true;
+        this.rootStore.userSt.setSettings('id', id);
+        this.rootStore.userSt.setSettings('mode', mode);
+        this.rootStore.userSt.setSettings('sections', dataFormatting(sections));
+      }
+
+      setTimeout(() => {
+        this.rootStore.uiSt.setLoading('loading', false);
+      }, 1500);
+    } catch (e) {
+      console.log(e);
+      Router.push('/');
+    }
+  };
+
   @action logout = () => {
     this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-out/`, 'POST').then(() => {
       Router.push('/');
     });
-  };
-
-  @observable login = {
-    error: null,
   };
 
   @action setLogin = (name, value) => {
@@ -47,7 +73,9 @@ class AuthorizationSt {
         if (data !== undefined) {
           if (data.id) {
             this.rootStore.uiSt.setLoading('loading', true);
+
             const { id, mode, sections } = data;
+            this.rootStore.auth = true;
             this.rootStore.userSt.setSettings('id', id);
             this.rootStore.userSt.setSettings('mode', mode);
             this.rootStore.userSt.setSettings('sections', dataFormatting(sections));
@@ -55,8 +83,8 @@ class AuthorizationSt {
             setTimeout(() => {
               this.rootStore.uiSt.setLoading('loading', false);
             }, 1500);
-          } else if (data.a === "User doesn't exist") {
-            this.setLogin('error', "User doesn't exist");
+          } else if (data.a === 'User doesn\'t exist') {
+            this.setLogin('error', 'User doesn\'t exist');
             trigger();
           } else if (data.a === 'Wrong password') {
             this.setLogin('error', 'Wrong password');

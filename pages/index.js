@@ -5,7 +5,6 @@
 /* eslint-disable react/jsx-filename-extension */
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import Head from 'next/head';
 import { Stack } from '@mui/material';
 
 import React from 'react';
@@ -15,10 +14,11 @@ import { useSessionStorage } from 'react-use';
 
 import Header from 'components/Signin/Header';
 import Form from 'components/Signin/Form';
+import Layout from 'kit/Layout/Layout';
 
 const Signin = inject(
   'uiSt',
-  'userSt'
+  'userSt',
 )(
   observer((props) => {
     const { uiSt, userSt } = props;
@@ -26,10 +26,7 @@ const Signin = inject(
     const [prevPathname, setPrevPathname] = useSessionStorage('prevPathname');
 
     return (
-      <>
-        <Head>
-          <title>Ξffect | Вход</title>
-        </Head>
+      <Layout title='Вход'>
         <Stack
           direction='column'
           justifyContent='flex-start'
@@ -44,9 +41,9 @@ const Signin = inject(
           <Header />
           <Form />
         </Stack>
-      </>
+      </Layout>
     );
-  })
+  }),
 );
 
 export default Signin;

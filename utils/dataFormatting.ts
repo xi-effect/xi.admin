@@ -1,4 +1,4 @@
-export const dataFormatting = (sections: SectionsT) => {
+export const formatSectionData = (sections: SectionsT): SectionsDataT => {
   const resultSection = {};
 
   for (const s of sections) {
@@ -23,10 +23,10 @@ type SectionsT = {
   }[];
 }[];
 
-type PermissionsT = 'manage mods' | 'emailing' | 'manage';
+export type PermissionsT = 'manage mods' | 'emailing' | 'manage';
 
-type PermissionsUserRoleT = 'super' | 'quality assurance' | 'users';
+export type PermissionsUserRoleT = 'super' | 'quality assurance' | 'users';
 
-type PermissionsDataT = { [key in PermissionsT]?: boolean };
+export type PermissionsDataT = { [key in PermissionsT]?: boolean };
 
 export type SectionsDataT = { [key in PermissionsUserRoleT]?: PermissionsDataT };

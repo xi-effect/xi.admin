@@ -2,7 +2,7 @@
 /* eslint-disable no-shadow */
 import { action, observable, makeObservable } from 'mobx';
 import Router from 'next/router';
-import { dataFormatting } from 'utils/dataFormatting';
+import { formatSectionData } from 'utils/dataFormatting';
 
 class AuthorizationSt {
   // `this` from rootstore passed to the constructor and we can
@@ -50,13 +50,13 @@ class AuthorizationSt {
             const { id, mode, sections } = data;
             this.rootStore.userSt.setSettings('id', id);
             this.rootStore.userSt.setSettings('mode', mode);
-            this.rootStore.userSt.setSettings('sections', dataFormatting(sections));
+            this.rootStore.userSt.setSettings('sections', formatSectionData(sections));
             Router.push('/home');
             setTimeout(() => {
               this.rootStore.uiSt.setLoading('loading', false);
             }, 1500);
-          } else if (data.a === "User doesn't exist") {
-            this.setLogin('error', "User doesn't exist");
+          } else if (data.a === 'User doesn\'t exist') {
+            this.setLogin('error', 'User doesn\'t exist');
             trigger();
           } else if (data.a === 'Wrong password') {
             this.setLogin('error', 'Wrong password');

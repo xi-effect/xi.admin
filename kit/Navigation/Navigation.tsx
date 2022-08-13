@@ -24,12 +24,14 @@ type Props = {
 const Navigation: React.FC<Props> = inject(
   'rootStore',
   'userSt',
-  'uiSt',
+  'uiSt'
 )(
   observer(({ rootStore, userSt, uiSt, children }) => {
     const router = useRouter();
 
-    const { settings: { sections } } = userSt;
+    const {
+      settings: { sections },
+    } = userSt;
 
     const [prevPathname, setPrevPathname] = useSessionStorage('prevPathname');
     const [hoverLeftName, setHoverLeftName] = React.useState('');
@@ -111,7 +113,7 @@ const Navigation: React.FC<Props> = inject(
         </Box>
       </Stack>
     );
-  }),
+  })
 );
 
 export default Navigation;

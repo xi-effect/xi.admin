@@ -4,7 +4,7 @@ import Head from 'next/head';
 const Layout: React.FC<{ title: string }> = ({ title, children }) => (
   <>
     <Head>
-      <title>Ξffect | {title}</title>
+      <title>xi.admin | {title}</title>
       <meta name='robots' content='noindex' />
     </Head>
     {children}

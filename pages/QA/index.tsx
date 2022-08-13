@@ -34,7 +34,7 @@ const QAPage = inject('userSt')(
         </Navigation>
       </Layout>
     );
-  }),
+  })
 );
 
 export default QAPage;

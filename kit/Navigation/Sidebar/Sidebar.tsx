@@ -13,7 +13,7 @@ type SidebarType = {
 
 const Sidebar: React.FC<SidebarType> = inject(
   'authorizationSt',
-  'userSt',
+  'userSt'
 )(
   observer(({ authorizationSt, userSt }) => {
     const {
@@ -70,7 +70,7 @@ const Sidebar: React.FC<SidebarType> = inject(
         </Tooltip>
       </Stack>
     );
-  }),
+  })
 );
 
 export default Sidebar;

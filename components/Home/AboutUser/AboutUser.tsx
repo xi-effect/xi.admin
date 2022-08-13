@@ -15,12 +15,13 @@ import SubHeaderForAU from './SubHeaderForAU';
 
 const AboutUser = inject('userSt')(
   observer(({ userSt }) => {
+
     const {
-      settings: { id, username, permissions },
+      settings: { id, username, sections },
     } = userSt;
 
-    const access =
-      permissions && permissions.length ? permissions[0].name : 'Недостаточно разрешений';
+    const permissions = sections.map(s => s.name);
+    const access = permissions.length ? permissions.join(', ') : 'Отсутствуют разрешения';
 
     return (
       <Paper
@@ -73,7 +74,7 @@ const AboutUser = inject('userSt')(
         </List>
       </Paper>
     );
-  })
+  }),
 );
 
 export default AboutUser;

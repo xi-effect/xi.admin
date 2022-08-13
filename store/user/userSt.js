@@ -29,7 +29,7 @@ class UserSt {
     darkTheme: true,
     emailConfirmed: null,
     invite: null,
-    communities: [],
+    sections: [],
   };
 
   @action setSettings = (item, value) => {
@@ -75,7 +75,8 @@ class UserSt {
       .fetchData(`${this.rootStore.url}/settings/`, 'POST', {
         changed: { ...this.settings, 'dark-theme': this.settings.darkTheme },
       })
-      .then(() => {});
+      .then(() => {
+      });
   };
 
   @action logout = () => {

@@ -48,17 +48,17 @@ class AuthorizationSt {
         if (data !== undefined) {
           if (data.id) {
             this.rootStore.uiSt.setLoading('loading', true);
-            const { id, mode, permissions } = data;
+            const { id, mode, sections } = data;
             this.rootStore.userSt.setSettings('id', id);
             this.rootStore.userSt.setSettings('mode', mode);
             this.rootStore.userSt.setSettings('username', username);
-            this.rootStore.userSt.setSettings('permissions', permissions);
+            this.rootStore.userSt.setSettings('sections', sections);
             Router.push('/home');
             setTimeout(() => {
               this.rootStore.uiSt.setLoading('loading', false);
             }, 1500);
-          } else if (data.a === "User doesn't exist") {
-            this.setLogin('error', "User doesn't exist");
+          } else if (data.a === 'User doesn\'t exist') {
+            this.setLogin('error', 'User doesn\'t exist');
             trigger();
           } else if (data.a === 'Wrong password') {
             this.setLogin('error', 'Wrong password');

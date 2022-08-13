@@ -1,6 +1,13 @@
 import React from 'react';
 import { Box, Divider, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
-import { GitHub, Web, Bookmarks, DocumentScanner, DesignServices } from '@mui/icons-material';
+import {
+  GitHub,
+  Web,
+  Bookmarks,
+  DocumentScanner,
+  DesignServices,
+  AdminPanelSettings,
+} from '@mui/icons-material';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import DefaultLink from './DefaultLink';
 import HeaderForLinks from './HeaderForLinks';
@@ -24,8 +31,49 @@ const CardWithLinks = () => (
     >
       <ListItem>
         <ListItemAvatar>
-          {' '}
-          <GitHub color='primary' />{' '}
+          <DocumentScanner color='primary' />
+        </ListItemAvatar>
+        <ListItemText
+          primary={<HeaderForLinks text='Документация' />}
+          secondary={
+            <>
+              <DefaultLink text='Docs xieffect' href='https://docs.xieffect.ru/' />
+
+              <Box
+                pt={2}
+                component='span'
+                fontSize='16px'
+                color='lightgray'
+                display='inline-block'
+                sx={{ wordBreak: 'break-all' }}
+              >
+                <Box component='span' display='block'>
+                  <Typography pr={1} component='span'>
+                    Логин:
+                  </Typography>
+                  reader
+                </Box>
+
+                <Box component='span'>
+                  <Typography pr={1} component='span'>
+                    Пароль:
+                  </Typography>
+                  5q9f5Kz6qzsj6jxwznSUeugEp8a5BWnd7R4JQb
+                </Box>
+
+                <Typography p={1} display='block' component='span'>
+                  (логин и пароль подходят к документации бэкенда)
+                </Typography>
+              </Box>
+            </>
+          }
+        />
+      </ListItem>
+      <Divider />
+
+      <ListItem>
+        <ListItemAvatar>
+          <GitHub color='primary' />
         </ListItemAvatar>
 
         <ListItemText
@@ -43,8 +91,28 @@ const CardWithLinks = () => (
 
       <ListItem>
         <ListItemAvatar>
-          {' '}
-          <Web color='primary' />{' '}
+          <AdminPanelSettings color='primary' />
+        </ListItemAvatar>
+
+        <ListItemText
+          primary={<HeaderForLinks text='Админ-панель' />}
+          secondary={
+            <>
+              <DefaultLink
+                text='Админ-панель'
+                href='https://github.com/xi-effect/xieffect-admin' />
+              <DefaultLink
+                text='Core (Docker+NGINX)'
+                href='https://github.com/xi-effect/xieffect-core' />
+            </>
+          }
+        />
+      </ListItem>
+      <Divider />
+
+      <ListItem>
+        <ListItemAvatar>
+          <Web color='primary' />
         </ListItemAvatar>
         <ListItemText
           primary={<HeaderForLinks text='Сайт' />}
@@ -126,48 +194,6 @@ const CardWithLinks = () => (
             <>
               <DefaultLink text='REST API' href='https://xieffect.ru:5000/doc/' />
               <DefaultLink text='SocketIO' href='https://xieffect.ru:5000/sio-doc/' />
-            </>
-          }
-        />
-      </ListItem>
-      <Divider />
-
-      <ListItem>
-        <ListItemAvatar>
-          <DocumentScanner color='primary' />
-        </ListItemAvatar>
-        <ListItemText
-          primary={<HeaderForLinks text='Документация' />}
-          secondary={
-            <>
-              <DefaultLink text='Docs xieffect' href='https://docs.xieffect.ru/' />
-
-              <Box
-                pt={2}
-                component='span'
-                fontSize='16px'
-                color='lightgray'
-                display='inline-block'
-                sx={{ wordBreak: 'break-all' }}
-              >
-                <Box component='span' display='block'>
-                  <Typography pr={1} component='span'>
-                    Логин:
-                  </Typography>
-                  reader
-                </Box>
-
-                <Box component='span'>
-                  <Typography pr={1} component='span'>
-                    Пароль:
-                  </Typography>
-                  5q9f5Kz6qzsj6jxwznSUeugEp8a5BWnd7R4JQb
-                </Box>
-
-                <Typography p={1} display='block' component='span'>
-                  (логин и пароль подходят к документации бэкенда)
-                </Typography>
-              </Box>
             </>
           }
         />

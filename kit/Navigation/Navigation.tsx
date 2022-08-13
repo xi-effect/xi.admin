@@ -5,10 +5,12 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { inject, observer } from 'mobx-react';
 
-import { Stack, Slide, Button, Box, useMediaQuery } from '@mui/material';
+import { Stack, Button, Box } from '@mui/material';
 import { useSessionStorage, useBeforeUnload } from 'react-use';
 import dynamic from 'next/dynamic';
 import { useSnackbar } from 'notistack';
+import { checkUserRole } from 'utils/checkPermissions';
+import NotEnoughRights from '../Layout/NotEnoughRights';
 
 const Sidebar = dynamic(() => import('./Sidebar/Sidebar'), { ssr: false });
 
@@ -22,20 +24,21 @@ type Props = {
 const Navigation: React.FC<Props> = inject(
   'rootStore',
   'userSt',
-  'uiSt'
+  'uiSt',
 )(
   observer(({ rootStore, userSt, uiSt, children }) => {
     const router = useRouter();
-    // @ts-ignore
-    const mobile = useMediaQuery((theme) => theme.breakpoints.down('dl'));
+
+    const { settings: { sections } } = userSt;
 
     const [prevPathname, setPrevPathname] = useSessionStorage('prevPathname');
+    const [hoverLeftName, setHoverLeftName] = React.useState('');
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    // const mobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('dl'));
 
     React.useEffect(() => {
       setPrevPathname(router.pathname);
     }, [router.pathname]);
-
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const action = (key) => (
       <Button
@@ -70,27 +73,15 @@ const Navigation: React.FC<Props> = inject(
     //     });
     //   });
     // }, []);
-
     // @ts-ignore
     useBeforeUnload(() => {
       rootStore.socket.disconnect();
       rootStore.socket.off();
     });
 
-    React.useEffect(() => {
-      if (userSt.settings.id === null) {
-        uiSt.setLoading('loading', true);
-        userSt.getMainSettings();
-      }
-    }, []);
-
-    React.useEffect(() => {
-      if (userSt.settings.code === null) {
-        userSt.getAllSettings();
-      }
-    }, []);
-
-    const [hoverLeftName, setHoverLeftName] = React.useState('');
+    if (router.pathname === '/QA' && !checkUserRole({ sections, arg: 'quality assurance' })) {
+      return <NotEnoughRights />;
+    }
 
     return (
       <Stack
@@ -120,7 +111,7 @@ const Navigation: React.FC<Props> = inject(
         </Box>
       </Stack>
     );
-  })
+  }),
 );
 
 export default Navigation;

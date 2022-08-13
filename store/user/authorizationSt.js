@@ -46,10 +46,10 @@ class AuthorizationSt {
         if (data !== undefined) {
           if (data.id) {
             this.rootStore.uiSt.setLoading('loading', true);
-            const { id, mode, permissions } = data;
+            const { id, mode, sections } = data;
             this.rootStore.userSt.setSettings('id', id);
             this.rootStore.userSt.setSettings('mode', mode);
-            this.rootStore.userSt.setSettings('permissions', permissions);
+            this.rootStore.userSt.setSettings('sections', sections);
             Router.push('/home');
             setTimeout(() => {
               this.rootStore.uiSt.setLoading('loading', false);

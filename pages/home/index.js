@@ -3,7 +3,9 @@ import React from 'react';
 import { Stack, Typography } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import Navigation from 'kit/Navigation/Navigation';
+import AboutUser from 'components/Home/AboutUser/AboutUser';
 import CardWithLinks from 'components/Home/CardWithLinks/CardWithLinks';
+
 
 const Home = inject()(
   observer(() => (
@@ -31,12 +33,12 @@ const Home = inject()(
           <Typography p={1} width='100%' variant='h5' textAlign='center'>
             Главная Админки
           </Typography>
-
+          <AboutUser />
           <CardWithLinks />
         </Stack>
       </Navigation>
     </>
-  ))
+  )),
 );
 
 export default Home;

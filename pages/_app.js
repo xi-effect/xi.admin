@@ -37,14 +37,14 @@ Router.events.on('routeChangeError', () => NProgress.done());
 
 const InnerApp = inject(
   'authorizationSt',
-  'userSt'
+  'userSt',
 )(
   observer((props) => {
     const {
       Component,
       pageProps,
       authorizationSt: { getSettings },
-      userSt: { settings },
+      userSt: { settings: { auth } },
       emotionCache = clientSideEmotionCache,
     } = props;
 
@@ -52,14 +52,14 @@ const InnerApp = inject(
     const theme = React.useMemo(
       () =>
         responsiveFontSizes(
-          createTheme(getDesignTokens('dark' || rootStore.userSt.settings.darkTheme))
+          createTheme(getDesignTokens('dark' || rootStore.userSt.settings.darkTheme)),
         ), // Только тёмная тема
-      [rootStore.userSt.settings.darkTheme]
+      [rootStore.userSt.settings.darkTheme],
     );
 
     useEffect(() => {
-      if (!settings.auth) getSettings();
-    }, [settings.auth]);
+      if (!auth) getSettings();
+    }, [auth]);
 
     return (
       <CacheProvider value={emotionCache}>
@@ -86,7 +86,7 @@ const InnerApp = inject(
         </ThemeProvider>
       </CacheProvider>
     );
-  })
+  }),
 );
 
 const App = observer((props) => {

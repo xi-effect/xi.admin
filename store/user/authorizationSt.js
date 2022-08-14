@@ -14,8 +14,6 @@ class AuthorizationSt {
     makeObservable(this);
   }
 
-  @observable auth = undefined;
-
   @observable newPasswordReset = {
     emailResetOk: false,
   };
@@ -28,17 +26,22 @@ class AuthorizationSt {
     this.newPasswordReset[name] = value;
   };
 
+  @action setData = (data) => {
+    const { id, mode, sections, username } = data;
+
+    this.rootStore.userSt.setSettings('id', id);
+    this.rootStore.userSt.setSettings('mode', mode);
+    this.rootStore.userSt.setSettings('auth', true);
+    this.rootStore.userSt.setSettings('username', username);
+    this.rootStore.userSt.setSettings('sections', formatSectionData(sections));
+  };
+
   @action getSettings = async () => {
     this.rootStore.uiSt.setLoading('loading', true);
 
     const data = await this.rootStore.fetchData(`${this.rootStore.url}/mub/my-settings/`, 'GET');
     if (data) {
-      const { id, mode, sections } = data;
-
-      this.rootStore.userSt.setSettings('auth', true);
-      this.rootStore.userSt.setSettings('id', id);
-      this.rootStore.userSt.setSettings('mode', mode);
-      this.rootStore.userSt.setSettings('sections', dataFormatting(sections));
+      this.setData(data);
     }
 
     setTimeout(() => {
@@ -46,49 +49,50 @@ class AuthorizationSt {
     }, 1500);
   };
 
-  @action logout = () => {
-    this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-out/`, 'POST').then(() => {
-      Router.push('/');
-    });
+  @action logout = async () => {
+    await this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-out/`, 'POST');
+
+    await Router.push('/');
   };
 
   @action setLogin = (name, value) => {
     this.login[name] = value;
   };
 
-  @action clickEnterButton = (data, trigger) => {
+  @action clickEnterButton = async (data, trigger) => {
     this.setLogin('error', null);
-    this.rootStore
-      .fetchData(`${this.rootStore.url}/mub/sign-in/`, 'POST', {
-        username: data.username,
-        password: data.password,
-      })
-      .then((data) => {
-        if (data !== undefined) {
-          if (data.id) {
-            this.rootStore.uiSt.setLoading('loading', true);
 
-            const { id, mode, sections } = data;
-            this.rootStore.auth = true;
-            this.rootStore.userSt.setSettings('id', id);
-            this.rootStore.userSt.setSettings('mode', mode);
-            this.rootStore.userSt.setSettings('sections', formatSectionData(sections));
-            Router.push('/home');
-            setTimeout(() => {
-              this.rootStore.uiSt.setLoading('loading', false);
-            }, 1500);
-          } else if (data.a === "User doesn't exist") {
-            this.setLogin('error', "User doesn't exist");
-            trigger();
-          } else if (data.a === 'Wrong password') {
-            this.setLogin('error', 'Wrong password');
-            trigger();
-          }
-        } else {
-          this.setLogin('error', 'Server error');
-          trigger();
-        }
-      });
+    const resData = await this.rootStore
+      .fetchData(
+        `${this.rootStore.url}/mub/sign-in/`,
+        'POST',
+        {
+          username: data.username,
+          password: data.password,
+        });
+
+    if (resData !== undefined) {
+      if (resData.id) {
+        this.rootStore.uiSt.setLoading('loading', true);
+
+        this.setData(resData);
+
+        await Router.push('/home');
+
+        setTimeout(() => {
+          this.rootStore.uiSt.setLoading('loading', false);
+        }, 1500);
+      } else if (resData.a === 'User doesn\'t exist') {
+        this.setLogin('error', 'User doesn\'t exist');
+        trigger();
+      } else if (resData.a === 'Wrong password') {
+        this.setLogin('error', 'Wrong password');
+        trigger();
+      }
+    } else {
+      this.setLogin('error', 'Server error');
+      trigger();
+    }
   };
 }
 

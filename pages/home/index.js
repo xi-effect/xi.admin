@@ -28,12 +28,19 @@ const Home = inject()(
           <Typography p={1} width='100%' variant='h5' textAlign='center'>
             Главная Админки
           </Typography>
-          <AboutUser />
-          <CardWithLinks />
+
+          <Stack
+            direction='row'
+            alignItems='flex-start'
+          >
+            <CardWithLinks />
+            <AboutUser />
+          </Stack>
+
         </Stack>
       </Navigation>
     </Layout>
-  ))
+  )),
 );
 
 export default Home;

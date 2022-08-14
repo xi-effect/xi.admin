@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { AccountBox, FormatListNumbered, Announcement } from '@mui/icons-material';
+import { formatAccessData } from 'utils/dataFormatting';
 import HeaderForAU from './HeaderForAU';
 import SubHeaderForAU from './SubHeaderForAU';
 
@@ -19,22 +20,19 @@ const AboutUser = inject('userSt')(
       settings: { id, username, sections },
     } = userSt;
 
-    const permissions = sections.map((s) => s.name);
-    const access = permissions.length ? permissions.join(', ') : 'Отсутствуют разрешения';
-
     return (
       <Paper
         elevation={3}
         sx={{
           maxWidth: '340px',
           margin: '10px',
-          padding: '10px',
+          padding: '15px',
           backgroundColor: 'background.main',
         }}
       >
         <List
           subheader={
-            <Typography pl={2} component='span' color='lightgray' variant='subtitle1'>
+            <Typography pl={1} component='span' color='lightgray' variant='subtitle1'>
               Информация о пользователе
             </Typography>
           }
@@ -67,7 +65,7 @@ const AboutUser = inject('userSt')(
             </ListItemAvatar>
             <ListItemText
               primary={<HeaderForAU text='Разрешения' />}
-              secondary={<SubHeaderForAU text={access} />}
+              secondary={<SubHeaderForAU text={formatAccessData(sections)} />}
             />
           </ListItem>
         </List>

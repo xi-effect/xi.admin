@@ -44,7 +44,9 @@ const InnerApp = inject(
       Component,
       pageProps,
       authorizationSt: { getSettings },
-      userSt: { settings },
+      userSt: {
+        settings: { auth },
+      },
       emotionCache = clientSideEmotionCache,
     } = props;
 
@@ -58,8 +60,8 @@ const InnerApp = inject(
     );
 
     useEffect(() => {
-      if (!settings.auth) getSettings();
-    }, [settings.auth]);
+      if (!auth) getSettings();
+    }, [auth]);
 
     return (
       <CacheProvider value={emotionCache}>

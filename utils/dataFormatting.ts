@@ -30,3 +30,13 @@ export const formatSectionData = (sections: SectionsT): SectionsDataT => {
 
   return resultSection;
 };
+
+export const formatAccessData = (sections: SectionsDataT) => {
+  const result: string[] = [];
+
+  for (const key in sections) {
+    if (sections) result.push(key);
+  }
+
+  return result.length ? result.join(', ') : 'Отсутствуют разрешения';
+};

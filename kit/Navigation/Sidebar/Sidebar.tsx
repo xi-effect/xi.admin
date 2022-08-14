@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarType> = inject(
           <NavButton href='/home' title='Главная' icon={<Home />} />
 
           {sections['quality assurance'] && (
-            <NavButton href='/QA' title='QA Engine' icon={<DeveloperMode />} />
+            <NavButton href='/qa' title='QA Engine' icon={<DeveloperMode />} />
           )}
         </Stack>
         <Tooltip placement='right' title='Выйти'>

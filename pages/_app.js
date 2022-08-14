@@ -54,7 +54,7 @@ const InnerApp = inject('authorizationSt')(
     );
 
     useEffect(() => {
-      if (auth === undefined) getSettings();
+      if (!auth) getSettings();
     }, [auth]);
 
     return (

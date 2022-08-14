@@ -29,27 +29,22 @@ class AuthorizationSt {
   };
 
   @action getSettings = async () => {
-    try {
-      this.rootStore.uiSt.setLoading('loading', true);
+    this.rootStore.uiSt.setLoading('loading', true);
 
-      const data = await this.rootStore.fetchData(`${this.rootStore.url}/mub/my-settings/`, 'GET');
+    const data = await this.rootStore.fetchData(`${this.rootStore.url}/mub/my-settings/`, 'GET');
 
-      if (data !== undefined) {
-        const { id, mode, sections } = data;
+    if (data !== undefined) {
+      const { id, mode, sections } = data;
 
-        this.rootStore.auth = true;
-        this.rootStore.userSt.setSettings('id', id);
-        this.rootStore.userSt.setSettings('mode', mode);
-        this.rootStore.userSt.setSettings('sections', dataFormatting(sections));
-      }
-
-      setTimeout(() => {
-        this.rootStore.uiSt.setLoading('loading', false);
-      }, 1500);
-    } catch (e) {
-      console.log(e);
-      Router.push('/');
+      this.rootStore.auth = true;
+      this.rootStore.userSt.setSettings('id', id);
+      this.rootStore.userSt.setSettings('mode', mode);
+      this.rootStore.userSt.setSettings('sections', dataFormatting(sections));
     }
+
+    setTimeout(() => {
+      this.rootStore.uiSt.setLoading('loading', false);
+    }, 1500);
   };
 
   @action logout = () => {
@@ -83,8 +78,8 @@ class AuthorizationSt {
             setTimeout(() => {
               this.rootStore.uiSt.setLoading('loading', false);
             }, 1500);
-          } else if (data.a === "User doesn't exist") {
-            this.setLogin('error', "User doesn't exist");
+          } else if (data.a === 'User doesn\'t exist') {
+            this.setLogin('error', 'User doesn\'t exist');
             trigger();
           } else if (data.a === 'Wrong password') {
             this.setLogin('error', 'Wrong password');

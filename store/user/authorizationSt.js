@@ -58,6 +58,8 @@ class AuthorizationSt {
   };
 
   @action clickEnterButton = (data, trigger) => {
+    const { username } = data;
+
     this.setLogin('error', null);
     this.rootStore
       .fetchData(`${this.rootStore.url}/mub/sign-in/`, 'POST', {

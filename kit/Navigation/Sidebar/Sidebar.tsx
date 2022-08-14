@@ -13,14 +13,12 @@ type SidebarType = {
 
 const Sidebar: React.FC<SidebarType> = inject(
   'authorizationSt',
-  'userSt'
+  'userSt',
 )(
   observer(({ authorizationSt, userSt }) => {
     const {
       settings: { sections },
     }: { settings: { sections: SectionsDataT } } = userSt;
-
-    const logoutHandler = () => authorizationSt.logout();
 
     const stylesLogoutBtn = {
       position: 'absolute',
@@ -64,13 +62,13 @@ const Sidebar: React.FC<SidebarType> = inject(
           )}
         </Stack>
         <Tooltip placement='right' title='Выйти'>
-          <IconButton onClick={logoutHandler} sx={stylesLogoutBtn}>
+          <IconButton onClick={() => authorizationSt.logout()} sx={stylesLogoutBtn}>
             <Logout />
           </IconButton>
         </Tooltip>
       </Stack>
     );
-  })
+  }),
 );
 
 export default Sidebar;

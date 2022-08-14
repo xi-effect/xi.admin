@@ -24,7 +24,7 @@ type Props = {
 const Navigation: React.FC<Props> = inject(
   'rootStore',
   'userSt',
-  'uiSt'
+  'uiSt',
 )(
   observer(({ rootStore, userSt, uiSt, children }) => {
     const router = useRouter();
@@ -81,7 +81,7 @@ const Navigation: React.FC<Props> = inject(
       rootStore.socket.off();
     });
 
-    if (router.pathname === '/QA' && !sections['quality assurance']?.emailing) {
+    if (router.pathname === '/qa' && !sections['quality assurance']?.emailing) {
       return <NotEnoughRights />;
     }
 
@@ -113,7 +113,7 @@ const Navigation: React.FC<Props> = inject(
         </Box>
       </Stack>
     );
-  })
+  }),
 );
 
 export default Navigation;

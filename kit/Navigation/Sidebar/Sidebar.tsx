@@ -1,36 +1,44 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { inject, observer } from 'mobx-react';
-
 import { Stack, Tooltip, IconButton } from '@mui/material';
-
-import HomeIcon from '@mui/icons-material/Home';
-import EmailIcon from '@mui/icons-material/Email';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { DeveloperMode, Logout, Home } from '@mui/icons-material';
+import { SectionsDataT } from 'utils/dataFormatting';
+import NavButton from './NavButton';
 
 type SidebarType = {
   rootStore?: any;
   authorizationSt?: any;
+  userSt?: any;
 };
 
-const menu = [
-  {
-    id: 0,
-    icon: <HomeIcon />,
-    label: 'Главная',
-    href: '/home',
-  },
-  {
-    id: 1,
-    icon: <EmailIcon />,
-    label: 'Почта',
-    href: '/email',
-  },
-];
+const Sidebar: React.FC<SidebarType> = inject(
+  'authorizationSt',
+  'userSt'
+)(
+  observer(({ authorizationSt, userSt }) => {
+    const {
+      settings: { sections },
+    }: { settings: { sections: SectionsDataT } } = userSt;
 
-const Sidebar: React.FC<SidebarType> = inject('authorizationSt')(
-  observer(({ authorizationSt }) => {
-    const router = useRouter();
+    const stylesLogoutBtn = {
+      position: 'absolute',
+      bottom: 16,
+      bgcolor: 'error.dark',
+      borderRadius: 2,
+      '&:hover': {
+        bgcolor: 'error.main',
+      },
+    };
+
+    const stylesStack = {
+      position: 'relative',
+      pt: 2,
+      width: 80,
+      height: '100vh',
+      overflow: 'hidden',
+      backgroundColor: 'grey.800',
+      boxShadow: 12,
+    };
 
     return (
       <Stack
@@ -38,15 +46,7 @@ const Sidebar: React.FC<SidebarType> = inject('authorizationSt')(
         justifyContent='flex-start'
         alignItems='center'
         spacing={2}
-        sx={{
-          position: 'relative',
-          pt: 2,
-          width: 80,
-          height: '100vh',
-          overflow: 'hidden',
-          backgroundColor: 'grey.800',
-          boxShadow: 12,
-        }}
+        sx={stylesStack}
       >
         <Stack
           sx={{ width: 80 }}
@@ -55,41 +55,15 @@ const Sidebar: React.FC<SidebarType> = inject('authorizationSt')(
           alignItems='center'
           spacing={2}
         >
-          {menu.map((item, index) => (
-            <Tooltip key={index.toString()} placement='right' title={item.label}>
-              <IconButton
-                onClick={() => {
-                  router.push(item.href);
-                }}
-                sx={{
-                  bgcolor: router.pathname.includes(item.href) ? 'primary.main' : '',
-                  borderRadius: 2,
-                  '&:hover': {
-                    bgcolor: router.pathname.includes(item.href) ? 'primary.main' : '',
-                  },
-                }}
-              >
-                {item.icon}
-              </IconButton>
-            </Tooltip>
-          ))}
+          <NavButton href='/home' title='Главная' icon={<Home />} />
+
+          {sections['quality assurance'] && (
+            <NavButton href='/QA' title='QA Engine' icon={<DeveloperMode />} />
+          )}
         </Stack>
         <Tooltip placement='right' title='Выйти'>
-          <IconButton
-            onClick={() => {
-              authorizationSt.logout();
-            }}
-            sx={{
-              position: 'absolute',
-              bottom: 16,
-              bgcolor: 'error.dark',
-              borderRadius: 2,
-              '&:hover': {
-                bgcolor: 'error.main',
-              },
-            }}
-          >
-            <LogoutIcon />
+          <IconButton onClick={() => authorizationSt.logout()} sx={stylesLogoutBtn}>
+            <Logout />
           </IconButton>
         </Tooltip>
       </Stack>

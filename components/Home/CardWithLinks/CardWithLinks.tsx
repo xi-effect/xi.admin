@@ -98,12 +98,11 @@ const CardWithLinks = () => (
           primary={<HeaderForLinks text='Админ-панель' />}
           secondary={
             <>
-              <DefaultLink
-                text='Админ-панель'
-                href='https://github.com/xi-effect/xieffect-admin' />
+              <DefaultLink text='Админ-панель' href='https://github.com/xi-effect/xieffect-admin' />
               <DefaultLink
                 text='Core (Docker+NGINX)'
-                href='https://github.com/xi-effect/xieffect-core' />
+                href='https://github.com/xi-effect/xieffect-core'
+              />
             </>
           }
         />

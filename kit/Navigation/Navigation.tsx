@@ -5,10 +5,12 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { inject, observer } from 'mobx-react';
 
-import { Stack, Slide, Button, Box, useMediaQuery } from '@mui/material';
+import { Stack, Button, Box } from '@mui/material';
 import { useSessionStorage, useBeforeUnload } from 'react-use';
 import dynamic from 'next/dynamic';
 import { useSnackbar } from 'notistack';
+import { SectionsDataT } from 'utils/dataFormatting';
+import NotEnoughRights from '../Layout/NotEnoughRights';
 
 const Sidebar = dynamic(() => import('./Sidebar/Sidebar'), { ssr: false });
 
@@ -26,16 +28,19 @@ const Navigation: React.FC<Props> = inject(
 )(
   observer(({ rootStore, userSt, uiSt, children }) => {
     const router = useRouter();
-    // @ts-ignore
-    const mobile = useMediaQuery((theme) => theme.breakpoints.down('dl'));
+
+    const {
+      settings: { sections },
+    }: { settings: { sections: SectionsDataT } } = userSt;
 
     const [prevPathname, setPrevPathname] = useSessionStorage('prevPathname');
+    const [hoverLeftName, setHoverLeftName] = React.useState('');
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    // const mobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('dl'));
 
     React.useEffect(() => {
       setPrevPathname(router.pathname);
     }, [router.pathname]);
-
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const action = (key) => (
       <Button
@@ -70,27 +75,15 @@ const Navigation: React.FC<Props> = inject(
     //     });
     //   });
     // }, []);
-
     // @ts-ignore
     useBeforeUnload(() => {
       rootStore.socket.disconnect();
       rootStore.socket.off();
     });
 
-    React.useEffect(() => {
-      if (userSt.settings.id === null) {
-        uiSt.setLoading('loading', true);
-        userSt.getMainSettings();
-      }
-    }, []);
-
-    React.useEffect(() => {
-      if (userSt.settings.code === null) {
-        userSt.getAllSettings();
-      }
-    }, []);
-
-    const [hoverLeftName, setHoverLeftName] = React.useState('');
+    if (router.pathname === '/qa' && !sections['quality assurance']?.emailing) {
+      return <NotEnoughRights />;
+    }
 
     return (
       <Stack

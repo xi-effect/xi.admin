@@ -1,19 +1,14 @@
-import Head from 'next/head';
 import React from 'react';
 import { Stack, Typography } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import Navigation from 'kit/Navigation/Navigation';
+import Layout from 'kit/Layout/Layout';
 import AboutUser from 'components/Home/AboutUser/AboutUser';
 import CardWithLinks from 'components/Home/CardWithLinks/CardWithLinks';
 
-
 const Home = inject()(
   observer(() => (
-    <>
-      <Head>
-        <title>Ξffect | Главная</title>
-        <meta name='robots' content='noindex' />
-      </Head>
+    <Layout title='Главная'>
       <Navigation>
         <Stack
           direction='column'
@@ -37,8 +32,8 @@ const Home = inject()(
           <CardWithLinks />
         </Stack>
       </Navigation>
-    </>
-  )),
+    </Layout>
+  ))
 );
 
 export default Home;

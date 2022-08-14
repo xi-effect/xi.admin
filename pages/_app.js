@@ -1,12 +1,12 @@
 /* eslint-disable import/no-relative-packages */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable react/forbid-prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
 import Router from 'next/router';
-import { Provider, observer } from 'mobx-react';
+import { Provider, observer, inject } from 'mobx-react';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
@@ -35,31 +35,40 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-const MyApp = observer((props) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+const InnerApp = inject(
+  'authorizationSt',
+  'userSt'
+)(
+  observer((props) => {
+    const {
+      Component,
+      pageProps,
+      authorizationSt: { getSettings },
+      userSt: { settings },
+      emotionCache = clientSideEmotionCache,
+    } = props;
 
-  const rootStore = useStore(pageProps.initialState);
-  const theme = React.useMemo(
-    () =>
-      responsiveFontSizes(
-        createTheme(getDesignTokens('dark' || rootStore.userSt.settings.darkTheme))
-      ), // Только тёмная тема
-    [rootStore.userSt.settings.darkTheme]
-  );
+    const rootStore = useStore(pageProps.initialState);
+    const theme = React.useMemo(
+      () =>
+        responsiveFontSizes(
+          createTheme(getDesignTokens('dark' || rootStore.userSt.settings.darkTheme))
+        ), // Только тёмная тема
+      [rootStore.userSt.settings.darkTheme]
+    );
 
-  return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name='viewport' content='width=device-width, initial-scale=0.9, maximum-scale=0.9' />
-      </Head>
-      {/* MobX Provider */}
-      <Provider
-        rootStore={rootStore}
-        uiSt={rootStore.uiSt}
-        userSt={rootStore.userSt}
-        homeSt={rootStore.homeSt}
-        authorizationSt={rootStore.authorizationSt}
-      >
+    useEffect(() => {
+      if (!settings.auth) getSettings();
+    }, [settings.auth]);
+
+    return (
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <meta
+            name='viewport'
+            content='width=device-width, initial-scale=0.9, maximum-scale=0.9'
+          />
+        </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Loading />
@@ -75,14 +84,30 @@ const MyApp = observer((props) => {
             <Component {...pageProps} />
           </SnackbarProvider>
         </ThemeProvider>
-      </Provider>
-    </CacheProvider>
+      </CacheProvider>
+    );
+  })
+);
+
+const App = observer((props) => {
+  const rootStore = useStore(props.pageProps.initialState);
+
+  return (
+    <Provider
+      rootStore={rootStore}
+      uiSt={rootStore.uiSt}
+      userSt={rootStore.userSt}
+      homeSt={rootStore.homeSt}
+      authorizationSt={rootStore.authorizationSt}
+    >
+      <InnerApp {...props} />
+    </Provider>
   );
 });
 
-export default MyApp;
+export default App;
 
-MyApp.propTypes = {
+InnerApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   emotionCache: PropTypes.object,
   pageProps: PropTypes.object.isRequired,

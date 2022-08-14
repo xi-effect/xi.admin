@@ -4,7 +4,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 
-import { Stack, useMediaQuery, Button, Paper, NativeSelect } from '@mui/material';
+import { Stack, useMediaQuery, Button, NativeSelect, Box } from '@mui/material';
 
 import { inject, observer } from 'mobx-react';
 
@@ -73,107 +73,102 @@ const Form: React.FC<Props> = inject('rootStore')(
     };
 
     return (
-      <Stack
-        direction='column'
-        justifyContent='flex-start'
-        alignItems='center'
+      <Box
         sx={{
-          zIndex: 0,
+          p: 2,
+          mt: 4,
+          width: '100%',
         }}
       >
-        <Paper
-          elevation={24}
+        <Stack
+          component='form'
+          onSubmit={handleSubmit(onSubmit)}
+          direction='column'
+          justifyContent='center'
+          alignItems='center'
           sx={{
-            p: 2,
-            mt: 4,
-            zIndex: 500,
-            bgcolor: 'grey.800',
-            borderRadius: '20px',
+            padding: '20px',
+            margin: '0 auto',
+            backgroundColor: '#424242',
+            maxWidth: '450px',
+            borderRadius: '10px',
           }}
         >
-          <Stack
-            component='form'
-            onSubmit={handleSubmit(onSubmit)}
-            direction='column'
-            justifyContent='center'
-            alignItems='center'
-            sx={{ width: '100%' }}
-          >
-            <Controller
-              name='useremail'
-              control={control}
-              defaultValue=''
-              render={({ field }) => (
-                <TextFieldCustom
-                  variant='filled'
-                  type='text'
-                  fullWidth
-                  label='useremail'
-                  {...field}
-                />
-              )}
-            />
-            <Controller
-              name='testeremail'
-              control={control}
-              defaultValue=''
-              render={({ field }) => (
-                <TextFieldCustom
-                  variant='filled'
-                  fullWidth
-                  label='testeremail'
-                  type='text'
-                  {...field}
-                />
-              )}
-            />
-            <Controller
-              name='type'
-              control={control}
-              defaultValue='confirm'
-              render={({ field }) => (
-                <NativeSelect
-                  variant='filled'
-                  sx={{
-                    mt: 1,
-                  }}
-                  fullWidth
-                  {...field}
-                >
-                  <option value='confirm'>confirm</option>
-                  <option value='password'>password</option>
-                  <option value='change'>change</option>
-                </NativeSelect>
-              )}
-            />
-            <Button
-              variant='contained'
-              size='large'
-              type='submit'
-              sx={{
-                '&.MuiButton-root': {
-                  fontFamily: 'Roboto',
-                  fontSize: '15px',
-                  lineHeight: '26px',
-                  letterSpacing: '0.46000000834465027px',
-                  width: mobile ? '196px' : '196px',
-                  height: mobile ? '42px' : '42px',
-                  color: 'text.primary',
-                  bgcolor: 'secondary.main',
-                  borderRadius: mobile ? '62px' : '88px',
-                  '&:hover': {
-                    bgcolor: 'secondary.dark',
-                  },
-                  boxShadow: 2,
-                  mt: 2,
+          <Controller
+            name='useremail'
+            control={control}
+            defaultValue=''
+            render={({ field }) => (
+              <TextFieldCustom
+                variant='filled'
+                type='text'
+                fullWidth
+                label='useremail'
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            name='testeremail'
+            control={control}
+            defaultValue=''
+            render={({ field }) => (
+              <TextFieldCustom
+                variant='filled'
+                fullWidth
+                label='testeremail'
+                type='text'
+                sx={{ margin: '25px 0' }}
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            name='type'
+            control={control}
+            defaultValue='confirm'
+            render={({ field }) => (
+              <NativeSelect
+                variant='filled'
+                sx={{
+                  mt: 1,
+                }}
+                fullWidth
+                {...field}
+              >
+                <option value='confirm'>confirm</option>
+                <option value='password'>password</option>
+                <option value='change'>change</option>
+              </NativeSelect>
+            )}
+          />
+          <Button
+            variant='contained'
+            size='large'
+            type='submit'
+            sx={{
+              '&.MuiButton-root': {
+                fontFamily: 'Roboto',
+                fontSize: '15px',
+                lineHeight: '26px',
+                letterSpacing: '0.46000000834465027px',
+                width: mobile ? '196px' : '196px',
+                height: mobile ? '42px' : '42px',
+                color: 'text.primary',
+                bgcolor: 'secondary.main',
+                borderRadius: mobile ? '62px' : '88px',
+                '&:hover': {
+                  bgcolor: 'secondary.dark',
                 },
-              }}
-            >
-              Отправить
-            </Button>
-          </Stack>
-        </Paper>
-      </Stack>
+                boxShadow: 2,
+                mt: 4,
+              },
+            }}
+          >
+            Отправить
+          </Button>
+        </Stack>
+      </Box>
     );
   })
 );

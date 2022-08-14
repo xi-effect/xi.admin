@@ -2,6 +2,7 @@
 /* eslint-disable no-shadow */
 import { action, observable, makeObservable } from 'mobx';
 import Router from 'next/router';
+import { formatSectionData } from 'utils/dataFormatting';
 
 class AuthorizationSt {
   // `this` from rootstore passed to the constructor and we can
@@ -13,12 +14,36 @@ class AuthorizationSt {
     makeObservable(this);
   }
 
+  @observable auth = undefined;
+
   @observable newPasswordReset = {
     emailResetOk: false,
   };
 
+  @observable login = {
+    error: null,
+  };
+
   @action setNewPasswordReset = (name, value) => {
     this.newPasswordReset[name] = value;
+  };
+
+  @action getSettings = async () => {
+    this.rootStore.uiSt.setLoading('loading', true);
+
+    const data = await this.rootStore.fetchData(`${this.rootStore.url}/mub/my-settings/`, 'GET');
+    if (data) {
+      const { id, mode, sections } = data;
+
+      this.rootStore.userSt.setSettings('auth', true);
+      this.rootStore.userSt.setSettings('id', id);
+      this.rootStore.userSt.setSettings('mode', mode);
+      this.rootStore.userSt.setSettings('sections', dataFormatting(sections));
+    }
+
+    setTimeout(() => {
+      this.rootStore.uiSt.setLoading('loading', false);
+    }, 1500);
   };
 
   @action logout = () => {
@@ -27,17 +52,11 @@ class AuthorizationSt {
     });
   };
 
-  @observable login = {
-    error: null,
-  };
-
   @action setLogin = (name, value) => {
     this.login[name] = value;
   };
 
   @action clickEnterButton = (data, trigger) => {
-    const { username } = data;
-
     this.setLogin('error', null);
     this.rootStore
       .fetchData(`${this.rootStore.url}/mub/sign-in/`, 'POST', {
@@ -48,11 +67,12 @@ class AuthorizationSt {
         if (data !== undefined) {
           if (data.id) {
             this.rootStore.uiSt.setLoading('loading', true);
+
             const { id, mode, sections } = data;
+            this.rootStore.auth = true;
             this.rootStore.userSt.setSettings('id', id);
             this.rootStore.userSt.setSettings('mode', mode);
-            this.rootStore.userSt.setSettings('username', username);
-            this.rootStore.userSt.setSettings('sections', sections);
+            this.rootStore.userSt.setSettings('sections', formatSectionData(sections));
             Router.push('/home');
             setTimeout(() => {
               this.rootStore.uiSt.setLoading('loading', false);

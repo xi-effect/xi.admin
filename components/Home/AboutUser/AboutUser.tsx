@@ -14,7 +14,6 @@ import { formatAccessData } from 'utils/dataFormatting';
 import HeaderForAU from './HeaderForAU';
 import SubHeaderForAU from './SubHeaderForAU';
 
-
 const AboutUser = inject('userSt')(
   observer(({ userSt }) => {
     const {
@@ -72,7 +71,7 @@ const AboutUser = inject('userSt')(
         </List>
       </Paper>
     );
-  }),
+  })
 );
 
 export default AboutUser;

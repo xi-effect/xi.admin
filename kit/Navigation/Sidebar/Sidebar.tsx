@@ -57,12 +57,9 @@ const Sidebar: React.FC<SidebarType> = inject(
         >
           <NavButton href='/home' title='Главная' icon={<Home />} />
 
-          {sections['quality assurance'] &&
-          <NavButton
-            href='/qa'
-            title='QA Engine'
-            icon={<DeveloperMode />}
-          />}
+          {sections['quality assurance'] && (
+            <NavButton href='/qa' title='QA Engine' icon={<DeveloperMode />} />
+          )}
         </Stack>
         <Tooltip placement='right' title='Выйти'>
           <IconButton onClick={() => authorizationSt.logout()} sx={stylesLogoutBtn}>

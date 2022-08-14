@@ -29,18 +29,14 @@ const Home = inject()(
             Главная Админки
           </Typography>
 
-          <Stack
-            direction='row'
-            alignItems='flex-start'
-          >
+          <Stack direction='row' alignItems='flex-start'>
             <CardWithLinks />
             <AboutUser />
           </Stack>
-
         </Stack>
       </Navigation>
     </Layout>
-  )),
+  ))
 );
 
 export default Home;

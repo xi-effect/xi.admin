@@ -35,13 +35,16 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-const InnerApp = inject('authorizationSt', 'userSt')(
+const InnerApp = inject(
+  'authorizationSt',
+  'userSt'
+)(
   observer((props) => {
     const {
       Component,
       pageProps,
       authorizationSt: { getSettings },
-      userSt: { settings }, 
+      userSt: { settings },
       emotionCache = clientSideEmotionCache,
     } = props;
 
@@ -49,9 +52,9 @@ const InnerApp = inject('authorizationSt', 'userSt')(
     const theme = React.useMemo(
       () =>
         responsiveFontSizes(
-          createTheme(getDesignTokens('dark' || rootStore.userSt.settings.darkTheme)),
+          createTheme(getDesignTokens('dark' || rootStore.userSt.settings.darkTheme))
         ), // Только тёмная тема
-      [rootStore.userSt.settings.darkTheme],
+      [rootStore.userSt.settings.darkTheme]
     );
 
     useEffect(() => {
@@ -83,7 +86,7 @@ const InnerApp = inject('authorizationSt', 'userSt')(
         </ThemeProvider>
       </CacheProvider>
     );
-  }),
+  })
 );
 
 const App = observer((props) => {

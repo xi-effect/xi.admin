@@ -57,7 +57,6 @@ class AuthorizationSt {
   };
 
   @action clickEnterButton = (data, trigger) => {
-
     this.setLogin('error', null);
     this.rootStore
       .fetchData(`${this.rootStore.url}/mub/sign-in/`, 'POST', {
@@ -78,8 +77,8 @@ class AuthorizationSt {
             setTimeout(() => {
               this.rootStore.uiSt.setLoading('loading', false);
             }, 1500);
-          } else if (data.a === 'User doesn\'t exist') {
-            this.setLogin('error', 'User doesn\'t exist');
+          } else if (data.a === "User doesn't exist") {
+            this.setLogin('error', "User doesn't exist");
             trigger();
           } else if (data.a === 'Wrong password') {
             this.setLogin('error', 'Wrong password');

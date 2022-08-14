@@ -11,10 +11,11 @@ class UserSt {
   }
 
   @observable settings = {
+    auth: false,
     id: null,
     username: '',
     darkTheme: true,
-    sections: {},
+    sections: [],
   };
 
   @action setSettings = (item, value) => {

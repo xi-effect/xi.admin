@@ -35,12 +35,13 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-const InnerApp = inject('authorizationSt')(
+const InnerApp = inject('authorizationSt', 'userSt')(
   observer((props) => {
     const {
       Component,
       pageProps,
-      authorizationSt: { auth, getSettings },
+      authorizationSt: { getSettings },
+      userSt: { settings }, 
       emotionCache = clientSideEmotionCache,
     } = props;
 
@@ -54,8 +55,8 @@ const InnerApp = inject('authorizationSt')(
     );
 
     useEffect(() => {
-      if (!auth) getSettings();
-    }, [auth]);
+      if (!settings.auth) getSettings();
+    }, [settings.auth]);
 
     return (
       <CacheProvider value={emotionCache}>

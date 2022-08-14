@@ -32,11 +32,10 @@ class AuthorizationSt {
     this.rootStore.uiSt.setLoading('loading', true);
 
     const data = await this.rootStore.fetchData(`${this.rootStore.url}/mub/my-settings/`, 'GET');
-
-    if (data !== undefined) {
+    if (data) {
       const { id, mode, sections } = data;
 
-      this.rootStore.auth = true;
+      this.rootStore.userSt.setSettings('auth', true);
       this.rootStore.userSt.setSettings('id', id);
       this.rootStore.userSt.setSettings('mode', mode);
       this.rootStore.userSt.setSettings('sections', dataFormatting(sections));
@@ -58,7 +57,6 @@ class AuthorizationSt {
   };
 
   @action clickEnterButton = (data, trigger) => {
-    const { username } = data;
 
     this.setLogin('error', null);
     this.rootStore

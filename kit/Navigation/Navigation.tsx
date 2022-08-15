@@ -17,7 +17,9 @@ const Navigation = inject('userSt')(
   observer((props) => {
     const {
       children,
-      userSt: { settings: { sections } },
+      userSt: {
+        settings: { sections },
+      },
     }: NavigationT = props;
 
     if (Router.pathname === '/qa' && !sections['quality assurance']?.emailing) {
@@ -52,7 +54,7 @@ const Navigation = inject('userSt')(
         </Box>
       </Stack>
     );
-  }),
+  })
 );
 
 export default Navigation;

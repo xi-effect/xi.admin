@@ -3,9 +3,8 @@ import { action, observable, makeObservable } from 'mobx';
 import RootStore from '../rootStore';
 
 type UIStT = {
-
-  settings: { loading: null | boolean }
-  setLoading: (name: any, value: null | boolean) => void
+  settings: { loading: null | boolean };
+  setLoading: (name: any, value: null | boolean) => void;
 };
 
 class UISt implements UIStT {

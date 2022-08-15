@@ -18,7 +18,7 @@ const schema = yup
   .required();
 
 type FormQAT = {
-  rootStore: RootStore
+  rootStore: RootStore;
 };
 
 const FormQA = inject('rootStore')(
@@ -164,7 +164,7 @@ const FormQA = inject('rootStore')(
         </Stack>
       </Box>
     );
-  }),
+  })
 );
 
 export default FormQA;

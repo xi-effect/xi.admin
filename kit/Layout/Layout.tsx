@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 import Head from 'next/head';
 
 type LayoutT = {
-  title: string
-  children: ReactNode
+  title: string;
+  children: ReactNode;
 };
 
 const Layout: React.FC<LayoutT> = ({ title, children }) => (

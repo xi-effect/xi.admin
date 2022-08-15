@@ -7,7 +7,7 @@ import XiLogo from 'kit/XiLogo';
 import UISt from 'store/ui/uiSt';
 
 type LoadingT = {
-  uiSt: UISt
+  uiSt: UISt;
 };
 
 const Loading = inject('uiSt')(
@@ -70,7 +70,7 @@ const Loading = inject('uiSt')(
         )}
       </AnimatePresence>
     );
-  }),
+  })
 );
 
 export default Loading;

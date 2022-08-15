@@ -8,7 +8,8 @@ import {
   Typography,
   Box,
   Button,
-  Paper, Theme,
+  Paper,
+  Theme,
 } from '@mui/material';
 
 import Visibility from '@mui/icons-material/Visibility';
@@ -118,7 +119,7 @@ const SingInForm = inject('authorizationSt')(
                       variant='filled'
                       error={
                         errors?.username?.type === 'username' ||
-                        authorizationSt.login.error === 'User doesn\'t exist'
+                        authorizationSt.login.error === "User doesn't exist"
                       }
                       type='text'
                       fullWidth
@@ -220,7 +221,7 @@ const SingInForm = inject('authorizationSt')(
         </Paper>
       </Stack>
     );
-  }),
+  })
 );
 
 export default SingInForm;

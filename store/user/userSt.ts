@@ -4,16 +4,16 @@ import { SectionsDataT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';
 
 type SettingsUserStoreT = {
-  auth: boolean,
-  id: null | number
-  username: string
-  darkTheme: boolean
-  sections: SectionsDataT
+  auth: boolean;
+  id: null | number;
+  username: string;
+  darkTheme: boolean;
+  sections: SectionsDataT;
 };
 
 export type UserStoreT = {
-  settings: SettingsUserStoreT
-  setSettings: (item: any, value: any) => void
+  settings: SettingsUserStoreT;
+  setSettings: (item: any, value: any) => void;
 };
 
 class UserSt implements UserStoreT {

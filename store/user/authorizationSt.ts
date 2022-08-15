@@ -5,11 +5,11 @@ import { formatSectionData, ResponseDataT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';
 
 type AuthorizationStT = {
-  login: { error: null | string }
-  logoutUser: () => void
-  getSettings: () => void
-  setData: (data: ResponseDataT) => void
-  loginUser: (data: { username: string, password: string }, trigger: any) => Promise<void>
+  login: { error: null | string };
+  logoutUser: () => void;
+  getSettings: () => void;
+  setData: (data: ResponseDataT) => void;
+  loginUser: (data: { username: string; password: string }, trigger: any) => Promise<void>;
 };
 
 class AuthorizationSt implements AuthorizationStT {
@@ -76,8 +76,8 @@ class AuthorizationSt implements AuthorizationStT {
         setTimeout(() => {
           this.rootStore.uiSt.setLoading('loading', false);
         }, 1500);
-      } else if (resData.a === 'User doesn\'t exist') {
-        this.setLogin('error', 'User doesn\'t exist');
+      } else if (resData.a === "User doesn't exist") {
+        this.setLogin('error', "User doesn't exist");
         trigger();
       } else if (resData.a === 'Wrong password') {
         this.setLogin('error', 'Wrong password');

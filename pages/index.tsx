@@ -23,6 +23,7 @@ const SignIn = inject()(
         <SingInForm />
       </Stack>
     </Layout>
-  )));
+  ))
+);
 
 export default SignIn;

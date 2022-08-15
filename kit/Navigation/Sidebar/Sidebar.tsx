@@ -11,11 +11,16 @@ type SidebarT = {
   userSt: UserSt;
 };
 
-const Sidebar = inject('authorizationSt', 'userSt')(
+const Sidebar = inject(
+  'authorizationSt',
+  'userSt'
+)(
   observer((props) => {
     const {
       authorizationSt,
-      userSt: { settings: { sections } },
+      userSt: {
+        settings: { sections },
+      },
     }: SidebarT = props;
 
     const stylesLogoutBtn = {
@@ -66,7 +71,7 @@ const Sidebar = inject('authorizationSt', 'userSt')(
         </Tooltip>
       </Stack>
     );
-  }),
+  })
 );
 
 export default Sidebar;

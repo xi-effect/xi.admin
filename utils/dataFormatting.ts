@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 export type ResponseDataT = {
-  id: number
-  mode: string
-  username: string
-  sections: SectionsT
+  id: number;
+  mode: string;
+  username: string;
+  sections: SectionsT;
 };
 
 type SectionsT = {

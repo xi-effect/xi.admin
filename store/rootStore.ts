@@ -15,7 +15,7 @@ let store;
 type MethodT = 'GET' | 'POST' | 'DELETE' | 'PATCH';
 
 type RootStoreT = {
-  fetchData: (url: string, method: MethodT, data?: any) => any
+  fetchData: (url: string, method: MethodT, data?: any) => any;
 };
 
 class RootStore implements RootStoreT {

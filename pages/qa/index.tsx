@@ -8,12 +8,16 @@ import UserSt from 'store/user/userSt';
 import FormQA from 'components/Email/Form';
 
 type QAPageT = {
-  userSt: UserSt
+  userSt: UserSt;
 };
 
 const QAPage = inject('userSt')(
   observer((props) => {
-    const { userSt: { settings: { sections } } }: QAPageT = props;
+    const {
+      userSt: {
+        settings: { sections },
+      },
+    }: QAPageT = props;
 
     return (
       <Layout title='Тестирование'>
@@ -36,7 +40,7 @@ const QAPage = inject('userSt')(
         </Navigation>
       </Layout>
     );
-  }),
+  })
 );
 
 export default QAPage;

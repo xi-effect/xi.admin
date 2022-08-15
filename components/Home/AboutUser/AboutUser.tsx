@@ -16,12 +16,16 @@ import HeaderForAU from './HeaderForAU';
 import SubHeaderForAU from './SubHeaderForAU';
 
 type AboutUserT = {
-  userSt: UserSt
+  userSt: UserSt;
 };
 
 const AboutUser = inject('userSt')(
   observer((props) => {
-    const { userSt: { settings: { sections, id, username } } }: AboutUserT = props;
+    const {
+      userSt: {
+        settings: { sections, id, username },
+      },
+    }: AboutUserT = props;
 
     return (
       <Paper
@@ -74,7 +78,7 @@ const AboutUser = inject('userSt')(
         </List>
       </Paper>
     );
-  }),
+  })
 );
 
 export default AboutUser;

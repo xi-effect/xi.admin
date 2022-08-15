@@ -25,12 +25,12 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "store/rootStore.js",
+    "store/rootStore",
     "kit/Editor/config.js",
     "store/contentEditor/contentEditorSt.js",
     "kit/Avatar/const.js",
     "kit/CreateInvite.js",
-    "kit/XiLogo.js"
+    "kit/XiLogo"
 , "kit/SettingsDialog/MenuItems/UserAvatar.js"  ],
   "exclude": ["node_modules"]
 }

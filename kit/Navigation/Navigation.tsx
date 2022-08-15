@@ -1,6 +1,6 @@
 import React from 'react';
 import UserSt from 'store/user/userSt';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { inject, observer } from 'mobx-react';
 import { Stack, Box } from '@mui/material';
 import dynamic from 'next/dynamic';
@@ -15,6 +15,8 @@ type NavigationT = {
 
 const Navigation = inject('userSt')(
   observer((props) => {
+    const router = useRouter();
+
     const {
       children,
       userSt: {
@@ -22,7 +24,7 @@ const Navigation = inject('userSt')(
       },
     }: NavigationT = props;
 
-    if (Router.pathname === '/qa' && !sections['quality assurance']?.emailing) {
+    if (router.pathname === '/qa' && !sections['quality assurance']?.emailing) {
       return <NotEnoughRights />;
     }
 

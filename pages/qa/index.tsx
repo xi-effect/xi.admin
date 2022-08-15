@@ -1,17 +1,19 @@
 import React from 'react';
-import Form from 'components/Email/Form';
 import { Stack } from '@mui/material';
 import Layout from 'kit/Layout/Layout';
 import Navigation from 'kit/Navigation/Navigation';
 import { inject, observer } from 'mobx-react';
-import { SectionsDataT } from 'utils/dataFormatting';
 import NotEnoughRights from 'kit/Layout/NotEnoughRights';
+import UserSt from 'store/user/userSt';
+import FormQA from 'components/Email/Form';
+
+type QAPageT = {
+  userSt: UserSt
+};
 
 const QAPage = inject('userSt')(
-  observer(({ userSt }) => {
-    const {
-      settings: { sections },
-    }: { settings: { sections: SectionsDataT } } = userSt;
+  observer((props) => {
+    const { userSt: { settings: { sections } } }: QAPageT = props;
 
     return (
       <Layout title='Тестирование'>
@@ -28,13 +30,13 @@ const QAPage = inject('userSt')(
               overflow: 'hidden',
             }}
           >
-            {sections['quality assurance']?.emailing && <Form />}
+            {sections['quality assurance']?.emailing && <FormQA />}
             {!sections['quality assurance']?.emailing && <NotEnoughRights />}
           </Stack>
         </Navigation>
       </Layout>
     );
-  })
+  }),
 );
 
 export default QAPage;

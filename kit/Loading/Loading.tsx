@@ -1,17 +1,24 @@
 import React from 'react';
 import { Grid, useMediaQuery, Box } from '@mui/material';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { inject, observer } from 'mobx-react';
 import XiLogo from 'kit/XiLogo';
+import UISt from 'store/ui/uiSt';
+
+type LoadingT = {
+  uiSt: UISt
+};
 
 const Loading = inject('uiSt')(
-  observer(({ uiSt }) => {
+  observer((props) => {
+    const { uiSt }: LoadingT = props;
+
     const isDarkTheme = useMediaQuery('(prefers-color-scheme: dark)');
 
     return (
       <AnimatePresence>
-        {uiSt.load.loading && (
+        {uiSt.settings.loading && (
           <Grid
             component={motion.div}
             container
@@ -63,7 +70,7 @@ const Loading = inject('uiSt')(
         )}
       </AnimatePresence>
     );
-  })
+  }),
 );
 
 export default Loading;

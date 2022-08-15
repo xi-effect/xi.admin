@@ -1,19 +1,13 @@
-/* eslint-disable consistent-return */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/function-component-definition */
-/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-
-import { Stack, useMediaQuery, Button, NativeSelect, Box } from '@mui/material';
-
+import { Stack, useMediaQuery, Button, NativeSelect, Box, Theme } from '@mui/material';
 import { inject, observer } from 'mobx-react';
-
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackbar } from 'notistack';
 
 import * as yup from 'yup';
 import TextFieldCustom from 'kit/TextFieldCustom';
+import RootStore from 'store/rootStore';
 
 const schema = yup
   .object({
@@ -23,15 +17,15 @@ const schema = yup
   })
   .required();
 
-type Props = {
-  rootStore?: any;
+type FormQAT = {
+  rootStore: RootStore
 };
 
-const Form: React.FC<Props> = inject('rootStore')(
+const FormQA = inject('rootStore')(
   observer((props) => {
-    const { rootStore } = props;
-    // @ts-ignore
-    const mobile: boolean = useMediaQuery((theme) => theme.breakpoints.down('dl'));
+    const { rootStore }: FormQAT = props;
+
+    const mobile: boolean = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
     const { enqueueSnackbar } = useSnackbar();
 
     const {
@@ -170,7 +164,7 @@ const Form: React.FC<Props> = inject('rootStore')(
         </Stack>
       </Box>
     );
-  })
+  }),
 );
 
-export default Form;
+export default FormQA;

@@ -11,14 +11,17 @@ import {
 } from '@mui/material';
 import { AccountBox, FormatListNumbered, Announcement } from '@mui/icons-material';
 import { formatAccessData } from 'utils/dataFormatting';
+import UserSt from 'store/user/userSt';
 import HeaderForAU from './HeaderForAU';
 import SubHeaderForAU from './SubHeaderForAU';
 
+type AboutUserT = {
+  userSt: UserSt
+};
+
 const AboutUser = inject('userSt')(
-  observer(({ userSt }) => {
-    const {
-      settings: { id, username, sections },
-    } = userSt;
+  observer((props) => {
+    const { userSt: { settings: { sections, id, username } } }: AboutUserT = props;
 
     return (
       <Paper
@@ -54,7 +57,7 @@ const AboutUser = inject('userSt')(
             </ListItemAvatar>
             <ListItemText
               primary={<HeaderForAU text='Идентификатор' />}
-              secondary={<SubHeaderForAU text={id} />}
+              secondary={<SubHeaderForAU text={id || ''} />}
             />
           </ListItem>
           <Divider />
@@ -71,7 +74,7 @@ const AboutUser = inject('userSt')(
         </List>
       </Paper>
     );
-  })
+  }),
 );
 
 export default AboutUser;

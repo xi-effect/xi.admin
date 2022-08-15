@@ -1,11 +1,9 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-filename-extension */
-import React from 'react';
+import React, { FC } from 'react';
 import Image from 'next/image';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 
-const XiLogo = ({ size = 'm' }) => {
+const XiLogo: FC<{ size?: 'm' | 's' }> = ({ size = 'm' }) => {
   const router = useRouter();
 
   return (

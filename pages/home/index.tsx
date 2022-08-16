@@ -35,7 +35,7 @@ const Home = inject()(
         </Stack>
       </Navigation>
     </Layout>
-  )),
+  ))
 );
 
 export default Home;

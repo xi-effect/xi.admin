@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, FunctionComponent } from 'react';
 import Head from 'next/head';
 import {
   createTheme,
@@ -12,7 +12,6 @@ import { Provider, observer, inject } from 'mobx-react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import 'moment/locale/ru';
-import { SnackbarProvider } from 'notistack';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import '../styles/globals.css';
@@ -20,6 +19,7 @@ import AuthorizationSt from 'store/user/authorizationSt';
 import UserSt from 'store/user/userSt';
 import NProgress from 'nprogress'; // nprogress module
 import Loading from 'kit/Loading/Loading';
+import { SnackbarProvider } from 'notistack';
 import createEmotionCache from '../store/createEmotionCache';
 import { useStore } from '../store/rootStore';
 import { getDesignTokens } from '../theme';
@@ -56,6 +56,8 @@ const InnerApp = inject(
       emotionCache = clientSideEmotionCache,
     }: AppProps & InnerAppT = props;
 
+    const C = Component as FunctionComponent;
+
     const rootStore = useStore(pageProps.initialState);
     const theme = React.useMemo(
       () =>
@@ -91,7 +93,7 @@ const InnerApp = inject(
             preventDuplicate
             dense
           >
-            <Component {...pageProps} />
+            <C {...pageProps} />
           </SnackbarProvider>
         </ThemeProvider>
       </CacheProvider>

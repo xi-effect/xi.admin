@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import UserSt from 'store/user/userSt';
 import { useRouter } from 'next/router';
 import { inject, observer } from 'mobx-react';
@@ -6,7 +6,7 @@ import { Stack, Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import NotEnoughRights from '../Layout/NotEnoughRights';
 
-const Sidebar = dynamic(() => import('./Sidebar/Sidebar'), { ssr: false });
+const Sidebar = dynamic(() => import('./Sidebar/Sidebar'), { ssr: false }) as FunctionComponent;
 
 type NavigationT = {
   userSt: UserSt;

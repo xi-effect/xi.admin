@@ -1,10 +1,11 @@
 import React from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import Navigation from 'kit/Navigation/Navigation';
 import Layout from 'kit/Layout/Layout';
 import AboutUser from 'components/Home/AboutUser/AboutUser';
 import CardWithLinks from 'components/Home/CardWithLinks/CardWithLinks';
+import PageHeader from '../../kit/Layout/PageHeader';
 
 const Home = inject()(
   observer(() => (
@@ -25,9 +26,7 @@ const Home = inject()(
             overflowX: 'hidden',
           }}
         >
-          <Typography p={1} width='100%' variant='h5' textAlign='center'>
-            Главная Админки
-          </Typography>
+          <PageHeader title='Главная Админки' />
 
           <Stack direction='row' alignItems='flex-start'>
             <CardWithLinks />
@@ -36,7 +35,7 @@ const Home = inject()(
         </Stack>
       </Navigation>
     </Layout>
-  ))
+  )),
 );
 
 export default Home;

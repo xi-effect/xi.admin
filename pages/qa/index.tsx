@@ -6,6 +6,7 @@ import { inject, observer } from 'mobx-react';
 import NotEnoughRights from 'kit/Layout/NotEnoughRights';
 import UserSt from 'store/user/userSt';
 import FormQA from 'components/Email/Form';
+import PageHeader from '../../kit/Layout/PageHeader';
 
 type QAPageT = {
   userSt: UserSt;
@@ -34,6 +35,8 @@ const QAPage = inject('userSt')(
               overflow: 'hidden',
             }}
           >
+            <PageHeader title='Тестирование' />
+
             {sections['quality assurance']?.emailing && <FormQA />}
             {!sections['quality assurance']?.emailing && <NotEnoughRights />}
           </Stack>

@@ -4,7 +4,7 @@ import RootStore from '../rootStore';
 
 type UIStT = {
   settings: { loading: null | boolean };
-  setLoading: (name: any, value: null | boolean) => void;
+  setLoading: (name: string, value: null | boolean) => void;
 };
 
 class UISt implements UIStT {

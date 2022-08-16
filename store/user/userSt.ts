@@ -13,7 +13,7 @@ type SettingsUserStoreT = {
 
 export type UserStoreT = {
   settings: SettingsUserStoreT;
-  setSettings: (item: any, value: any) => void;
+  setSettings: (item: string, value: any) => void;
 };
 
 class UserSt implements UserStoreT {

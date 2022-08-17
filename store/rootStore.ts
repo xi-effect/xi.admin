@@ -1,14 +1,8 @@
-/* eslint-disable no-shadow */
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable consistent-return */
-/* eslint-disable class-methods-use-this */
+/* eslint-disable no-unused-vars */
 import { action, makeObservable } from 'mobx';
 import { enableStaticRendering } from 'mobx-react';
 import { useMemo } from 'react';
 import Router from 'next/router';
-
-// import { io } from 'socket.io-client';
 import UISt from './ui/uiSt';
 import HomeSt from './home/homeSt';
 import UserSt from './user/userSt';
@@ -18,7 +12,21 @@ enableStaticRendering(typeof window === 'undefined');
 
 let store;
 
-class RootStore {
+type MethodT = 'GET' | 'POST' | 'DELETE' | 'PATCH';
+
+type RootStoreT = {
+  fetchData: (url: string, method: MethodT, data?: any) => any;
+};
+
+class RootStore implements RootStoreT {
+  uiSt: UISt;
+
+  homeSt: HomeSt;
+
+  userSt: UserSt;
+
+  authorizationSt: AuthorizationSt;
+
   url = process.env.NEXT_PUBLIC_SERVER_URL;
 
   constructor() {
@@ -30,18 +38,11 @@ class RootStore {
     makeObservable(this);
   }
 
-  // socket = null;
-
-  // @action initSocket = () => {
-  //   this.socket = io('https://xieffect.ru:5000/', {
-  //     withCredentials: true,
-  //   });
-  // };
-
-  @action async fetchData(url, method, data = null) {
+  @action fetchData = async (url, method, data?) => {
     try {
-      let response = null;
-      if (data != null) {
+      let response: null | Response = null;
+
+      if (data) {
         response = await fetch(url, {
           method,
           cache: 'no-cache',
@@ -52,6 +53,7 @@ class RootStore {
           body: JSON.stringify(data),
         });
       }
+
       if (data == null) {
         response = await fetch(url, {
           method,
@@ -62,26 +64,29 @@ class RootStore {
           },
         });
       }
-      if (response.status === 401 || response.status === 403 || response.status === 422) {
+
+      if (response?.status === 401 || response?.status === 403 || response?.status === 422) {
         const router = Router;
-        router.push('/');
+        await router.push('/');
         return null;
       }
-      if (response.ok) {
-        const string = await response.text();
+
+      if (response?.ok) {
+        const string = await response?.text();
         const json = string === '' ? {} : JSON.parse(string);
         return json;
       }
-      const string = await response.text();
-      const json = string === '' ? {} : JSON.parse(string);
-      return json;
+
+      const string = await response?.text();
+      return string && (string === '' ? {} : JSON.parse(string));
     } catch (error) {
-      console.log('Возникла проблема с вашим fetch запросом: ', error.message);
+      return console.log('Возникла проблема с вашим fetch запросом: ', error.message);
     }
-  }
+  };
 }
 
 function initializeStore(initialData = null) {
+  // eslint-disable-next-line no-underscore-dangle
   const _store = store ?? new RootStore();
 
   // If your page has Next.js data fetching methods that use a Mobx store, it will
@@ -101,3 +106,5 @@ export function useStore(initialState) {
   const store = useMemo(() => initializeStore(initialState), [initialState]);
   return store;
 }
+
+export default RootStore;

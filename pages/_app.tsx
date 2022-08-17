@@ -1,29 +1,29 @@
-/* eslint-disable import/no-relative-packages */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/forbid-prop-types */
-import React, { useEffect } from 'react';
+import { AppProps } from 'next/app';
+import React, { FC, useEffect, FunctionComponent } from 'react';
 import Head from 'next/head';
-import PropTypes from 'prop-types';
-import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
+import {
+  createTheme,
+  ThemeProvider,
+  responsiveFontSizes,
+  ThemeOptions,
+} from '@mui/material/styles';
 import Router from 'next/router';
 import { Provider, observer, inject } from 'mobx-react';
-
 import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider } from '@emotion/react';
+import { CacheProvider, EmotionCache } from '@emotion/react';
 import 'moment/locale/ru';
-
-import { SnackbarProvider } from 'notistack';
-
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import '../styles/globals.css';
-
+import AuthorizationSt from 'store/user/authorizationSt';
+import UserSt from 'store/user/userSt';
 import NProgress from 'nprogress'; // nprogress module
 import Loading from 'kit/Loading/Loading';
+import { SnackbarProvider } from 'notistack';
 import createEmotionCache from '../store/createEmotionCache';
 import { useStore } from '../store/rootStore';
 import { getDesignTokens } from '../theme';
-import 'nprogress/nprogress.css'; // styles of nprogress
+import 'nprogress/nprogress.css';
 
 config.autoAddCss = false;
 
@@ -34,6 +34,12 @@ NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
+
+type InnerAppT = {
+  userSt: UserSt;
+  emotionCache: EmotionCache;
+  authorizationSt: AuthorizationSt;
+};
 
 const InnerApp = inject(
   'authorizationSt',
@@ -48,13 +54,17 @@ const InnerApp = inject(
         settings: { auth },
       },
       emotionCache = clientSideEmotionCache,
-    } = props;
+    }: AppProps & InnerAppT = props;
+
+    const C = Component as FunctionComponent;
 
     const rootStore = useStore(pageProps.initialState);
     const theme = React.useMemo(
       () =>
         responsiveFontSizes(
-          createTheme(getDesignTokens('dark' || rootStore.userSt.settings.darkTheme))
+          createTheme(
+            getDesignTokens('dark' || rootStore.userSt.settings.darkTheme) as ThemeOptions
+          )
         ), // Только тёмная тема
       [rootStore.userSt.settings.darkTheme]
     );
@@ -83,7 +93,7 @@ const InnerApp = inject(
             preventDuplicate
             dense
           >
-            <Component {...pageProps} />
+            <C {...pageProps} />
           </SnackbarProvider>
         </ThemeProvider>
       </CacheProvider>
@@ -91,8 +101,9 @@ const InnerApp = inject(
   })
 );
 
-const App = observer((props) => {
-  const rootStore = useStore(props.pageProps.initialState);
+const App: FC<AppProps> = (props) => {
+  const { pageProps } = props;
+  const rootStore = useStore(pageProps.initialState);
 
   return (
     <Provider
@@ -105,12 +116,6 @@ const App = observer((props) => {
       <InnerApp {...props} />
     </Provider>
   );
-});
+};
 
 export default App;
-
-InnerApp.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  emotionCache: PropTypes.object,
-  pageProps: PropTypes.object.isRequired,
-};

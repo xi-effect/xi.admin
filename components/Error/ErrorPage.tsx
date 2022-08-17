@@ -1,4 +1,4 @@
-import { Button, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Button, Stack, Theme, Typography, useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -7,7 +7,7 @@ import React from 'react';
 
 // eslint-disable-next-line react/prop-types
 export default function ErrorPage({ imageSrc, textMessage }) {
-  const mobile = useMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const mobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const router = useRouter();
 
   return (

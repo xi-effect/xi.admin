@@ -1,29 +1,37 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
 import { action, observable, makeObservable } from 'mobx';
 import Router from 'next/router';
-import { formatSectionData } from 'utils/dataFormatting';
+import { formatSectionData, ResponseDataT } from 'utils/dataFormatting';
+import RootStore from '../rootStore';
 
-class AuthorizationSt {
-  // `this` from rootstore passed to the constructor and we can
-  // assign it to a variable accessible in this class called
-  // `rootStore`. Therefore, we can access other store like
-  // useStore for e.g (this.rootStore.userStore)
+type AuthorizationStT = {
+  login: { error: null | string };
+  logoutUser: () => void;
+  getSettings: () => void;
+  setData: (data: ResponseDataT) => void;
+  loginUser: (data: { username: string; password: string }, trigger: any) => Promise<void>;
+};
+
+class AuthorizationSt implements AuthorizationStT {
+  rootStore: RootStore;
+
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this);
   }
 
-  @observable newPasswordReset = {
-    emailResetOk: false,
-  };
-
   @observable login = {
     error: null,
   };
 
-  @action setNewPasswordReset = (name, value) => {
-    this.newPasswordReset[name] = value;
+  @action logoutUser = async () => {
+    await this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-out/`, 'POST');
+
+    await Router.push('/');
+  };
+
+  @action setLogin = (name, value) => {
+    this.login[name] = value;
   };
 
   @action setData = (data) => {
@@ -49,17 +57,7 @@ class AuthorizationSt {
     }, 1500);
   };
 
-  @action logout = async () => {
-    await this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-out/`, 'POST');
-
-    await Router.push('/');
-  };
-
-  @action setLogin = (name, value) => {
-    this.login[name] = value;
-  };
-
-  @action clickEnterButton = async (data, trigger) => {
+  @action loginUser = async (data, trigger) => {
     this.setLogin('error', null);
 
     const resData = await this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-in/`, 'POST', {

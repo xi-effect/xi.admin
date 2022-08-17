@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Head from 'next/head';
 
-const Layout: React.FC<{ title: string }> = ({ title, children }) => (
+type LayoutT = {
+  title: string;
+  children: ReactNode;
+};
+
+const Layout: React.FC<LayoutT> = ({ title, children }) => (
   <>
     <Head>
       <title>xi.admin | {title}</title>

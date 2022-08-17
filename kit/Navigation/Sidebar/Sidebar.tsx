@@ -2,23 +2,26 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Stack, Tooltip, IconButton } from '@mui/material';
 import { DeveloperMode, Logout, Home } from '@mui/icons-material';
-import { SectionsDataT } from 'utils/dataFormatting';
+import AuthorizationSt from 'store/user/authorizationSt';
+import UserSt from 'store/user/userSt';
 import NavButton from './NavButton';
 
-type SidebarType = {
-  rootStore?: any;
-  authorizationSt?: any;
-  userSt?: any;
+type SidebarT = {
+  authorizationSt: AuthorizationSt;
+  userSt: UserSt;
 };
 
-const Sidebar: React.FC<SidebarType> = inject(
+const Sidebar = inject(
   'authorizationSt',
   'userSt'
 )(
-  observer(({ authorizationSt, userSt }) => {
+  observer((props) => {
     const {
-      settings: { sections },
-    }: { settings: { sections: SectionsDataT } } = userSt;
+      authorizationSt,
+      userSt: {
+        settings: { sections },
+      },
+    }: SidebarT = props;
 
     const stylesLogoutBtn = {
       position: 'absolute',
@@ -62,7 +65,7 @@ const Sidebar: React.FC<SidebarType> = inject(
           )}
         </Stack>
         <Tooltip placement='right' title='Выйти'>
-          <IconButton onClick={() => authorizationSt.logout()} sx={stylesLogoutBtn}>
+          <IconButton onClick={() => authorizationSt.logoutUser()} sx={stylesLogoutBtn}>
             <Logout />
           </IconButton>
         </Tooltip>

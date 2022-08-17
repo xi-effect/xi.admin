@@ -1,14 +1,7 @@
-/* eslint-disable consistent-return */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/function-component-definition */
-/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-// import { useRouter, NextRouter } from 'next/router';
 import Image from 'next/image';
-
 import {
   Stack,
-  // Link,
   useMediaQuery,
   InputAdornment,
   IconButton,
@@ -16,18 +9,18 @@ import {
   Box,
   Button,
   Paper,
+  Theme,
 } from '@mui/material';
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 import { motion } from 'framer-motion';
 import { inject, observer } from 'mobx-react';
-
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import TextFieldCustom from 'kit/TextFieldCustom';
+import AuthorizationSt from 'store/user/authorizationSt';
 
 const schema = yup
   .object({
@@ -36,19 +29,16 @@ const schema = yup
   })
   .required();
 
-type Props = {
-  authorizationSt?: any;
+type SingInFormT = {
+  authorizationSt: AuthorizationSt;
 };
 
-const Form: React.FC<Props> = inject('authorizationSt')(
+const SingInForm = inject('authorizationSt')(
   observer((props) => {
-    const { authorizationSt } = props;
-    // @ts-ignore
-    const mobile: boolean = useMediaQuery((theme) => theme.breakpoints.down('dl'));
-    // @ts-ignore
-    const mobileImage: boolean = useMediaQuery((theme) => theme.breakpoints.down('md'));
-    // const router: NextRouter = useRouter();
+    const { authorizationSt }: SingInFormT = props;
 
+    const mobile: boolean = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+    const mobileImage: boolean = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
     const {
@@ -62,7 +52,7 @@ const Form: React.FC<Props> = inject('authorizationSt')(
 
     const onSubmit = (data) => {
       trigger();
-      authorizationSt.clickEnterButton(data, trigger);
+      authorizationSt.loginUser(data, trigger);
     };
 
     return (
@@ -234,4 +224,4 @@ const Form: React.FC<Props> = inject('authorizationSt')(
   })
 );
 
-export default Form;
+export default SingInForm;

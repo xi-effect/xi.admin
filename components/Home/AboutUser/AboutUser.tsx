@@ -61,7 +61,7 @@ const AboutUser = inject('userSt')(
             </ListItemAvatar>
             <ListItemText
               primary={<HeaderForAU text='Идентификатор' />}
-              secondary={<SubHeaderForAU text={id || ''} />}
+              secondary={<SubHeaderForAU text={id ? id.toString() : ''} />}
             />
           </ListItem>
           <Divider />
@@ -78,7 +78,7 @@ const AboutUser = inject('userSt')(
         </List>
       </Paper>
     );
-  })
+  }),
 );
 
 export default AboutUser;

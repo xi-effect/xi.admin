@@ -40,7 +40,7 @@ const FormQA = inject('rootStore')(
     const onSubmit = (data) => {
       trigger();
       rootStore
-        .fetchData(`${rootStore.url}/mub/emailer/send/`, 'POST', {
+        .fetchData(`/mub/emailer/send/`, 'POST', {
           'user-email': data.useremail,
           'tester-email': data.testeremail,
           type: data.type,

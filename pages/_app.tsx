@@ -43,7 +43,7 @@ type InnerAppT = {
 
 const InnerApp = inject(
   'authorizationSt',
-  'userSt'
+  'userSt',
 )(
   observer((props) => {
     const {
@@ -63,10 +63,10 @@ const InnerApp = inject(
       () =>
         responsiveFontSizes(
           createTheme(
-            getDesignTokens('dark' || rootStore.userSt.settings.darkTheme) as ThemeOptions
-          )
+            getDesignTokens('dark' || rootStore.userSt.settings.darkTheme) as ThemeOptions,
+          ),
         ), // Только тёмная тема
-      [rootStore.userSt.settings.darkTheme]
+      [rootStore.userSt.settings.darkTheme],
     );
 
     useEffect(() => {
@@ -98,7 +98,7 @@ const InnerApp = inject(
         </ThemeProvider>
       </CacheProvider>
     );
-  })
+  }),
 );
 
 const App: FC<AppProps> = (props) => {
@@ -111,6 +111,7 @@ const App: FC<AppProps> = (props) => {
       uiSt={rootStore.uiSt}
       userSt={rootStore.userSt}
       homeSt={rootStore.homeSt}
+      manageSt={rootStore.manageSt}
       authorizationSt={rootStore.authorizationSt}
     >
       <InnerApp {...props} />

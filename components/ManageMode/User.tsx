@@ -27,8 +27,8 @@ const User = inject('manageSt')(
 
     const icon = access?.map((n) => {
       if (n === 'emailing') return <BugReport fontSize='large' />;
-      if (n === 'manage mods' || n === 'manage' || n === 'manage files') return <ManageAccounts
-        fontSize='large' />;
+      if (n === 'manage mods' || n === 'manage' || n === 'manage files')
+        return <ManageAccounts fontSize='large' />;
 
       return null;
     })[0];
@@ -102,7 +102,7 @@ const User = inject('manageSt')(
         </Stack>
       </Paper>
     );
-  }),
+  })
 );
 
 export default User;

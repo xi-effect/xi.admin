@@ -11,15 +11,15 @@ type SectionsT = {
   name: PermissionsUserRoleT;
   permissions: {
     id: number;
-    name: PermissionsT;
+    name: PermissionsNameT;
   }[];
 }[];
 
-export type PermissionsT = 'manage mods' | 'emailing' | 'manage';
+export type PermissionsNameT = 'manage mods' | 'emailing' | 'manage' | 'manage files';
 
 export type PermissionsUserRoleT = 'super' | 'quality assurance' | 'users';
 
-export type PermissionsDataT = { [key in PermissionsT]?: boolean };
+export type PermissionsDataT = { [key in PermissionsNameT]?: boolean };
 
 export type SectionsDataT = { [key in PermissionsUserRoleT]?: PermissionsDataT };
 
@@ -42,8 +42,14 @@ export const formatSectionData = (sections: SectionsT): SectionsDataT => {
 export const formatAccessData = (sections: SectionsDataT) => {
   const result: string[] = [];
 
-  for (const key in sections) {
-    if (sections) result.push(key);
+  for (const i in sections) {
+    if (sections) {
+      for (const j in sections[i]) {
+        if (sections[i]) {
+          result.push(j);
+        }
+      }
+    }
   }
 
   return result.length ? result.join(', ') : 'Отсутствуют разрешения';

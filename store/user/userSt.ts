@@ -11,12 +11,7 @@ type SettingsUserStoreT = {
   sections: SectionsDataT;
 };
 
-export type UserStoreT = {
-  settings: SettingsUserStoreT;
-  setSettings: (item: string, value: any) => void;
-};
-
-class UserSt implements UserStoreT {
+class UserSt {
   rootStore: RootStore;
 
   constructor(rootStore) {
@@ -24,7 +19,7 @@ class UserSt implements UserStoreT {
     makeObservable(this);
   }
 
-  @observable settings = {
+  @observable settings: SettingsUserStoreT = {
     auth: false,
     id: null,
     username: '',
@@ -32,7 +27,7 @@ class UserSt implements UserStoreT {
     sections: {},
   };
 
-  @action setSettings = (item, value) => {
+  @action setSettings = (item: string, value: any) => {
     this.settings[item] = value;
   };
 }

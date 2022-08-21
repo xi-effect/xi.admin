@@ -7,6 +7,7 @@ import UISt from './ui/uiSt';
 import HomeSt from './home/homeSt';
 import UserSt from './user/userSt';
 import AuthorizationSt from './user/authorizationSt';
+import ManageSt from './manage-mode/manageSt';
 
 enableStaticRendering(typeof window === 'undefined');
 
@@ -14,16 +15,14 @@ let store;
 
 type MethodT = 'GET' | 'POST' | 'DELETE' | 'PATCH';
 
-type RootStoreT = {
-  fetchData: (url: string, method: MethodT, data?: any) => any;
-};
-
-class RootStore implements RootStoreT {
+class RootStore {
   uiSt: UISt;
 
   homeSt: HomeSt;
 
   userSt: UserSt;
+
+  manageSt: ManageSt;
 
   authorizationSt: AuthorizationSt;
 
@@ -33,17 +32,19 @@ class RootStore implements RootStoreT {
     this.uiSt = new UISt(this);
     this.homeSt = new HomeSt(this);
     this.userSt = new UserSt(this);
+    this.manageSt = new ManageSt(this);
     this.authorizationSt = new AuthorizationSt(this);
 
     makeObservable(this);
   }
 
-  @action fetchData = async (url, method, data?) => {
+  @action fetchData = async (url: string, method: MethodT, data?: any) => {
     try {
+      const URL = `${this.url}${url}`;
       let response: null | Response = null;
 
       if (data) {
-        response = await fetch(url, {
+        response = await fetch(URL, {
           method,
           cache: 'no-cache',
           credentials: 'include',
@@ -52,16 +53,10 @@ class RootStore implements RootStoreT {
           },
           body: JSON.stringify(data),
         });
-      }
-
-      if (data == null) {
-        response = await fetch(url, {
+      } else {
+        response = await fetch(URL, {
           method,
-          cache: 'no-cache',
           credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
         });
       }
 

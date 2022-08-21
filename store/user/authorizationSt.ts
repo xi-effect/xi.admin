@@ -4,15 +4,16 @@ import Router from 'next/router';
 import { formatSectionData, ResponseDataT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';
 
-type AuthorizationStT = {
-  login: { error: null | string };
-  logoutUser: () => void;
-  getSettings: () => void;
-  setData: (data: ResponseDataT) => void;
-  loginUser: (data: { username: string; password: string }, trigger: any) => Promise<void>;
+type LoginT = {
+  error: null | string;
 };
 
-class AuthorizationSt implements AuthorizationStT {
+type DataT = {
+  username: string;
+  password: string;
+};
+
+class AuthorizationSt {
   rootStore: RootStore;
 
   constructor(rootStore) {
@@ -20,7 +21,7 @@ class AuthorizationSt implements AuthorizationStT {
     makeObservable(this);
   }
 
-  @observable login = {
+  @observable login: LoginT = {
     error: null,
   };
 
@@ -34,7 +35,7 @@ class AuthorizationSt implements AuthorizationStT {
     this.login[name] = value;
   };
 
-  @action setData = (data) => {
+  @action setData = (data: ResponseDataT) => {
     const { id, mode, sections, username } = data;
 
     this.rootStore.userSt.setSettings('id', id);
@@ -47,7 +48,7 @@ class AuthorizationSt implements AuthorizationStT {
   @action getSettings = async () => {
     this.rootStore.uiSt.setLoading('loading', true);
 
-    const data = await this.rootStore.fetchData(`${this.rootStore.url}/mub/my-settings/`, 'GET');
+    const data = await this.rootStore.fetchData(`/mub/my-settings/`, 'GET');
     if (data) {
       this.setData(data);
     }
@@ -57,10 +58,10 @@ class AuthorizationSt implements AuthorizationStT {
     }, 1500);
   };
 
-  @action loginUser = async (data, trigger) => {
+  @action loginUser = async (data: DataT, trigger: any) => {
     this.setLogin('error', null);
 
-    const resData = await this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-in/`, 'POST', {
+    const resData = await this.rootStore.fetchData(`/mub/sign-in/`, 'POST', {
       username: data.username,
       password: data.password,
     });

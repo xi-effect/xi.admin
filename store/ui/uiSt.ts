@@ -2,12 +2,9 @@
 import { action, observable, makeObservable } from 'mobx';
 import RootStore from '../rootStore';
 
-type UIStT = {
-  settings: { loading: null | boolean };
-  setLoading: (name: string, value: null | boolean) => void;
-};
+type SettingsT = { loading: null | boolean };
 
-class UISt implements UIStT {
+class UISt {
   rootStore: RootStore;
 
   constructor(rootStore) {
@@ -15,11 +12,11 @@ class UISt implements UIStT {
     makeObservable(this);
   }
 
-  @observable settings = {
+  @observable settings: SettingsT = {
     loading: null,
   };
 
-  @action setLoading = (name, value) => {
+  @action setLoading = (name: string, value: null | boolean) => {
     this.settings[name] = value;
   };
 }

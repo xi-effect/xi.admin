@@ -36,24 +36,28 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 type InnerAppT = {
-  userSt: UserSt
-  rootStore: RootStore
-  authorizationSt: AuthorizationSt
+  userSt: UserSt;
+  rootStore: RootStore;
+  authorizationSt: AuthorizationSt;
 };
 
 const InnerApp = inject(
   'authorizationSt',
   'userSt',
-  'rootStore',
+  'rootStore'
 )(
   observer((props) => {
     const {
       Component,
       pageProps,
-      userSt: { settings: { auth } },
+      userSt: {
+        settings: { auth },
+      },
       authorizationSt: { getSettings },
       rootStore: {
-        globalOptions: { snackbar: { show, message, variant } },
+        globalOptions: {
+          snackbar: { show, message, variant },
+        },
       },
     }: AppProps & InnerAppT = props;
 
@@ -69,10 +73,9 @@ const InnerApp = inject(
       if (show !== null) enqueueSnackbar(message, { variant });
     }, [show]);
 
-    return (<C {...pageProps} />);
-  }),
+    return <C {...pageProps} />;
+  })
 );
-
 
 const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
   const { pageProps, emotionCache = clientSideEmotionCache } = props;
@@ -81,11 +84,9 @@ const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
   const theme = React.useMemo(
     () =>
       responsiveFontSizes(
-        createTheme(
-          getDesignTokens('dark' || rootStore.userSt.settings.mode) as ThemeOptions,
-        ),
+        createTheme(getDesignTokens('dark' || rootStore.userSt.settings.mode) as ThemeOptions)
       ), // Только тёмная тема
-    [rootStore.userSt.settings.mode],
+    [rootStore.userSt.settings.mode]
   );
 
   return (

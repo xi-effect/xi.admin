@@ -7,15 +7,15 @@ type AccessCheckboxT = {
   text: string;
   value: number;
   checked: boolean;
-  disabled?: boolean;
-  disabledText?: string;
+  disabled: boolean;
+  disabledText: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const AccessCheckbox: FC<AccessCheckboxT> = (props) => {
   const { disabledText, text, checked, value, disabled, onChange } = props;
   return (
-    <Tooltip title={disabledText || ''} placement='left'>
+    <Tooltip title={disabled ? disabledText : ''} placement='left'>
       <FormControlLabel
         labelPlacement='start'
         sx={{
@@ -33,7 +33,7 @@ const AccessCheckbox: FC<AccessCheckboxT> = (props) => {
             defaultChecked={checked}
           />
         }
-        label={<H color={disabledText ? 'lightgray' : 'white'}>{text}</H>}
+        label={<H color={disabled ? 'lightgray' : 'white'}>{text}</H>}
       />
     </Tooltip>
   );

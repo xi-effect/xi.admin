@@ -7,7 +7,7 @@ type SettingsUserStoreT = {
   auth: boolean;
   id: null | number;
   username: string;
-  darkTheme: boolean;
+  mode: 'dark' | 'light';
   sections: SectionsDataT;
 };
 
@@ -20,10 +20,10 @@ class UserSt {
   }
 
   @observable settings: SettingsUserStoreT = {
-    auth: false,
     id: null,
+    auth: false,
     username: '',
-    darkTheme: true,
+    mode: 'dark',
     sections: {},
   };
 

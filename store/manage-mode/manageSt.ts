@@ -30,14 +30,13 @@ type CurrentUserT = {
 
 type PermissionsT = {
   id: number;
-  name: string;
+  name: PermissionsNameT;
 };
 
 type ModeratorDataT = {
   username: string;
   password: string;
   'append-perms': number[];
-  'remove-perms': number[];
 };
 
 type VariantT = 'creation' | 'editing';
@@ -82,20 +81,35 @@ class ManageSt {
   @action deleteModerator = async (id: number) => {
     await this.rootStore.fetchData(`/mub/moderators/${id}/`, 'DELETE');
 
-    await this.getModerators();
+    this.data.users.filter((u) => u.id !== id);
   };
 
-  @action updateModerator = async (data: ModeratorDataT & { id: number }) => {
-    const { id, ...requestData } = data;
-    await this.rootStore.fetchData(`/mub/moderators/${id}/`, 'POST', requestData);
+  @action updateModerator = async (
+    data: ModeratorDataT & { id: number; 'remove-perms': number[] }
+  ) => {
+    const { id, ...reqData } = data;
 
-    await this.getModerators();
+    await this.rootStore.fetchData(`/mub/moderators/${id}/`, 'POST', reqData);
+
+    this.data.users = this.data.users.map((u) =>
+      u.id === id
+        ? {
+            ...u,
+            username: reqData.username,
+            permissions: u.permissions
+              .filter((p) => !reqData['remove-perms'].includes(p.id))
+              .concat(
+                this.data.globalPermissions.filter((p) => reqData['append-perms'].includes(p.id))
+              ),
+          }
+        : u
+    );
   };
 
   @action createModerator = async (data: ModeratorDataT) => {
-    await this.rootStore.fetchData(`/mub/moderators/`, 'POST', data);
+    const user = await this.rootStore.fetchData(`/mub/moderators/`, 'POST', data);
 
-    await this.getModerators();
+    this.data.users.push(user);
   };
 
   @action toggleModal = (modal: 'main' | 'confirmation', value: boolean) => {

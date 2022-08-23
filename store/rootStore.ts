@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { action, makeObservable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import { enableStaticRendering } from 'mobx-react';
 import { useMemo } from 'react';
 import Router from 'next/router';
@@ -14,6 +14,16 @@ enableStaticRendering(typeof window === 'undefined');
 let store;
 
 type MethodT = 'GET' | 'POST' | 'DELETE' | 'PATCH';
+
+type SnackbarT = {
+  message: null | string;
+  show: null | boolean;
+  variant: 'info' | 'default' | 'error' | 'warning' | 'success';
+};
+
+type GlobalOptionsT = {
+  snackbar: SnackbarT;
+};
 
 class RootStore {
   uiSt: UISt;
@@ -37,6 +47,18 @@ class RootStore {
 
     makeObservable(this);
   }
+
+  @observable globalOptions: GlobalOptionsT = {
+    snackbar: {
+      show: null,
+      message: null,
+      variant: 'default',
+    },
+  };
+
+  @action showSnackbar = (options: SnackbarT) => {
+    this.globalOptions.snackbar = options;
+  };
 
   @action fetchData = async (url: string, method: MethodT, data?: any) => {
     try {
@@ -69,13 +91,37 @@ class RootStore {
       if (response?.ok) {
         const string = await response?.text();
         const json = string === '' ? {} : JSON.parse(string);
+
+        if (typeof json === 'string')
+          this.showSnackbar({
+            message: json,
+            variant: 'warning',
+            show: !this.globalOptions.snackbar.show,
+          });
+
         return json;
       }
 
-      const string = await response?.text();
-      return string && (string === '' ? {} : JSON.parse(string));
+      const error = await response?.text();
+      const resError = error && (error === '' ? {} : JSON.parse(error));
+
+      if (resError.a) {
+        this.showSnackbar({
+          message: resError.a,
+          variant: 'error',
+          show: !this.globalOptions.snackbar.show,
+        });
+      }
+
+      return resError;
     } catch (error) {
-      return console.log('Возникла проблема с вашим fetch запросом: ', error.message);
+      this.showSnackbar({
+        message: `Возникла проблема с вашим запросом, ${error.message}!`,
+        variant: 'error',
+        show: !this.globalOptions.snackbar.show,
+      });
+
+      return console.log(error.message);
     }
   };
 }

@@ -72,13 +72,13 @@ const AboutUser = inject('userSt')(
             </ListItemAvatar>
             <ListItemText
               primary={<HeaderForAU text='Разрешения' />}
-              secondary={<SubHeaderForAU text={formatAccessData(sections)} />}
+              secondary={<SubHeaderForAU text={formatAccessData(sections) as string} />}
             />
           </ListItem>
         </List>
       </Paper>
     );
-  })
+  }),
 );
 
 export default AboutUser;

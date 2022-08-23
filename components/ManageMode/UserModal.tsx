@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { inject, observer } from 'mobx-react';
 import { ManagePageT } from 'pages/manage-mode';
+import { Close } from '@mui/icons-material';
+import UserSt from 'store/user/userSt';
 import {
   Dialog,
   DialogActions,
@@ -15,10 +17,10 @@ import {
   Stack,
   FormControl,
 } from '@mui/material';
-import { Close } from '@mui/icons-material';
-import H from './H';
 import TextFieldPass from './TextFieldPass';
 import AccessCheckbox from './AccessCheckbox';
+import H from './H';
+import { formatAccessData } from '../../utils/dataFormatting';
 
 type FormDataT = {
   username: string;
@@ -30,7 +32,14 @@ type PermsT = {
   'remove-perms': Set<number>;
 };
 
-const UserModal = inject('manageSt')(
+type UserModalT = {
+  userSt: UserSt;
+};
+
+const UserModal = inject(
+  'manageSt',
+  'userSt'
+)(
   observer((props) => {
     const {
       manageSt: {
@@ -41,7 +50,10 @@ const UserModal = inject('manageSt')(
         updateModerator,
         createModerator,
       },
-    }: ManagePageT = props;
+      userSt: {
+        settings: { sections },
+      },
+    }: ManagePageT & UserModalT = props;
 
     const perms: PermsT = {
       'append-perms': new Set(),
@@ -67,18 +79,14 @@ const UserModal = inject('manageSt')(
     });
 
     const onSubmit: SubmitHandler<FormDataT> = (data) => {
-      const resultData = {
-        ...data,
-        'remove-perms': Array.from(perms['remove-perms']),
-        'append-perms': Array.from(perms['append-perms']),
-      };
+      const resultData = { ...data, 'append-perms': Array.from(perms['append-perms']) };
 
       if (id) {
         toggleModal('main', false);
-        updateModerator({ id, ...resultData });
+        updateModerator({ id, ...resultData, 'remove-perms': Array.from(perms['remove-perms']) });
       } else {
         toggleModal('main', false);
-        createModerator({ ...resultData });
+        createModerator(resultData);
       }
     };
 
@@ -106,6 +114,8 @@ const UserModal = inject('manageSt')(
         value={p.id}
         text={p.name}
         onChange={onChange}
+        disabledText='Вам недоступно это действие'
+        disabled={!formatAccessData(sections, true).includes(p.name)}
         checked={!!permissions.filter((c) => c.id === p.id)[0]?.name}
       />
     ));

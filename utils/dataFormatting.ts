@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 export type ResponseDataT = {
   id: number;
-  mode: string;
   username: string;
   sections: SectionsT;
+  mode: 'dark' | 'light';
 };
 
 type SectionsT = {
@@ -39,7 +39,10 @@ export const formatSectionData = (sections: SectionsT): SectionsDataT => {
   return resultSection;
 };
 
-export const formatAccessData = (sections: SectionsDataT) => {
+export const formatAccessData = (
+  sections: SectionsDataT,
+  returnArr?: boolean
+): string | string[] => {
   const result: string[] = [];
 
   for (const i in sections) {
@@ -51,6 +54,8 @@ export const formatAccessData = (sections: SectionsDataT) => {
       }
     }
   }
+
+  if (returnArr) return result;
 
   return result.length ? result.join(', ') : 'Отсутствуют разрешения';
 };

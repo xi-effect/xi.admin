@@ -36,22 +36,19 @@ class AuthorizationSt {
   };
 
   @action setData = (data: ResponseDataT) => {
-    const { id, mode, sections, username } = data;
-
-    this.rootStore.userSt.setSettings('id', id);
-    this.rootStore.userSt.setSettings('mode', mode);
-    this.rootStore.userSt.setSettings('auth', true);
-    this.rootStore.userSt.setSettings('username', username);
-    this.rootStore.userSt.setSettings('sections', formatSectionData(sections));
+    this.rootStore.userSt.settings = {
+      ...data,
+      auth: true,
+      sections: formatSectionData(data.sections),
+    };
   };
 
   @action getSettings = async () => {
     this.rootStore.uiSt.setLoading('loading', true);
 
     const data = await this.rootStore.fetchData(`/mub/my-settings/`, 'GET');
-    if (data) {
-      this.setData(data);
-    }
+
+    this.setData(data);
 
     setTimeout(() => {
       this.rootStore.uiSt.setLoading('loading', false);

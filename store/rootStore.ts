@@ -14,11 +14,12 @@ enableStaticRendering(typeof window === 'undefined');
 let store;
 
 type MethodT = 'GET' | 'POST' | 'DELETE' | 'PATCH';
+type SnackbarVariantT = 'info' | 'default' | 'error' | 'warning' | 'success';
 
 type SnackbarT = {
   message: null | string;
   show: null | boolean;
-  variant: 'info' | 'default' | 'error' | 'warning' | 'success';
+  variant: SnackbarVariantT;
 };
 
 type GlobalOptionsT = {
@@ -56,8 +57,12 @@ class RootStore {
     },
   };
 
-  @action showSnackbar = (options: SnackbarT) => {
-    this.globalOptions.snackbar = options;
+  @action showSnackbar = (error: string, variant?: SnackbarVariantT) => {
+    this.globalOptions.snackbar = {
+      message: error,
+      variant: variant || 'error',
+      show: !this.globalOptions.snackbar.show,
+    };
   };
 
   @action fetchData = async (url: string, method: MethodT, data?: any) => {
@@ -84,6 +89,10 @@ class RootStore {
 
       if (response?.status === 401 || response?.status === 403 || response?.status === 422) {
         const router = Router;
+        const error = await response?.text();
+
+        if (JSON.parse(error).a) this.showSnackbar(JSON.parse(error).a);
+
         await router.push('/');
         return null;
       }
@@ -92,12 +101,7 @@ class RootStore {
         const string = await response?.text();
         const json = string === '' ? {} : JSON.parse(string);
 
-        if (typeof json === 'string')
-          this.showSnackbar({
-            message: json,
-            variant: 'warning',
-            show: !this.globalOptions.snackbar.show,
-          });
+        if (typeof json === 'string') this.showSnackbar(json);
 
         return json;
       }
@@ -105,21 +109,11 @@ class RootStore {
       const error = await response?.text();
       const resError = error && (error === '' ? {} : JSON.parse(error));
 
-      if (resError.a) {
-        this.showSnackbar({
-          message: resError.a,
-          variant: 'error',
-          show: !this.globalOptions.snackbar.show,
-        });
-      }
+      if (resError.a) this.showSnackbar(resError.a);
 
       return resError;
     } catch (error) {
-      this.showSnackbar({
-        message: `Возникла проблема с вашим запросом, ${error.message}!`,
-        variant: 'error',
-        show: !this.globalOptions.snackbar.show,
-      });
+      this.showSnackbar(`Возникла проблема с вашим запросом, ${error.message}!`);
 
       return console.log(error.message);
     }

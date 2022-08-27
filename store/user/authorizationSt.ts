@@ -35,12 +35,14 @@ class AuthorizationSt {
     this.login[name] = value;
   };
 
-  @action setData = (data: ResponseDataT) => {
-    this.rootStore.userSt.settings = {
-      ...data,
-      auth: true,
-      sections: formatSectionData(data.sections),
-    };
+  @action setData = (data?: ResponseDataT) => {
+    if (data) {
+      this.rootStore.userSt.settings = {
+        ...data,
+        auth: true,
+        sections: formatSectionData(data.sections),
+      };
+    }
   };
 
   @action getSettings = async () => {
@@ -74,8 +76,8 @@ class AuthorizationSt {
         setTimeout(() => {
           this.rootStore.uiSt.setLoading('loading', false);
         }, 1500);
-      } else if (resData.a === "User doesn't exist") {
-        this.setLogin('error', "User doesn't exist");
+      } else if (resData.a === 'User doesn\'t exist') {
+        this.setLogin('error', 'User doesn\'t exist');
         trigger();
       } else if (resData.a === 'Wrong password') {
         this.setLogin('error', 'Wrong password');

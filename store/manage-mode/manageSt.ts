@@ -67,9 +67,23 @@ class ManageSt {
     variant: 'creation',
   };
 
-  @action getModerators = async (offset?: string, counter?: string) => {
-    const res = await this.rootStore.fetchData(`/mub/moderators/?offset=0`, 'GET');
+  @action getModerators = async () => {
+    const res = await this.rootStore.fetchData(
+      `/mub/moderators/?offset=${this.data.users.length}`,
+      'GET'
+    );
 
+    this.data.users.push(...res.results);
+    this.data['has-next'] = res['has-next'];
+  };
+
+  @action searchUser = async (search: string) => {
+    if (search === '') {
+      await this.getModerators();
+      return;
+    }
+
+    const res = await this.rootStore.fetchData(`/mub/moderators/?offset=0&search=${search}`, 'GET');
     this.data.users = res.results;
     this.data['has-next'] = res['has-next'];
   };

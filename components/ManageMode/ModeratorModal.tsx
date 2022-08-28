@@ -34,7 +34,7 @@ type ModerModalT = {
 
 const ModeratorModal = inject(
   'manageSt',
-  'userSt',
+  'userSt'
 )(
   observer((props) => {
     const {
@@ -162,7 +162,7 @@ const ModeratorModal = inject(
         </FormControl>
       </Dialog>
     );
-  }),
+  })
 );
 
 export default ModeratorModal;

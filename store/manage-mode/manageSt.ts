@@ -71,7 +71,7 @@ class ManageSt {
     const res = await this.rootStore.fetchData(
       `/mub/moderators/?offset=${firstSearch ? 0 : this.data.moderators.length}
       ${search ? `&search=${search}` : ''}`,
-      'GET',
+      'GET'
     );
 
     this.data['has-next'] = res['has-next'];
@@ -94,7 +94,7 @@ class ManageSt {
   };
 
   @action updateModerator = async (
-    data: ModeratorDataT & { id: number; 'remove-perms': number[] },
+    data: ModeratorDataT & { id: number; 'remove-perms': number[] }
   ) => {
     const { id, ...reqData } = data;
 
@@ -103,15 +103,15 @@ class ManageSt {
     this.data.moderators = this.data.moderators.map((u) =>
       u.id === id
         ? {
-          ...u,
-          username: reqData.username,
-          permissions: u.permissions
-            .filter((p) => !reqData['remove-perms'].includes(p.id))
-            .concat(
-              this.data.globalPermissions.filter((p) => reqData['append-perms'].includes(p.id)),
-            ),
-        }
-        : u,
+            ...u,
+            username: reqData.username,
+            permissions: u.permissions
+              .filter((p) => !reqData['remove-perms'].includes(p.id))
+              .concat(
+                this.data.globalPermissions.filter((p) => reqData['append-perms'].includes(p.id))
+              ),
+          }
+        : u
     );
   };
 

@@ -35,12 +35,11 @@ const ManagePage = inject('manageSt')(
       changeUser(null);
       changeModalVariant('creation');
       toggleModal('main', true);
-
     };
 
-    const moderators = data
-      .moderators
-      .map((u: ModeratorsT) => <Moderator key={u.id} moderator={u} />);
+    const moderators = data.moderators.map((u: ModeratorsT) => (
+      <Moderator key={u.id} moderator={u} />
+    ));
 
     const searchModerators = debounce((e: ChangeEvent<HTMLInputElement>) => {
       setSearchQuery(e.target.value);
@@ -130,7 +129,7 @@ const ManagePage = inject('manageSt')(
         </Navigation>
       </Layout>
     );
-  }),
+  })
 );
 
 export default ManagePage;

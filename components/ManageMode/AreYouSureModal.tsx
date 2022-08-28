@@ -64,7 +64,7 @@ const AreYouSureModal = inject('manageSt')(
         </DialogActions>
       </Dialog>
     );
-  }),
+  })
 );
 
 export default AreYouSureModal;

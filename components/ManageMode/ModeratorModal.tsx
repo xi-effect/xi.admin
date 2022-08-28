@@ -25,7 +25,7 @@ import H from './H';
 type FormDataT = {
   username: string;
   password: string;
-  currentPerms: number[]
+  currentPerms: number[];
 };
 
 type ModerModalT = {
@@ -34,7 +34,7 @@ type ModerModalT = {
 
 const ModeratorModal = inject(
   'manageSt',
-  'userSt',
+  'userSt'
 )(
   observer((props) => {
     const {
@@ -73,18 +73,18 @@ const ModeratorModal = inject(
       toggleModal('main', false);
 
       const { currentPerms, username, password } = data;
-      const oldPerms = permissions.map(p => p.id);
+      const oldPerms = permissions.map((p) => p.id);
       const newPerms = currentPerms.map(Number);
 
       const createModerData = {
         username,
         password,
-        'append-perms': newPerms.filter(id => !oldPerms.includes(id)),
+        'append-perms': newPerms.filter((id) => !oldPerms.includes(id)),
       };
 
       const updateModerData = {
         ...createModerData,
-        'remove-perms': oldPerms.filter(id => !newPerms.includes(id)),
+        'remove-perms': oldPerms.filter((id) => !newPerms.includes(id)),
       };
 
       if (id) {
@@ -161,7 +161,7 @@ const ModeratorModal = inject(
         </FormControl>
       </Dialog>
     );
-  }),
+  })
 );
 
 export default ModeratorModal;

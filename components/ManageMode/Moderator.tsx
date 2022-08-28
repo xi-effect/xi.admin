@@ -101,7 +101,7 @@ const Moderator = inject('manageSt')(
         </Stack>
       </Paper>
     );
-  }),
+  })
 );
 
 export default Moderator;

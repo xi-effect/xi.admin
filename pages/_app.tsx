@@ -19,9 +19,9 @@ import AuthorizationSt from 'store/user/authorizationSt';
 import UserSt from 'store/user/userSt';
 import NProgress from 'nprogress'; // nprogress module
 import Loading from 'kit/Loading/Loading';
-import { SnackbarProvider } from 'notistack';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 import createEmotionCache from '../store/createEmotionCache';
-import { useStore } from '../store/rootStore';
+import RootStore, { useStore } from '../store/rootStore';
 import { getDesignTokens } from '../theme';
 import 'nprogress/nprogress.css';
 
@@ -37,43 +37,67 @@ Router.events.on('routeChangeError', () => NProgress.done());
 
 type InnerAppT = {
   userSt: UserSt;
-  emotionCache: EmotionCache;
+  rootStore: RootStore;
   authorizationSt: AuthorizationSt;
 };
 
 const InnerApp = inject(
   'authorizationSt',
-  'userSt'
+  'userSt',
+  'rootStore'
 )(
   observer((props) => {
     const {
       Component,
       pageProps,
-      authorizationSt: { getSettings },
       userSt: {
         settings: { auth },
       },
-      emotionCache = clientSideEmotionCache,
+      authorizationSt: { getSettings },
+      rootStore: {
+        globalOptions: {
+          snackbar: { show, message, variant },
+        },
+      },
     }: AppProps & InnerAppT = props;
 
     const C = Component as FunctionComponent;
 
-    const rootStore = useStore(pageProps.initialState);
-    const theme = React.useMemo(
-      () =>
-        responsiveFontSizes(
-          createTheme(
-            getDesignTokens('dark' || rootStore.userSt.settings.darkTheme) as ThemeOptions
-          )
-        ), // Только тёмная тема
-      [rootStore.userSt.settings.darkTheme]
-    );
+    const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
       if (!auth) getSettings();
     }, [auth]);
 
-    return (
+    useEffect(() => {
+      if (show !== null) enqueueSnackbar(message, { variant });
+    }, [show]);
+
+    return <C {...pageProps} />;
+  })
+);
+
+const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
+  const { pageProps, emotionCache = clientSideEmotionCache } = props;
+
+  const rootStore = useStore(pageProps.initialState);
+  const theme = React.useMemo(
+    () =>
+      responsiveFontSizes(
+        createTheme(getDesignTokens('dark' || rootStore.userSt.settings.mode) as ThemeOptions)
+      ), // Только тёмная тема
+    [rootStore.userSt.settings.mode]
+  );
+
+  return (
+    <Provider
+      rootStore={rootStore}
+      uiSt={rootStore.uiSt}
+      userSt={rootStore.userSt}
+      homeSt={rootStore.homeSt}
+      manageSt={rootStore.manageSt}
+      authorizationSt={rootStore.authorizationSt}
+    >
       <CacheProvider value={emotionCache}>
         <Head>
           <meta
@@ -86,34 +110,17 @@ const InnerApp = inject(
           <Loading />
           <SnackbarProvider
             anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
+              vertical: 'top',
+              horizontal: 'right',
             }}
             maxSnack={3}
             preventDuplicate
             dense
           >
-            <C {...pageProps} />
+            <InnerApp {...props} />
           </SnackbarProvider>
         </ThemeProvider>
       </CacheProvider>
-    );
-  })
-);
-
-const App: FC<AppProps> = (props) => {
-  const { pageProps } = props;
-  const rootStore = useStore(pageProps.initialState);
-
-  return (
-    <Provider
-      rootStore={rootStore}
-      uiSt={rootStore.uiSt}
-      userSt={rootStore.userSt}
-      homeSt={rootStore.homeSt}
-      authorizationSt={rootStore.authorizationSt}
-    >
-      <InnerApp {...props} />
     </Provider>
   );
 };

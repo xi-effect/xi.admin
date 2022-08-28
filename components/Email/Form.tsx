@@ -37,33 +37,32 @@ const FormQA = inject('rootStore')(
       resolver: yupResolver(schema),
     });
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
       trigger();
-      rootStore
-        .fetchData(`${rootStore.url}/mub/emailer/send/`, 'POST', {
-          'user-email': data.useremail,
-          'tester-email': data.testeremail,
-          type: data.type,
-        })
-        .then((data) => {
-          if (data.a === 'User not found') {
-            enqueueSnackbar('User not found', {
-              variant: 'info',
-            });
-          } else if (data.a === 'Unsupported type') {
-            enqueueSnackbar('Unsupported type', {
-              variant: 'info',
-            });
-          } else if (data.a === 'Not sufficient permissions') {
-            enqueueSnackbar('Not sufficient permissions', {
-              variant: 'info',
-            });
-          } else {
-            enqueueSnackbar(`Успех! Письмо отправлено на ${data.testeremail}`, {
-              variant: 'info',
-            });
-          }
+
+      const response = await rootStore.fetchData(`/mub/emailer/send/`, 'POST', {
+        'user-email': data.useremail,
+        'tester-email': data.testeremail,
+        type: data.type,
+      });
+
+      if (response.a === 'User not found') {
+        enqueueSnackbar('User not found', {
+          variant: 'info',
         });
+      } else if (response.a === 'Unsupported type') {
+        enqueueSnackbar('Unsupported type', {
+          variant: 'info',
+        });
+      } else if (response.a === 'Not sufficient permissions') {
+        enqueueSnackbar('Not sufficient permissions', {
+          variant: 'info',
+        });
+      } else {
+        enqueueSnackbar(`Успех! Письмо отправлено на ${data.testeremail}`, {
+          variant: 'info',
+        });
+      }
     };
 
     return (

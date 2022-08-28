@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Stack, Tooltip, IconButton } from '@mui/material';
-import { DeveloperMode, Logout, Home } from '@mui/icons-material';
+import { BugReport, Logout, Home, ManageAccounts } from '@mui/icons-material';
 import AuthorizationSt from 'store/user/authorizationSt';
 import UserSt from 'store/user/userSt';
 import NavButton from './NavButton';
@@ -61,7 +61,11 @@ const Sidebar = inject(
           <NavButton href='/home' title='Главная' icon={<Home />} />
 
           {sections['quality assurance'] && (
-            <NavButton href='/qa' title='QA Engine' icon={<DeveloperMode />} />
+            <NavButton href='/qa' title='Тестирование' icon={<BugReport />} />
+          )}
+
+          {sections.super?.['manage mods'] && (
+            <NavButton href='/manage-mode' title='Управление' icon={<ManageAccounts />} />
           )}
         </Stack>
         <Tooltip placement='right' title='Выйти'>

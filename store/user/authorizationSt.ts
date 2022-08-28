@@ -4,15 +4,16 @@ import Router from 'next/router';
 import { formatSectionData, ResponseDataT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';
 
-type AuthorizationStT = {
-  login: { error: null | string };
-  logoutUser: () => void;
-  getSettings: () => void;
-  setData: (data: ResponseDataT) => void;
-  loginUser: (data: { username: string; password: string }, trigger: any) => Promise<void>;
+type LoginT = {
+  error: null | string;
 };
 
-class AuthorizationSt implements AuthorizationStT {
+type DataT = {
+  username: string;
+  password: string;
+};
+
+class AuthorizationSt {
   rootStore: RootStore;
 
   constructor(rootStore) {
@@ -20,7 +21,7 @@ class AuthorizationSt implements AuthorizationStT {
     makeObservable(this);
   }
 
-  @observable login = {
+  @observable login: LoginT = {
     error: null,
   };
 
@@ -34,33 +35,32 @@ class AuthorizationSt implements AuthorizationStT {
     this.login[name] = value;
   };
 
-  @action setData = (data) => {
-    const { id, mode, sections, username } = data;
-
-    this.rootStore.userSt.setSettings('id', id);
-    this.rootStore.userSt.setSettings('mode', mode);
-    this.rootStore.userSt.setSettings('auth', true);
-    this.rootStore.userSt.setSettings('username', username);
-    this.rootStore.userSt.setSettings('sections', formatSectionData(sections));
+  @action setData = (data?: ResponseDataT) => {
+    if (data) {
+      this.rootStore.userSt.settings = {
+        ...data,
+        auth: true,
+        sections: formatSectionData(data.sections),
+      };
+    }
   };
 
   @action getSettings = async () => {
     this.rootStore.uiSt.setLoading('loading', true);
 
-    const data = await this.rootStore.fetchData(`${this.rootStore.url}/mub/my-settings/`, 'GET');
-    if (data) {
-      this.setData(data);
-    }
+    const data = await this.rootStore.fetchData(`/mub/my-settings/`, 'GET');
+
+    this.setData(data);
 
     setTimeout(() => {
       this.rootStore.uiSt.setLoading('loading', false);
     }, 1500);
   };
 
-  @action loginUser = async (data, trigger) => {
+  @action loginUser = async (data: DataT, trigger: any) => {
     this.setLogin('error', null);
 
-    const resData = await this.rootStore.fetchData(`${this.rootStore.url}/mub/sign-in/`, 'POST', {
+    const resData = await this.rootStore.fetchData(`/mub/sign-in/`, 'POST', {
       username: data.username,
       password: data.password,
     });

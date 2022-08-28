@@ -61,7 +61,7 @@ const AboutUser = inject('userSt')(
             </ListItemAvatar>
             <ListItemText
               primary={<HeaderForAU text='Идентификатор' />}
-              secondary={<SubHeaderForAU text={id || ''} />}
+              secondary={<SubHeaderForAU text={id ? id.toString() : ''} />}
             />
           </ListItem>
           <Divider />
@@ -72,7 +72,7 @@ const AboutUser = inject('userSt')(
             </ListItemAvatar>
             <ListItemText
               primary={<HeaderForAU text='Разрешения' />}
-              secondary={<SubHeaderForAU text={formatAccessData(sections)} />}
+              secondary={<SubHeaderForAU text={formatAccessData(sections) as string} />}
             />
           </ListItem>
         </List>

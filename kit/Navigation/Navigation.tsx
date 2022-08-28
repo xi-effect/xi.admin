@@ -28,6 +28,10 @@ const Navigation = inject('userSt')(
       return <NotEnoughRights />;
     }
 
+    if (router.pathname === '/manage-mode' && !sections.super?.['manage mods']) {
+      return <NotEnoughRights />;
+    }
+
     return (
       <Stack
         direction='row'

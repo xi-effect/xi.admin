@@ -78,7 +78,7 @@ const AboutUser = inject('userSt')(
         </List>
       </Paper>
     );
-  }),
+  })
 );
 
 export default AboutUser;

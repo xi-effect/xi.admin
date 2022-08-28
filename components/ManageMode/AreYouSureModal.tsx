@@ -16,7 +16,7 @@ const AreYouSureModal = inject('manageSt')(
       manageSt: {
         toggleModal,
         deleteModerator,
-        user: { current, id },
+        moderator: { current, id },
         controlModals: { confirmation },
       },
     }: ManagePageT = props;
@@ -64,7 +64,7 @@ const AreYouSureModal = inject('manageSt')(
         </DialogActions>
       </Dialog>
     );
-  })
+  }),
 );
 
 export default AreYouSureModal;

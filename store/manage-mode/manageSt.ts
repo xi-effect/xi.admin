@@ -3,7 +3,7 @@ import { action, makeObservable, observable } from 'mobx';
 import { PermissionsNameT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';
 
-export type UsersT = {
+export type ModeratorsT = {
   id: number;
   super: boolean;
   username: string;
@@ -11,7 +11,7 @@ export type UsersT = {
 };
 
 type DataT = {
-  users: UsersT[];
+  moderators: ModeratorsT[];
   'has-next': boolean;
   globalPermissions: PermissionsT[];
 };
@@ -22,13 +22,13 @@ type ControlModalsT = {
   confirmation: boolean;
 };
 
-type CurrentUserT = {
+type CurrentModeratorT = {
   id: null | number;
   current: null | string;
   permissions: PermissionsT[];
 };
 
-type PermissionsT = {
+export type PermissionsT = {
   id: number;
   name: PermissionsNameT;
 };
@@ -50,12 +50,12 @@ class ManageSt {
   }
 
   @observable data: DataT = {
-    users: [],
+    moderators: [],
     'has-next': false,
     globalPermissions: [],
   };
 
-  @observable user: CurrentUserT = {
+  @observable moderator: CurrentModeratorT = {
     id: null,
     current: null,
     permissions: [],
@@ -67,25 +67,19 @@ class ManageSt {
     variant: 'creation',
   };
 
-  @action getModerators = async () => {
+  @action getModerators = async (search?: string, firstSearch?: boolean) => {
     const res = await this.rootStore.fetchData(
-      `/mub/moderators/?offset=${this.data.users.length}`,
-      'GET'
+      `/mub/moderators/?offset=${(search || search === '') ? 0 : this.data.moderators.length}${search ? `&search=${search}` : ''}`,
+      'GET',
     );
 
-    this.data.users.push(...res.results);
     this.data['has-next'] = res['has-next'];
-  };
 
-  @action searchUser = async (search: string) => {
-    if (search === '') {
-      await this.getModerators();
-      return;
+    if (firstSearch) {
+      this.data.moderators = res.results;
+    } else {
+      this.data.moderators.push(...res.results);
     }
-
-    const res = await this.rootStore.fetchData(`/mub/moderators/?offset=0&search=${search}`, 'GET');
-    this.data.users = res.results;
-    this.data['has-next'] = res['has-next'];
   };
 
   @action getPermissions = async () => {
@@ -95,35 +89,35 @@ class ManageSt {
   @action deleteModerator = async (id: number) => {
     await this.rootStore.fetchData(`/mub/moderators/${id}/`, 'DELETE');
 
-    this.data.users.filter((u) => u.id !== id);
+    this.data.moderators.filter((u) => u.id !== id);
   };
 
   @action updateModerator = async (
-    data: ModeratorDataT & { id: number; 'remove-perms': number[] }
+    data: ModeratorDataT & { id: number; 'remove-perms': number[] },
   ) => {
     const { id, ...reqData } = data;
 
     await this.rootStore.fetchData(`/mub/moderators/${id}/`, 'POST', reqData);
 
-    this.data.users = this.data.users.map((u) =>
+    this.data.moderators = this.data.moderators.map((u) =>
       u.id === id
         ? {
-            ...u,
-            username: reqData.username,
-            permissions: u.permissions
-              .filter((p) => !reqData['remove-perms'].includes(p.id))
-              .concat(
-                this.data.globalPermissions.filter((p) => reqData['append-perms'].includes(p.id))
-              ),
-          }
-        : u
+          ...u,
+          username: reqData.username,
+          permissions: u.permissions
+            .filter((p) => !reqData['remove-perms'].includes(p.id))
+            .concat(
+              this.data.globalPermissions.filter((p) => reqData['append-perms'].includes(p.id)),
+            ),
+        }
+        : u,
     );
   };
 
   @action createModerator = async (data: ModeratorDataT) => {
     const user = await this.rootStore.fetchData(`/mub/moderators/`, 'POST', data);
 
-    this.data.users.push(user);
+    this.data.moderators.push(user);
   };
 
   @action toggleModal = (modal: 'main' | 'confirmation', value: boolean) => {
@@ -134,13 +128,13 @@ class ManageSt {
     this.controlModals.variant = variant;
   };
 
-  @action changeUser = (current: CurrentUserT | null) => {
+  @action changeUser = (current: CurrentModeratorT | null) => {
     if (current) {
-      this.user = current;
+      this.moderator = current;
       return;
     }
 
-    this.user = { current: null, id: null, permissions: [] };
+    this.moderator = { current: null, id: null, permissions: [] };
   };
 }
 

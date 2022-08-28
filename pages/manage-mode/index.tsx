@@ -1,16 +1,16 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Stack, TextField } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import Layout from 'kit/Layout/Layout';
 import Navigation from 'kit/Navigation/Navigation';
 import PageHeader from 'kit/Layout/PageHeader';
-import ManageSt, { UsersT } from 'store/manage-mode/manageSt';
-import User from 'components/ManageMode/User';
-import UserModal from 'components/ManageMode/UserModal';
+import ManageSt, { ModeratorsT } from 'store/manage-mode/manageSt';
+import Moderator from 'components/ManageMode/Moderator';
+import ModeratorModal from 'components/ManageMode/ModeratorModal';
 import { Add } from '@mui/icons-material';
 import AreYouSureModal from 'components/ManageMode/AreYouSureModal';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { debounce } from '../../utils/debounce';
+import { debounce } from 'utils/debounce';
 
 export type ManagePageT = {
   manageSt: ManageSt;
@@ -26,19 +26,27 @@ const ManagePage = inject('manageSt')(
         getModerators,
         getPermissions,
         changeModalVariant,
-        searchUser,
       },
     }: ManagePageT = props;
+
+    const [searchQuery, setSearchQuery] = useState<string>('');
 
     const createUser = () => {
       changeUser(null);
       changeModalVariant('creation');
       toggleModal('main', true);
+
     };
 
-    const users = data.users.map((u: UsersT) => <User key={u.id} users={u} />);
+    const moderators = data
+      .moderators
+      .map((u: ModeratorsT) => <Moderator key={u.id} moderator={u} />);
 
-    const search = debounce((e: ChangeEvent<HTMLInputElement>) => searchUser(e.target.value));
+    const searchModerators = debounce((e: ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(e.target.value);
+
+      getModerators(e.target.value, true);
+    });
 
     useEffect(() => {
       getModerators();
@@ -63,7 +71,7 @@ const ManagePage = inject('manageSt')(
               overflowX: 'hidden',
             }}
           >
-            <PageHeader title='Управление пользователями' />
+            <PageHeader title='Управление модераторами' />
 
             <Stack
               m='20px 0'
@@ -76,22 +84,22 @@ const ManagePage = inject('manageSt')(
               <TextField
                 size='small'
                 variant='outlined'
-                onChange={search}
-                label='Найти пользователя'
+                label='Поиск модератора'
+                onChange={searchModerators}
                 sx={{ m: '10px 30px', flex: '0 1 500px' }}
               />
 
               <Button onClick={createUser} variant='contained' size='large'>
-                Создать пользователя
+                Создать модератора
                 <Add sx={{ ml: '10px' }} />
               </Button>
             </Stack>
 
             <Box sx={{ width: '100%' }}>
               <InfiniteScroll
-                next={getModerators}
+                next={() => getModerators(searchQuery)}
                 hasMore={data['has-next']}
-                dataLength={data.users.length}
+                dataLength={data.moderators.length}
                 loader={
                   <CircularProgress
                     sx={{
@@ -111,18 +119,18 @@ const ManagePage = inject('manageSt')(
                   justifyContent='space-around'
                   sx={{ m: '0 auto', maxWidth: '900px' }}
                 >
-                  {users}
+                  {moderators}
                 </Stack>
               </InfiniteScroll>
             </Box>
           </Stack>
 
-          <UserModal />
+          <ModeratorModal />
           <AreYouSureModal />
         </Navigation>
       </Layout>
     );
-  })
+  }),
 );
 
 export default ManagePage;

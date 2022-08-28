@@ -1,4 +1,3 @@
-import React from 'react';
 import { ManagePageT } from 'pages/manage-mode';
 import { inject, observer } from 'mobx-react';
 import {
@@ -8,20 +7,20 @@ import {
   ModeEdit,
   FormatListBulleted,
 } from '@mui/icons-material';
-import { UsersT } from 'store/manage-mode/manageSt';
+import { ModeratorsT } from 'store/manage-mode/manageSt';
 import { Stack, Paper, Avatar, IconButton, Tooltip } from '@mui/material';
 import H from './H';
 
-type UserT = {
-  users: UsersT;
+type ModeratorT = {
+  moderator: ModeratorsT;
 };
 
-const User = inject('manageSt')(
+const Moderator = inject('manageSt')(
   observer((props) => {
     const {
-      users: { id, username, permissions },
+      moderator: { id, username, permissions },
       manageSt: { toggleModal, changeModalVariant, changeUser },
-    }: ManagePageT & UserT = props;
+    }: ManagePageT & ModeratorT = props;
 
     const access = permissions.length ? permissions.map((p) => p.name) : undefined;
 
@@ -63,7 +62,7 @@ const User = inject('manageSt')(
 
           <Avatar sx={{ mt: '40px', width: '70px', height: '70px' }}>{icon}</Avatar>
 
-          <Tooltip placement='top' title='Удалить пользователя'>
+          <Tooltip placement='top' title='Удалить модератора'>
             <IconButton aria-label='delete user' onClick={deleteUserHandler}>
               <Clear />
             </IconButton>
@@ -102,7 +101,7 @@ const User = inject('manageSt')(
         </Stack>
       </Paper>
     );
-  })
+  }),
 );
 
-export default User;
+export default Moderator;

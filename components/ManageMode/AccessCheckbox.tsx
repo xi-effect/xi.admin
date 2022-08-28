@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { ChangeEvent, FC } from 'react';
+import React, { FC, forwardRef } from 'react';
 import { Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import H from './H';
 
@@ -9,11 +9,10 @@ type AccessCheckboxT = {
   checked: boolean;
   disabled: boolean;
   disabledText: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const AccessCheckbox: FC<AccessCheckboxT> = (props) => {
-  const { disabledText, text, checked, value, disabled, onChange } = props;
+const AccessCheckbox: FC<AccessCheckboxT> = forwardRef<HTMLButtonElement, AccessCheckboxT>((props, ref) => {
+  const { disabledText, text, checked, value, disabled, ...restProps } = props;
   return (
     <Tooltip title={disabled ? disabledText : ''} placement='left'>
       <FormControlLabel
@@ -27,16 +26,17 @@ const AccessCheckbox: FC<AccessCheckboxT> = (props) => {
         }}
         control={
           <Checkbox
+            ref={ref}
             value={value}
-            onChange={onChange}
             disabled={disabled}
             defaultChecked={checked}
+            {...restProps}
           />
         }
         label={<H color={disabled ? 'lightgray' : 'white'}>{text}</H>}
       />
     </Tooltip>
   );
-};
+});
 
 export default AccessCheckbox;

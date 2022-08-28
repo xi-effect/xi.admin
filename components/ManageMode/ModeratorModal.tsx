@@ -34,7 +34,7 @@ type ModerModalT = {
 
 const ModeratorModal = inject(
   'manageSt',
-  'userSt'
+  'userSt',
 )(
   observer((props) => {
     const {
@@ -82,13 +82,14 @@ const ModeratorModal = inject(
         'append-perms': newPerms.filter((id) => !oldPerms.includes(id)),
       };
 
-      const updateModerData = {
-        ...createModerData,
-        'remove-perms': oldPerms.filter((id) => !newPerms.includes(id)),
-      };
-
       if (id) {
-        updateModerator({ id, ...updateModerData });
+        const updateModerData = {
+          id,
+          ...createModerData,
+          'remove-perms': oldPerms.filter((id) => !newPerms.includes(id)),
+        };
+
+        updateModerator(updateModerData);
       } else {
         createModerator(createModerData);
       }
@@ -161,7 +162,7 @@ const ModeratorModal = inject(
         </FormControl>
       </Dialog>
     );
-  })
+  }),
 );
 
 export default ModeratorModal;

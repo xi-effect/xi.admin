@@ -24,11 +24,11 @@ const Navigation = inject('userSt')(
       },
     }: NavigationT = props;
 
-    if (router.pathname === '/qa' && !sections['quality assurance']?.emailing) {
-      return <NotEnoughRights />;
-    }
-
-    if (router.pathname === '/manage-mode' && !sections.super?.['manage mods']) {
+    if (
+      (router.pathname === '/qa' && !sections['quality assurance']?.emailing) ||
+      (router.pathname === '/manage-mode' && !sections.super?.['manage mods']) ||
+      (router.pathname === '/manage-mode' && !sections.super?.['manage files'])
+    ) {
       return <NotEnoughRights />;
     }
 
@@ -37,7 +37,6 @@ const Navigation = inject('userSt')(
         direction='row'
         justifyContent='flex-start'
         alignItems='center'
-        spacing={2}
         sx={{
           zIndex: 0,
           backgroundColor: 'background.main',

@@ -1,11 +1,11 @@
-import {yupResolver} from '@hookform/resolvers/yup';
-import React, {useEffect} from 'react';
-import {SubmitHandler, useForm} from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import {inject, observer} from 'mobx-react';
-import {ManagePageT} from 'pages/manage-mode/moderators';
-import {Close} from '@mui/icons-material';
-import {formatAccessData} from 'utils/dataFormatting';
+import { inject, observer } from 'mobx-react';
+import { ManagePageT } from 'pages/manage-mode/moderators';
+import { Close } from '@mui/icons-material';
+import { formatAccessData } from 'utils/dataFormatting';
 import UserSt from 'store/user/userSt';
 import {
   Dialog,
@@ -39,15 +39,17 @@ const ModeratorModal = inject(
   observer((props) => {
     const {
       manageSt: {
-        storage: {moderators: {globalPermissions}},
-        controlModals: {main, variant},
-        currentModerator: {current, permissions, id},
+        storage: {
+          moderators: { globalPermissions },
+        },
+        controlModals: { main, variant },
+        currentModerator: { current, permissions, id },
         toggleModal,
         updateModerator,
         createModerator,
       },
       userSt: {
-        settings: {sections},
+        settings: { sections },
       },
     }: ManagePageT & ModerModalT = props;
 
@@ -63,7 +65,7 @@ const ModeratorModal = inject(
       register,
       handleSubmit,
       reset,
-      formState: {errors},
+      formState: { errors },
     } = useForm<FormDataT>({
       mode: 'onChange',
       resolver: yupResolver(schema),
@@ -72,7 +74,7 @@ const ModeratorModal = inject(
     const onSubmit: SubmitHandler<FormDataT> = (data) => {
       toggleModal('main', false);
 
-      const {currentPerms, username, password} = data;
+      const { currentPerms, username, password } = data;
       const oldPerms = permissions.map((p) => p.id);
       const newPerms = currentPerms.map(Number);
 
@@ -120,7 +122,7 @@ const ModeratorModal = inject(
                 {variant === 'creation' ? 'Создать модератора' : 'Редактировать доступ'}
               </H>
               <IconButton onClick={() => toggleModal('main', false)}>
-                <Close/>
+                <Close />
               </IconButton>
             </Stack>
           </DialogTitle>
@@ -140,7 +142,7 @@ const ModeratorModal = inject(
             />
 
             <TextFieldPass
-              sx={{pb: '10px'}}
+              sx={{ pb: '10px' }}
               fullWidth
               margin='normal'
               variant='outlined'
@@ -155,7 +157,7 @@ const ModeratorModal = inject(
           </DialogContent>
 
           <DialogActions>
-            <Button fullWidth type='submit' variant='contained' sx={{m: '0 10px 10px 10px'}}>
+            <Button fullWidth type='submit' variant='contained' sx={{ m: '0 10px 10px 10px' }}>
               Сохранить
             </Button>
           </DialogActions>

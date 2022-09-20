@@ -7,8 +7,8 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import {inject, observer} from 'mobx-react';
-import {ManagePageT} from 'pages/manage-mode/moderators';
+import { inject, observer } from 'mobx-react';
+import { ManagePageT } from 'pages/manage-mode/moderators';
 
 const AreYouSureModal = inject('manageSt')(
   observer((props) => {
@@ -16,8 +16,8 @@ const AreYouSureModal = inject('manageSt')(
       manageSt: {
         toggleModal,
         deleteModerator,
-        currentModerator: {current, id},
-        controlModals: {confirmation},
+        currentModerator: { current, id },
+        controlModals: { confirmation },
       },
     }: ManagePageT = props;
 
@@ -34,7 +34,7 @@ const AreYouSureModal = inject('manageSt')(
         <DialogContent>
           <Typography mb={3} variant='body1'>
             Вы действительно хотите удалить
-            <span style={{color: '#5F85D8'}}>{` ${current} `}</span>?
+            <span style={{ color: '#5F85D8' }}>{` ${current} `}</span>?
           </Typography>
 
           <Typography variant='body1' color='error'>
@@ -49,14 +49,14 @@ const AreYouSureModal = inject('manageSt')(
             justifyContent: 'space-between',
           }}
         >
-          <Button sx={{width: '40%'}} variant='contained' color='success' onClick={onClick}>
+          <Button sx={{ width: '40%' }} variant='contained' color='success' onClick={onClick}>
             Да
           </Button>
 
           <Button
             color='error'
             variant='contained'
-            sx={{width: '40%'}}
+            sx={{ width: '40%' }}
             onClick={() => toggleModal('confirmation', false)}
           >
             Нет

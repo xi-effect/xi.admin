@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import Head from 'next/head';
 
-type LayoutT = {
+export type LayoutT = {
   title: string;
   children: ReactNode;
 };

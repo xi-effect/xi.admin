@@ -1,4 +1,4 @@
-import { ManagePageT } from 'pages/manage-mode';
+import { ManagePageT } from 'pages/manage-mode/moderators';
 import { inject, observer } from 'mobx-react';
 import {
   BugReport,

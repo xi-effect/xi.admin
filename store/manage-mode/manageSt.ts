@@ -10,10 +10,21 @@ export type ModeratorsT = {
   permissions: { id: number; name: PermissionsNameT }[];
 };
 
-type DataT = {
-  moderators: ModeratorsT[];
-  'has-next': boolean;
-  globalPermissions: PermissionsT[];
+export type FilesT = {
+  filename: string;
+  id: number;
+};
+
+type StorageT = {
+  moderators: {
+    data: ModeratorsT[];
+    'has-next': boolean;
+    globalPermissions: PermissionsT[];
+  };
+  files: {
+    data: FilesT[];
+    'has-next': boolean;
+  };
 };
 
 type ControlModalsT = {
@@ -49,13 +60,19 @@ class ManageSt {
     makeObservable(this);
   }
 
-  @observable data: DataT = {
-    moderators: [],
-    'has-next': false,
-    globalPermissions: [],
+  @observable storage: StorageT = {
+    moderators: {
+      data: [],
+      'has-next': false,
+      globalPermissions: [],
+    },
+    files: {
+      data: [],
+      'has-next': false,
+    },
   };
 
-  @observable moderator: CurrentModeratorT = {
+  @observable currentModerator: CurrentModeratorT = {
     id: null,
     current: null,
     permissions: [],
@@ -67,30 +84,49 @@ class ManageSt {
     variant: 'creation',
   };
 
-  @action getModerators = async (search?: string, firstSearch?: boolean) => {
+  @action getFiles = async () => {
     const res = await this.rootStore.fetchData(
-      `/mub/moderators/?offset=${firstSearch ? 0 : this.data.moderators.length}
+      `/mub/files/index/?offset=${this.storage.files.data.length}`,
+      'POST'
+    );
+
+    this.storage.files['has-next'] = res['has-next'];
+    this.storage.files.data.push(...res.results);
+  };
+
+  @action deleteFiles = async (id: number) => {
+    await this.rootStore.fetchData(`/mub/files/${id}/`, 'DELETE');
+
+    this.storage.files.data = this.storage.files.data.filter((u) => u.id !== id);
+  };
+
+  @action getModerators = async (search?: string, newSearch?: boolean) => {
+    const res = await this.rootStore.fetchData(
+      `/mub/moderators/?offset=${newSearch ? 0 : this.storage.moderators.data.length}
       ${search ? `&search=${search}` : ''}`,
       'GET'
     );
 
-    this.data['has-next'] = res['has-next'];
+    this.storage.moderators['has-next'] = res['has-next'];
 
-    if (firstSearch) {
-      this.data.moderators = res.results;
+    if (newSearch) {
+      this.storage.moderators = res.results;
     } else {
-      this.data.moderators.push(...res.results);
+      this.storage.moderators.data.push(...res.results);
     }
   };
 
   @action getPermissions = async () => {
-    this.data.globalPermissions = await this.rootStore.fetchData(`/mub/permissions/`, 'GET');
+    this.storage.moderators.globalPermissions = await this.rootStore.fetchData(
+      `/mub/permissions/`,
+      'GET'
+    );
   };
 
   @action deleteModerator = async (id: number) => {
     await this.rootStore.fetchData(`/mub/moderators/${id}/`, 'DELETE');
 
-    this.data.moderators.filter((u) => u.id !== id);
+    this.storage.moderators.data = this.storage.moderators.data.filter((u) => u.id !== id);
   };
 
   @action updateModerator = async (
@@ -100,7 +136,7 @@ class ManageSt {
 
     await this.rootStore.fetchData(`/mub/moderators/${id}/`, 'POST', reqData);
 
-    this.data.moderators = this.data.moderators.map((u) =>
+    this.storage.moderators.data = this.storage.moderators.data.map((u) =>
       u.id === id
         ? {
             ...u,
@@ -108,7 +144,9 @@ class ManageSt {
             permissions: u.permissions
               .filter((p) => !reqData['remove-perms'].includes(p.id))
               .concat(
-                this.data.globalPermissions.filter((p) => reqData['append-perms'].includes(p.id))
+                this.storage.moderators.globalPermissions.filter((p) =>
+                  reqData['append-perms'].includes(p.id)
+                )
               ),
           }
         : u
@@ -118,7 +156,7 @@ class ManageSt {
   @action createModerator = async (data: ModeratorDataT) => {
     const user = await this.rootStore.fetchData(`/mub/moderators/`, 'POST', data);
 
-    this.data.moderators.push(user);
+    this.storage.moderators.data.push(user);
   };
 
   @action toggleModal = (modal: 'main' | 'confirmation', value: boolean) => {
@@ -131,11 +169,11 @@ class ManageSt {
 
   @action changeUser = (current: CurrentModeratorT | null) => {
     if (current) {
-      this.moderator = current;
+      this.currentModerator = current;
       return;
     }
 
-    this.moderator = { current: null, id: null, permissions: [] };
+    this.currentModerator = { current: null, id: null, permissions: [] };
   };
 }
 

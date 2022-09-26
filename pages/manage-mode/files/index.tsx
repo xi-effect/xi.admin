@@ -1,16 +1,10 @@
 import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import PageHeader from 'kit/Layout/PageHeader';
-import { Clear } from '@mui/icons-material';
-import {
-  CircularProgress,
-  IconButton,
-  ImageList,
-  ImageListItem,
-  ImageListItemBar,
-} from '@mui/material';
+import { CircularProgress, Stack } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MainLayout from 'kit/Layout/MainLayout';
+import File from 'components/ManageMode/Files/File';
 import { ManagePageT } from '../moderators';
 
 const ManagePage = inject('manageSt')(
@@ -48,32 +42,11 @@ const ManagePage = inject('manageSt')(
             />
           }
         >
-          <ImageList
-            sx={{
-              m: 1,
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-around',
-            }}
-          >
-            {files.data.map((i) => (
-              <ImageListItem sx={{ m: '4px', flex: '1 1 400px' }} key={i.id}>
-                <img
-                  src={`https://xieffect.ru:5000/files/${i.filename}`}
-                  alt={i.filename}
-                  loading='lazy'
-                />
-                <ImageListItemBar
-                  title={i.filename}
-                  actionIcon={
-                    <IconButton onClick={() => deleteFiles(i.id)} sx={{ mr: 1 }}>
-                      <Clear />
-                    </IconButton>
-                  }
-                />
-              </ImageListItem>
+          <Stack direction='row' flexWrap='wrap' justifyContent='space-around'>
+            {files.data.map((f) => (
+              <File key={f.id} file={f} handler={deleteFiles} />
             ))}
-          </ImageList>
+          </Stack>
         </InfiniteScroll>
       </MainLayout>
     );

@@ -27,7 +27,8 @@ const Navigation = inject('userSt')(
     if (
       (router.pathname === '/qa' && !sections['quality assurance']?.emailing) ||
       (router.pathname === '/manage-mode' && !sections.super?.['manage mods']) ||
-      (router.pathname === '/manage-mode' && !sections.super?.['manage files'])
+      (router.pathname === '/manage-mode/files' &&
+        !sections['content management']?.['manage files'])
     ) {
       return <NotEnoughRights />;
     }

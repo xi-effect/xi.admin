@@ -16,10 +16,10 @@ type SectionsT = {
 }[];
 
 export type FormatSectionDataT = {
-  users?: { manage?: boolean }
-  super?: { 'manage mods'?: boolean }
-  'quality assurance'?: { emailing?: boolean }
-  'content management'?: { 'manage files'?: boolean }
+  users?: { manage?: boolean };
+  super?: { 'manage mods'?: boolean };
+  'quality assurance'?: { emailing?: boolean };
+  'content management'?: { 'manage files'?: boolean };
 };
 
 export type PermissionsNameT = 'manage mods' | 'emailing' | 'manage' | 'manage files';

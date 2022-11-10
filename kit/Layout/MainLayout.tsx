@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack } from '@mui/material';
+import { Navigation } from 'kit/Navigation';
 import Layout, { LayoutT } from './Layout';
-import Navigation from '../Navigation/Navigation';
 
 const MainLayout: React.FC<LayoutT> = ({ title, children }) => (
   <Layout title={title}>

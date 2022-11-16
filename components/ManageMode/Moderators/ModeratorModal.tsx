@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { inject, observer } from 'mobx-react';
-import { ManagePageT } from 'pages/manage-mode';
+import { ManagePageT } from 'pages/manage-mode/moderators';
 import { Close } from '@mui/icons-material';
 import { formatAccessData } from 'utils/dataFormatting';
 import UserSt from 'store/user/userSt';
@@ -39,9 +39,11 @@ const ModeratorModal = inject(
   observer((props) => {
     const {
       manageSt: {
-        data: { globalPermissions },
+        storage: {
+          moderators: { globalPermissions },
+        },
         controlModals: { main, variant },
-        moderator: { current, permissions, id },
+        currentModerator: { current, permissions, id },
         toggleModal,
         updateModerator,
         createModerator,

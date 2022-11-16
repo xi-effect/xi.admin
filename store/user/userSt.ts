@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { action, observable, makeObservable } from 'mobx';
-import { SectionsDataT } from 'utils/dataFormatting';
+import { FormatSectionDataT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';
 
 type SettingsUserStoreT = {
@@ -8,7 +8,7 @@ type SettingsUserStoreT = {
   id: null | number;
   username: string;
   mode: 'dark' | 'light';
-  sections: SectionsDataT;
+  sections: FormatSectionDataT;
 };
 
 class UserSt {

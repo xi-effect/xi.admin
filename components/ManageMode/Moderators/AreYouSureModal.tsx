@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { ManagePageT } from 'pages/manage-mode';
+import { ManagePageT } from 'pages/manage-mode/moderators';
 
 const AreYouSureModal = inject('manageSt')(
   observer((props) => {
@@ -16,7 +16,7 @@ const AreYouSureModal = inject('manageSt')(
       manageSt: {
         toggleModal,
         deleteModerator,
-        moderator: { current, id },
+        currentModerator: { current, id },
         controlModals: { confirmation },
       },
     }: ManagePageT = props;

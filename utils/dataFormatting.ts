@@ -15,15 +15,22 @@ type SectionsT = {
   }[];
 }[];
 
+export type FormatSectionDataT = {
+  users?: { manage?: boolean };
+  super?: { 'manage mods'?: boolean };
+  'quality assurance'?: { emailing?: boolean };
+  'content management'?: { 'manage files'?: boolean };
+};
+
 export type PermissionsNameT = 'manage mods' | 'emailing' | 'manage' | 'manage files';
 
-export type PermissionsUserRoleT = 'super' | 'quality assurance' | 'users';
+export type PermissionsUserRoleT = 'super' | 'quality assurance' | 'users' | 'content management';
 
 export type PermissionsDataT = { [key in PermissionsNameT]?: boolean };
 
 export type SectionsDataT = { [key in PermissionsUserRoleT]?: PermissionsDataT };
 
-export const formatSectionData = (sections: SectionsT): SectionsDataT => {
+export const formatSectionData = (sections: SectionsT): FormatSectionDataT => {
   const resultSection = {};
 
   for (const s of sections) {

@@ -78,10 +78,9 @@ const InnerApp = inject(
 );
 
 const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
-  const { pageProps, emotionCache = clientSideEmotionCache } = props;
+  const { emotionCache = clientSideEmotionCache } = props;
 
-  // @ts-ignore
-  const rootStore = useStore(pageProps.initialState);
+  const rootStore = useStore(null);
 
   const theme = React.useMemo(
     () =>

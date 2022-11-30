@@ -1,4 +1,4 @@
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import React, { FC, useEffect, FunctionComponent } from 'react';
 import Head from 'next/head';
 import {
@@ -80,6 +80,7 @@ const InnerApp = inject(
 const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
   const { pageProps, emotionCache = clientSideEmotionCache } = props;
 
+  // @ts-ignore
   const rootStore = useStore(pageProps.initialState);
 
   const theme = React.useMemo(

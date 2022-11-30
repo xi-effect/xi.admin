@@ -20,9 +20,9 @@ import UserSt from 'store/user/userSt';
 import NProgress from 'nprogress'; // nprogress module
 import Loading from 'kit/Loading/Loading';
 import { SnackbarProvider, useSnackbar } from 'notistack';
+import { getScheme } from '@xieffect/base.theme.scheme';
 import createEmotionCache from '../store/createEmotionCache';
 import RootStore, { useStore } from '../store/rootStore';
-import { getDesignTokens } from '../theme';
 import 'nprogress/nprogress.css';
 
 config.autoAddCss = false;
@@ -81,10 +81,11 @@ const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
   const { pageProps, emotionCache = clientSideEmotionCache } = props;
 
   const rootStore = useStore(pageProps.initialState);
+
   const theme = React.useMemo(
     () =>
       responsiveFontSizes(
-        createTheme(getDesignTokens('dark' || rootStore.userSt.settings.mode) as ThemeOptions)
+        createTheme(getScheme('dark' || rootStore.userSt.settings.mode) as ThemeOptions)
       ), // Только тёмная тема
     [rootStore.userSt.settings.mode]
   );

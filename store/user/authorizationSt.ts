@@ -5,7 +5,8 @@ import { formatSectionData, ResponseDataT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';
 
 type LoginT = {
-  error: null | string;
+  username: null | string;
+  password: null | string;
 };
 
 type DataT = {
@@ -22,7 +23,8 @@ class AuthorizationSt {
   }
 
   @observable login: LoginT = {
-    error: null,
+    username: null,
+    password: null,
   };
 
   @action logoutUser = async () => {
@@ -57,7 +59,7 @@ class AuthorizationSt {
     }, 1500);
   };
 
-  @action loginUser = async (data: DataT, trigger: any) => {
+  @action loginUser = async (data: DataT) => {
     this.setLogin('error', null);
 
     const resData = await this.rootStore.fetchData(`/mub/sign-in/`, 'POST', {
@@ -75,17 +77,16 @@ class AuthorizationSt {
 
         setTimeout(() => {
           this.rootStore.uiSt.setLoading('loading', false);
+          this.setLogin('password', null);
+          this.setLogin('username', null);
         }, 1500);
-      } else if (resData.a === "User doesn't exist") {
-        this.setLogin('error', "User doesn't exist");
-        trigger();
-      } else if (resData.a === 'Wrong password') {
-        this.setLogin('error', 'Wrong password');
-        trigger();
+      } else if (resData === 'Moderator does not exist') {
+        this.setLogin('username', 'Не удалось найти аккаунт');
+      } else if (resData === 'Wrong password') {
+        this.setLogin('password', 'Неправильный пароль');
       }
     } else {
       this.setLogin('error', 'Server error');
-      trigger();
     }
   };
 }

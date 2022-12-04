@@ -17,34 +17,36 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import '../styles/globals.css';
 import AuthorizationSt from 'store/user/authorizationSt';
 import UserSt from 'store/user/userSt';
-import NProgress from 'nprogress'; // nprogress module
-import Loading from 'kit/Loading/Loading';
+import NProgress from 'nprogress';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import { getScheme } from '@xieffect/base.theme.scheme';
+import { Loading } from '@xieffect/base.components.loading';
 import createEmotionCache from '../store/createEmotionCache';
 import RootStore, { useStore } from '../store/rootStore';
 import 'nprogress/nprogress.css';
-
-config.autoAddCss = false;
-
-// Client-side cache, shared for the whole session of the user in the browser.
-const clientSideEmotionCache = createEmotionCache();
-// Binding events.
-NProgress.configure({ showSpinner: false });
-Router.events.on('routeChangeStart', () => NProgress.start());
-Router.events.on('routeChangeComplete', () => NProgress.done());
-Router.events.on('routeChangeError', () => NProgress.done());
+import UISt from '../store/ui/uiSt';
 
 type InnerAppT = {
   userSt: UserSt;
   rootStore: RootStore;
   authorizationSt: AuthorizationSt;
+  uiSt: UISt;
 };
+
+config.autoAddCss = false;
+
+const clientSideEmotionCache = createEmotionCache();
+
+NProgress.configure({ showSpinner: false });
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 const InnerApp = inject(
   'authorizationSt',
   'userSt',
-  'rootStore'
+  'rootStore',
+  'uiSt'
 )(
   observer((props) => {
     const {
@@ -52,6 +54,9 @@ const InnerApp = inject(
       pageProps,
       userSt: {
         settings: { auth },
+      },
+      uiSt: {
+        settings: { loading },
       },
       authorizationSt: { getSettings },
       rootStore: {
@@ -73,7 +78,13 @@ const InnerApp = inject(
       if (show !== null) enqueueSnackbar(message, { variant });
     }, [show]);
 
-    return <C {...pageProps} />;
+    return (
+      <>
+        <Loading loading={!!loading} />
+
+        <C {...pageProps} />
+      </>
+    );
   })
 );
 
@@ -83,10 +94,7 @@ const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
   const rootStore = useStore(null);
 
   const theme = React.useMemo(
-    () =>
-      responsiveFontSizes(
-        createTheme(getScheme('dark' || rootStore.userSt.settings.mode) as ThemeOptions)
-      ), // Только тёмная тема
+    () => responsiveFontSizes(createTheme(getScheme('light') as ThemeOptions)), // Только тёмная тема
     [rootStore.userSt.settings.mode]
   );
 
@@ -108,7 +116,6 @@ const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Loading />
           <SnackbarProvider
             anchorOrigin={{
               vertical: 'top',

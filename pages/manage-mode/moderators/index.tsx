@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Stack, TextField } from '@mui/material';
 import { inject, observer } from 'mobx-react';
-import PageHeader from 'kit/Layout/PageHeader';
 import ManageSt, { ModeratorsT } from 'store/manage-mode/manageSt';
 import Moderator from 'components/ManageMode/Moderators/Moderator';
 import ModeratorModal from 'components/ManageMode/Moderators/ModeratorModal';
@@ -53,8 +52,6 @@ const Moderators = inject('manageSt')(
 
     return (
       <MainLayout title='Управление модераторами'>
-        <PageHeader title='Управление модераторами' />
-
         <Stack
           m='20px 0'
           direction='row'

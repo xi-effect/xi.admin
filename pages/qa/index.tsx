@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 import NotEnoughRights from 'kit/Layout/NotEnoughRights';
 import UserSt from 'store/user/userSt';
 import FormQA from 'components/Email/Form';
-import PageHeader from 'kit/Layout/PageHeader';
 import MainLayout from 'kit/Layout/MainLayout';
 
 type QAPageT = {
@@ -20,8 +19,6 @@ const QAPage = inject('userSt')(
 
     return (
       <MainLayout title='Тестирование'>
-        <PageHeader title='Тестирование' />
-
         {sections['quality assurance']?.emailing && <FormQA />}
         {!sections['quality assurance']?.emailing && <NotEnoughRights />}
       </MainLayout>

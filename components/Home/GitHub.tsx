@@ -1,0 +1,63 @@
+import React from 'react';
+import CardLayout from 'kit/Layout/CardLayout';
+import { Box, Stack } from '@mui/material';
+import LinkC from 'kit/common/LinkC';
+
+const GitHub = () => {
+  const LinkCS = {
+    m: '4px',
+    flex: '1 1 46%',
+  };
+
+  return (
+    <CardLayout>
+      <Box component='span' mb='24px' fontSize={24} fontWeight={500}>
+        GitHub
+      </Box>
+
+      <Stack m='-4px' direction='row' flexWrap='wrap'>
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/'>
+          xi.github
+        </LinkC>
+
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.backend'>
+          xi.back
+        </LinkC>
+
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.front'>
+          xi.front
+        </LinkC>
+
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.admin'>
+          xi.admin
+        </LinkC>
+
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.land'>
+          xi.lands
+        </LinkC>
+
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.docs'>
+          xi.docs
+        </LinkC>
+
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.core'>
+          xi.core
+        </LinkC>
+
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.actions'>
+          xi.actions
+        </LinkC>
+
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.bit'>
+          xi.bit
+        </LinkC>
+
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.emails'>
+          xi.email
+        </LinkC>
+      </Stack>
+    </CardLayout>
+  );
+};
+
+export default GitHub;

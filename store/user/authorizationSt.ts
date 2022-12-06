@@ -42,6 +42,7 @@ class AuthorizationSt {
       this.rootStore.userSt.settings = {
         ...data,
         auth: true,
+        mode: 'light',
         sections: formatSectionData(data.sections),
       };
     }

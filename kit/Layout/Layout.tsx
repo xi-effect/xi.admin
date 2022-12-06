@@ -9,7 +9,7 @@ export type LayoutT = {
 const Layout: React.FC<LayoutT> = ({ title, children }) => (
   <>
     <Head>
-      <title>xi.admin | {title}</title>
+      <title>{title} | xi.admin</title>
       <meta name='robots' content='noindex' />
     </Head>
     {children}

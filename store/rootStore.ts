@@ -57,9 +57,9 @@ class RootStore {
     },
   };
 
-  @action showSnackbar = (error: string, variant?: SnackbarVariantT) => {
+  @action showSnackbar = (message: string, variant?: SnackbarVariantT) => {
     this.globalOptions.snackbar = {
-      message: error,
+      message,
       variant: variant || 'error',
       show: !this.globalOptions.snackbar.show,
     };

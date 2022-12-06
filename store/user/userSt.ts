@@ -23,7 +23,7 @@ class UserSt {
     id: null,
     auth: false,
     username: '',
-    mode: 'dark',
+    mode: 'light',
     sections: {},
   };
 

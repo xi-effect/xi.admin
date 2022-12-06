@@ -21,6 +21,7 @@ import NProgress from 'nprogress';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import { getScheme } from '@xieffect/base.theme.scheme';
 import { Loading } from '@xieffect/base.components.loading';
+import { Box } from '@mui/material';
 import createEmotionCache from '../store/createEmotionCache';
 import RootStore, { useStore } from '../store/rootStore';
 import 'nprogress/nprogress.css';
@@ -53,7 +54,7 @@ const InnerApp = inject(
       Component,
       pageProps,
       userSt: {
-        settings: { auth },
+        settings: { auth, mode },
       },
       uiSt: {
         settings: { loading },
@@ -75,15 +76,15 @@ const InnerApp = inject(
     }, [auth]);
 
     useEffect(() => {
-      if (show !== null) enqueueSnackbar(message, { variant });
+      if (show !== null) enqueueSnackbar(message, { variant, autoHideDuration: 1000 });
     }, [show]);
 
     return (
-      <>
+      <Box bgcolor={mode === 'light' ? 'primary.pale' : 'grayscale.90'}>
         <Loading loading={!!loading} />
 
         <C {...pageProps} />
-      </>
+      </Box>
     );
   })
 );
@@ -94,7 +95,8 @@ const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
   const rootStore = useStore(null);
 
   const theme = React.useMemo(
-    () => responsiveFontSizes(createTheme(getScheme('light') as ThemeOptions)), // Только тёмная тема
+    () =>
+      responsiveFontSizes(createTheme(getScheme(rootStore.userSt.settings.mode) as ThemeOptions)),
     [rootStore.userSt.settings.mode]
   );
 

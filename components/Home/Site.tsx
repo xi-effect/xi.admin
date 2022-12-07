@@ -1,6 +1,6 @@
 import React from 'react';
 import CardLayout from 'kit/Layout/CardLayout';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Theme, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import LinkC from 'kit/common/LinkC';
 import { inject, observer } from 'mobx-react';
@@ -14,6 +14,8 @@ type DocumentationT = {
 const Site = inject('rootStore')(
   observer((props) => {
     const { rootStore }: DocumentationT = props;
+
+    const sm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
 
     return (
       <CardLayout>
@@ -85,8 +87,8 @@ const Site = inject('rootStore')(
           </Box>
         </Stack>
 
-        <Stack direction='row' justifyContent='space-between'>
-          <LinkC sx={{ flex: '0 0 49%' }} href='https://xieffect.ru/'>
+        <Stack direction={sm ? 'row' : 'column'} justifyContent='space-between'>
+          <LinkC sx={{ flex: '0 0 49%', mb: sm ? 0 : '8px' }} href='https://xieffect.ru/'>
             Prod
           </LinkC>
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Box, Stack, Theme, useMediaQuery } from '@mui/material';
-import UserSt from '../../store/user/userSt';
-import { formatAccessData } from '../../utils/dataFormatting';
+import { Box, Stack } from '@mui/material';
+import UserSt from 'store/user/userSt';
+import { formatAccessData } from 'utils/dataFormatting';
 
 type AboutModeratorT = {
   userSt: UserSt;
@@ -16,8 +16,6 @@ const AboutModerator = inject('userSt')(
       },
     }: AboutModeratorT = props;
 
-    const md = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-
     return (
       <Box
         sx={{
@@ -27,7 +25,6 @@ const AboutModerator = inject('userSt')(
           borderRadius: '8px',
           padding: '12px 16px',
           backgroundColor: 'grayscale.0',
-          display: !md ? 'none' : 'block',
         }}
       >
         <Stack

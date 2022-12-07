@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Theme, useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { navLinkS } from '../../kit/Sidebar/Nav';
+import { navLinkS } from 'kit/Sidebar/Nav';
 
 type NavButtonT = {
   href: string;
@@ -11,6 +11,9 @@ type NavButtonT = {
 
 const NavButton: React.FC<NavButtonT> = ({ href, visibility, children }) => {
   const router = useRouter();
+  const activeLink = router.pathname.includes(href);
+
+  const md = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   return visibility ? (
     <Link href={href}>
@@ -18,7 +21,7 @@ const NavButton: React.FC<NavButtonT> = ({ href, visibility, children }) => {
         component='span'
         sx={{
           ...navLinkS,
-          bgcolor: router.pathname.includes(href) ? 'grayscale.0' : '',
+          bgcolor: activeLink ? `${md ? 'grayscale.0' : 'primary.light'}` : '',
         }}
       >
         {children}

@@ -1,17 +1,19 @@
 import React from 'react';
 import CardLayout from 'kit/Layout/CardLayout';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Theme, useMediaQuery } from '@mui/material';
 import LinkC from 'kit/common/LinkC';
 
 const AdminPanel = () => {
+  const sm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
+
   const LinkCS = {
     m: '4px',
-    flex: '1 1 46%',
+    flex: sm ? '1 1 46%' : '1 1 100%',
   };
 
   return (
     <CardLayout sx={{ m: '0', mb: '32px' }}>
-      <Box component='span' mb='auto' fontSize={24} fontWeight={500}>
+      <Box component='span' mb='32px' fontSize={24} fontWeight={500}>
         Админ-панель
       </Box>
 

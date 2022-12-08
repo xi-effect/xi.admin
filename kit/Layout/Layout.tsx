@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import UserSt from 'store/user/userSt';
 import NotEnoughRights from './NotEnoughRights';
 import Sidebar from '../Sidebar/Sidebar';
+import ToggleThemeButton from '../common/ToggleThemeButton';
 
 export type LayoutT = {
   title: string;
@@ -43,23 +44,17 @@ const Layout = inject('userSt')(
           <meta name='robots' content='noindex' />
         </Head>
 
-        <Stack
-          direction='row'
-          alignItems='flex-start'
-          justifyContent='flex-start'
-          sx={{
-            width: '100%',
-            maxWidth: 1257,
-            margin: '0 auto',
-            padding: md ? '65px 10px 120px 10px' : '0',
-          }}
-        >
-          <Sidebar />
+        <Box m='0 auto' maxWidth='1257px' p={md ? '64px 10px 120px 10px ' : '0'}>
+          {md && <ToggleThemeButton />}
 
-          <Box width='100%' m={md ? '-16px 40px -16px 236px' : '70px 0 10px 0'}>
-            {children}
-          </Box>
-        </Stack>
+          <Stack direction='row' alignItems='flex-start' justifyContent='flex-start'>
+            <Sidebar />
+
+            <Box width='100%' m={md ? '-16px 40px -16px 236px' : '70px 0 10px 0'}>
+              {children}
+            </Box>
+          </Stack>
+        </Box>
       </>
     );
   })

@@ -80,7 +80,10 @@ const InnerApp = inject(
     }, [show]);
 
     return (
-      <Box bgcolor={mode === 'light' ? 'primary.pale' : 'grayscale.90'}>
+      <Box
+        sx={{ transition: 'background 0.2s ease-in-out' }}
+        bgcolor={mode === 'light' ? 'primary.pale' : 'grayscale.90'}
+      >
         <Loading loading={!!loading} />
 
         <C {...pageProps} />

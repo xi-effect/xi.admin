@@ -19,7 +19,7 @@ export const navLinkS = {
   cursor: 'pointer',
   borderRadius: '8px',
   color: 'grayscale.100',
-  transition: '0.3s background ease,0.3s color ease',
+  transition: 'background 0.3s ease, color 0.3s ease',
   '&:hover': {
     color: 'grayscale.0',
     bgcolor: 'primary.dark',
@@ -34,7 +34,7 @@ const Nav = inject(
     const {
       authorizationSt: { logoutUser },
       userSt: {
-        settings: { sections },
+        settings: { sections, mode },
       },
     }: SidebarT = props;
 
@@ -59,7 +59,14 @@ const Nav = inject(
           Файлы
         </NavButton>
 
-        <Box onClick={() => logoutUser()} sx={{ ...navLinkS, mt: '22px' }}>
+        <Box
+          onClick={() => logoutUser()}
+          sx={{
+            ...navLinkS,
+            mt: '22px',
+            color: mode === 'light' ? 'grayscale.100' : 'grayscale.0',
+          }}
+        >
           Выйти
         </Box>
       </Stack>

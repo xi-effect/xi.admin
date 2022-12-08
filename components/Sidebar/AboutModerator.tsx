@@ -12,7 +12,7 @@ const AboutModerator = inject('userSt')(
   observer((props) => {
     const {
       userSt: {
-        settings: { sections, id, username },
+        settings: { sections, id, username, mode },
       },
     }: AboutModeratorT = props;
 
@@ -20,11 +20,13 @@ const AboutModerator = inject('userSt')(
       <Box
         sx={{
           mt: 'auto',
-          mb: '65px',
+          mb: '120px',
           width: '100%',
           borderRadius: '8px',
           padding: '12px 16px',
-          backgroundColor: 'grayscale.0',
+          color: mode === 'light' ? 'grayscale.100' : 'grayscale.0',
+          backgroundColor: mode === 'light' ? 'grayscale.0' : 'grayscale.100',
+          transition: 'background 0.2s ease-in-out, color 0.2s ease-in-out,',
         }}
       >
         <Stack
@@ -32,9 +34,7 @@ const AboutModerator = inject('userSt')(
           sx={{ fontWeight: 500, fontSize: 18, mb: '8px' }}
           justifyContent='space-between'
         >
-          <Box component='span' sx={{ color: 'grayscale.100' }}>
-            {username}
-          </Box>
+          <Box component='span'>{username}</Box>
 
           <Box component='span' sx={{ color: 'grayscale.40' }}>
             {id}
@@ -51,7 +51,8 @@ const AboutModerator = inject('userSt')(
                 p: '4px 6px',
                 fontSize: '12px',
                 borderRadius: '4px',
-                backgroundColor: '#F5F5F5',
+                backgroundColor: mode === 'light' ? '#F5F5F5' : '#202020',
+                transition: 'background 0.2s ease-in-out, color 0.2s ease-in-out,',
               }}
             >
               {s}

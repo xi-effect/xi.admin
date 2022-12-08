@@ -8,7 +8,7 @@ import { Add } from '@mui/icons-material';
 import AreYouSureModal from 'components/ManageMode/Moderators/AreYouSureModal';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { debounce } from 'utils/debounce';
-import MainLayout from 'kit/Layout/MainLayout';
+import Layout from 'kit/Layout/Layout';
 
 export type ManagePageT = {
   manageSt: ManageSt;
@@ -51,7 +51,7 @@ const Moderators = inject('manageSt')(
     }, []);
 
     return (
-      <MainLayout title='Управление модераторами'>
+      <Layout title='Управление модераторами'>
         <Stack
           m='20px 0'
           direction='row'
@@ -105,7 +105,7 @@ const Moderators = inject('manageSt')(
 
         <ModeratorModal />
         <AreYouSureModal />
-      </MainLayout>
+      </Layout>
     );
   })
 );

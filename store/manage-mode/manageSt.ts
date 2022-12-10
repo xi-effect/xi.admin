@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { action, makeObservable, observable } from 'mobx';
 import { PermissionsNameT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';

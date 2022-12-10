@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { Box, Theme, useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { navLinkS } from 'kit/Sidebar/Nav';
+import { navLinkS } from 'components/sidebar/Nav';
 import { inject, observer } from 'mobx-react';
 import UserSt from 'store/user/userSt';
 

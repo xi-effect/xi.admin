@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'next/router';
 import { Paper, Stack, Typography } from '@mui/material';
-import GreenButton from '../GreenButton';
+import ButtonC from '../common/ButtonC';
 
 const NotEnoughRights = () => (
   <Paper
@@ -23,7 +23,7 @@ const NotEnoughRights = () => (
         У вас недостаточно разрешений, обратитесь к администратору.
       </Typography>
 
-      <GreenButton onClick={() => Router.push('/home')}>На главную</GreenButton>
+      <ButtonC onClick={() => Router.push('/home')}>На главную</ButtonC>
     </Stack>
   </Paper>
 );

@@ -2,13 +2,13 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Stack, TextField } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import ManageSt, { ModeratorsT } from 'store/manage-mode/manageSt';
-import Moderator from 'components/ManageMode/Moderators/Moderator';
-import ModeratorModal from 'components/ManageMode/Moderators/ModeratorModal';
+import Moderator from 'components/manage-mode/Moderators/Moderator';
+import ModeratorModal from 'components/manage-mode/Moderators/ModeratorModal';
 import { Add } from '@mui/icons-material';
-import AreYouSureModal from 'components/ManageMode/Moderators/AreYouSureModal';
+import AreYouSureModal from 'components/manage-mode/Moderators/AreYouSureModal';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { debounce } from 'utils/debounce';
-import Layout from 'kit/Layout/Layout';
+import Layout from 'kit/layout/Layout';
 
 export type ManagePageT = {
   manageSt: ManageSt;

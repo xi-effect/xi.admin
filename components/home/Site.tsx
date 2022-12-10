@@ -1,5 +1,5 @@
 import React from 'react';
-import CardLayout from 'kit/Layout/CardLayout';
+import CardLayout from 'kit/layout/CardLayout';
 import { Box, Stack, Theme, useMediaQuery } from '@mui/material';
 import LinkC from 'kit/common/LinkC';
 import ClipboardInput from 'kit/common/ClipboardInput';

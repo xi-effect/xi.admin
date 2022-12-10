@@ -43,6 +43,7 @@ const ClipboardInput = inject(
           fontSize={16}
           direction='row'
           borderRadius='8px'
+          position='relative'
           justifyContent='space-between'
           bgcolor={mode === 'light' ? '#F5F5F5' : '#202020'}
           color={mode === 'light' ? 'grayscale.100' : 'grayscale.0'}
@@ -50,15 +51,21 @@ const ClipboardInput = inject(
         >
           <Box
             sx={{
-              mr: '15px',
+              pr: '30px',
+              whiteSpace: 'nowrap',
               overflow: 'hidden',
+              position: 'absolute',
+              width: '90%',
               textOverflow: 'ellipsis',
             }}
           >
             {toClipboard}
           </Box>
 
-          <Box sx={{ cursor: 'pointer' }} onClick={() => copyToClipboard('test@test.test')}>
+          <Box
+            sx={{ cursor: 'pointer', ml: 'auto' }}
+            onClick={() => copyToClipboard('test@test.test')}
+          >
             <Image
               width={24}
               height={24}

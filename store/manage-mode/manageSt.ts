@@ -109,7 +109,7 @@ class ManageSt {
     this.storage.moderators['has-next'] = res['has-next'];
 
     if (newSearch) {
-      this.storage.moderators = res.results;
+      this.storage.moderators.data = res.results;
     } else {
       this.storage.moderators.data.push(...res.results);
     }

@@ -2,15 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 import * as yup from 'yup';
 import { inject, observer } from 'mobx-react';
-import { Stack, InputAdornment, Box } from '@mui/material';
+import { Stack, Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import AuthorizationSt from 'store/user/authorizationSt';
-import { Eyeoff } from '@xieffect/base.icons.eyeoff';
 import Input from 'kit/common/Input';
-import { Eyeon } from '@xieffect/base.icons.eyeon';
 import UserSt from 'store/user/userSt';
-import ButtonC from '../../kit/common/ButtonC';
+import ButtonC from 'kit/common/ButtonC';
 
 type SingInFormT = {
   userSt: UserSt;
@@ -38,8 +36,6 @@ const SingInForm = inject(
         settings: { mode },
       },
     }: SingInFormT = props;
-
-    const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
     const {
       register,
@@ -77,6 +73,7 @@ const SingInForm = inject(
           fullWidth
           variant='outlined'
           placeholder='Никнейм'
+          lightTheme={mode === 'light'}
           helperText={authorizationSt.loginErrors.username}
           error={!!errors.username?.message || !!authorizationSt.loginErrors.username}
           sx={{
@@ -88,35 +85,17 @@ const SingInForm = inject(
 
         <Input
           fullWidth
+          password
           variant='outlined'
           placeholder='Пароль'
+          lightTheme={mode === 'light'}
           helperText={authorizationSt.loginErrors.password}
-          type={showPassword ? 'text' : 'password'}
           error={!!errors.password?.message || !!authorizationSt.loginErrors.password}
           sx={{
             marginBottom: '32px',
             border: ' 1 px solid #E6E6E6',
           }}
           {...register('password')}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end' sx={{ mr: '7px' }}>
-                <Box
-                  width='24px'
-                  height='24px'
-                  borderRadius='8px'
-                  sx={{ cursor: 'pointer' }}
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {!showPassword ? (
-                    <Eyeoff sx={{ color: 'grayscale.100' }} />
-                  ) : (
-                    <Eyeon sx={{ color: 'grayscale.100' }} />
-                  )}
-                </Box>
-              </InputAdornment>
-            ),
-          }}
         />
 
         <ButtonC fullWidth type='submit' sx={{ marginBottom: '16px' }}>

@@ -13,14 +13,12 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  TextField,
-  Button,
-  Stack,
   FormControl,
+  Box,
 } from '@mui/material';
-import TextFieldPass from './TextFieldPass';
+import Input from 'kit/common/Input';
+import ButtonC from 'kit/common/ButtonC';
 import AccessCheckbox from './AccessCheckbox';
-import H from './H';
 
 type FormDataT = {
   username: string;
@@ -49,7 +47,7 @@ const ModeratorModal = inject(
         createModerator,
       },
       userSt: {
-        settings: { sections },
+        settings: { sections, mode },
       },
     }: ManagePageT & ModerModalT = props;
 
@@ -76,7 +74,7 @@ const ModeratorModal = inject(
 
       const { currentPerms, username, password } = data;
       const oldPerms = permissions.map((p) => p.id);
-      const newPerms = currentPerms.map(Number);
+      const newPerms = currentPerms.length ? currentPerms.map(Number) : [];
 
       const createModerData = {
         username,
@@ -103,6 +101,7 @@ const ModeratorModal = inject(
         key={p.id}
         value={p.id}
         text={p.name}
+        lightTheme={mode === 'light'}
         disabledText='Вам недоступно это действие'
         disabled={!formatAccessData(sections).includes(p.name)}
         checked={!!permissions.filter((c) => c.id === p.id)[0]?.name}
@@ -114,52 +113,92 @@ const ModeratorModal = inject(
     }, [current]);
 
     return (
-      <Dialog open={main} onClose={() => toggleModal('main', false)}>
+      <Dialog
+        sx={{
+          '& .MuiPaper-root,.MuiDialog-paper ': {
+            p: '32px',
+            maxWidth: '420px',
+            borderRadius: '16px',
+            backgroundImage: 'none',
+            backgroundColor: mode === 'light' ? 'grayscale.0' : 'grayscale.100',
+            border: mode === 'light' ? '1px solid #E6E6E6' : '1px solid #666666',
+          },
+          '& .MuiTypography-root,.MuiDialogContent-root,.MuiDialogActions-root ': {
+            p: '0',
+          },
+        }}
+        open={main}
+        onClose={() => toggleModal('main', false)}
+      >
         <FormControl component='form' onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle>
-            <Stack direction='row' alignItems='center' justifyContent='space-between'>
-              <H color='white'>
-                {variant === 'creation' ? 'Создать модератора' : 'Редактировать доступ'}
-              </H>
-              <IconButton onClick={() => toggleModal('main', false)}>
-                <Close />
+            <Box
+              mb='32px'
+              lineHeight='32px'
+              fontSize='24px'
+              fontWeight={600}
+              textAlign='center'
+              position='relative'
+              color={mode === 'light' ? '#000' : '#fff'}
+            >
+              {variant === 'creation' ? 'Создать модератора' : 'Редактировать доступ'}
+
+              <IconButton
+                sx={{
+                  p: 0,
+                  top: '-17px',
+                  right: '-17px',
+                  position: 'absolute',
+                }}
+                onClick={() => toggleModal('main', false)}
+              >
+                <Close sx={{ color: '#999', height: '24px', width: '24px' }} />
               </IconButton>
-            </Stack>
+            </Box>
           </DialogTitle>
 
           <DialogContent>
-            <TextField
-              margin='normal'
+            <Box component='span' mb='8px' color='grayscale.40' fontSize={16}>
+              Логин
+            </Box>
+
+            <Input
               fullWidth
-              type='text'
-              label='Name'
+              sx={{
+                mb: '16px',
+              }}
               variant='outlined'
               defaultValue={current}
               error={!!errors.username}
+              lightTheme={mode === 'light'}
               autoFocus={variant === 'creation'}
-              {...register('username')}
               helperText={errors.username?.message}
+              {...register('username')}
             />
 
-            <TextFieldPass
-              sx={{ pb: '10px' }}
+            <Box component='span' mb='8px' color='grayscale.40' fontSize={16}>
+              Пароль
+            </Box>
+
+            <Input
+              password
               fullWidth
-              margin='normal'
               variant='outlined'
+              sx={{ mb: '24px' }}
               error={!!errors.password}
-              {...register('password')}
+              lightTheme={mode === 'light'}
               autoFocus={variant === 'editing'}
               helperText={errors.password?.message}
-              label={variant === 'creation' ? 'Password' : 'New password'}
+              {...register('password')}
             />
 
             {availablePermissions}
           </DialogContent>
 
           <DialogActions>
-            <Button fullWidth type='submit' variant='contained' sx={{ m: '0 10px 10px 10px' }}>
-              Сохранить
-            </Button>
+            <ButtonC fullWidth type='submit' sx={{ mt: '24px' }}>
+              Создать
+            </ButtonC>
           </DialogActions>
         </FormControl>
       </Dialog>

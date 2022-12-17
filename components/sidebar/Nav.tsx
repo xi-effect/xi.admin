@@ -44,7 +44,7 @@ const Nav = inject(
           Главная
         </NavButton>
 
-        <NavButton href='/qa' visibility={!!sections['quality assurance']}>
+        <NavButton href='/qa' visibility={!!sections['quality assurance']?.emailing}>
           Тестирование
         </NavButton>
 

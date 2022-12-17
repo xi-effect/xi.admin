@@ -14,8 +14,10 @@ const ToggleThemeButton = inject('userSt')(
     const {
       sx,
       userSt: {
-        setSettings,
         settings: { mode },
+        rootStore: {
+          authorizationSt: { setSettings },
+        },
       },
     }: ToggleThemeButtonT = props;
 
@@ -48,7 +50,7 @@ const ToggleThemeButton = inject('userSt')(
           >
             <IconButton
               sx={{ p: 0 }}
-              onClick={() => setSettings('mode', mode === 'light' ? 'dark' : 'light')}
+              onClick={() => setSettings(mode === 'light' ? 'dark' : 'light')}
             >
               {mode === 'light' ? (
                 <SvgIcon sx={IconS}>

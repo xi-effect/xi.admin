@@ -25,6 +25,24 @@ const AboutModerator = inject('userSt')(
       },
     }: AboutModeratorT = props;
 
+    const permissionsJsx = permissions.map((s) => (
+      <Box
+        component='span'
+        key={s}
+        sx={{
+          m: '4px',
+          p: '4px 6px',
+          borderRadius: '4px',
+          height: children ? '36px' : '24px',
+          fontSize: children ? '16px' : '12px',
+          backgroundColor: mode === 'light' ? '#F5F5F5' : '#202020',
+          transition: 'background 0.2s ease-in-out, color 0.2s ease-in-out,',
+        }}
+      >
+        {s}
+      </Box>
+    ));
+
     return (
       <Stack
         sx={{
@@ -50,23 +68,7 @@ const AboutModerator = inject('userSt')(
         </Stack>
 
         <Stack flex='1 1 auto' direction='row' flexWrap='wrap'>
-          {permissions.map((s) => (
-            <Box
-              component='span'
-              key={s}
-              sx={{
-                m: '4px',
-                p: '4px 6px',
-                borderRadius: '4px',
-                height: children ? '36px' : '24px',
-                fontSize: children ? '16px' : '12px',
-                backgroundColor: mode === 'light' ? '#F5F5F5' : '#202020',
-                transition: 'background 0.2s ease-in-out, color 0.2s ease-in-out,',
-              }}
-            >
-              {s}
-            </Box>
-          ))}
+          {permissions.length ? permissionsJsx : <Box fontSize={15}>Отсутствуют разрешения</Box>}
         </Stack>
 
         {children}

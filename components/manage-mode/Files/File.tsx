@@ -5,18 +5,21 @@ import { IconButton, Link, Box } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import UserSt from 'store/user/userSt';
 import Image from 'next/image';
+import AreYouSureModal from '../Moderators/AreYouSureModal';
 
 type FileT = {
   userSt: UserSt;
   file: FilesT;
-  handler: (id: number) => void;
+  toggleModal: () => void;
+  deleteFiles: (id: number) => void;
 };
 
 const File = inject('userSt')(
   observer((props) => {
     const {
       file,
-      handler,
+      deleteFiles,
+      toggleModal,
       userSt: {
         settings: { mode },
       },
@@ -58,7 +61,10 @@ const File = inject('userSt')(
         </Box>
 
         <IconButton
-          onClick={() => handler(file.id)}
+          onClick={(e) => {
+            toggleModal();
+            e.preventDefault();
+          }}
           sx={{
             ml: 'auto',
             width: '48px',
@@ -80,6 +86,12 @@ const File = inject('userSt')(
             alt='удалить модератора'
           />
         </IconButton>
+
+        <AreYouSureModal
+          content={file.filename}
+          title='Удалить файл?'
+          deleteHandler={() => deleteFiles(file.id)}
+        />
       </Link>
     );
   })

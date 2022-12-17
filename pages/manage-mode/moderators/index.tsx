@@ -28,12 +28,14 @@ const Moderators = inject(
         settings: { mode },
       },
       manageSt: {
-        storage: { moderators },
         changeUser,
         toggleModal,
         getModerators,
         getPermissions,
+        deleteModerator,
         changeModalVariant,
+        storage: { moderators },
+        currentModerator: { id, current },
       },
     }: ManagePageT = props;
 
@@ -54,6 +56,13 @@ const Moderators = inject(
 
       getModerators(e.target.value, true);
     });
+
+    const deleteModeratorHandler = () => {
+      if (id) {
+        deleteModerator(id);
+        toggleModal('confirmation', false);
+      }
+    };
 
     useEffect(() => {
       getModerators();
@@ -146,7 +155,12 @@ const Moderators = inject(
           </Box>
 
           <ModeratorModal />
-          <AreYouSureModal />
+
+          <AreYouSureModal
+            content={current}
+            title='Удалить модератора?'
+            deleteHandler={deleteModeratorHandler}
+          />
         </Box>
       </Layout>
     );

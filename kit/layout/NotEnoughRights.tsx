@@ -15,11 +15,11 @@ const NotEnoughRights = () => (
       padding: '30px',
       textAlign: 'center',
       transform: 'translate(-50%,-50%)',
-      backgroundColor: 'background.main',
+      backgroundColor: 'primary.pale',
     }}
   >
     <Stack direction='column' justifyContent='center' alignItems='center'>
-      <Typography variant='h6' fontWeight='400' mb={5}>
+      <Typography variant='h5' fontWeight='400' mb={5}>
         У вас недостаточно разрешений, обратитесь к администратору.
       </Typography>
 

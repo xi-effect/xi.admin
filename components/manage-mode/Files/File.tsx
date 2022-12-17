@@ -1,72 +1,88 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { FilesT } from 'store/manage-mode/manageSt';
-import { IconButton, Stack, Link, Typography } from '@mui/material';
-import { Clear, AttachFile } from '@mui/icons-material';
+import { IconButton, Link, Box } from '@mui/material';
+import { inject, observer } from 'mobx-react';
+import UserSt from 'store/user/userSt';
+import Image from 'next/image';
 
-const File: React.FC<{ file: FilesT; handler: (id: number) => void }> = ({ file, handler }) => {
-  const reg = /.+(\.jpg|\.jpeg|\.gif|\.png|\.raw|\.tiff|\.webp)$/i;
-  const link = `${process.env.NEXT_PUBLIC_SERVER_URL}/files/${file.filename}`;
+type FileT = {
+  userSt: UserSt;
+  file: FilesT;
+  handler: (id: number) => void;
+};
 
-  return (
-    <Stack
-      sx={{
-        m: 1,
-        flex: '1 1 400px',
-        position: 'relative',
-      }}
-    >
+const File = inject('userSt')(
+  observer((props) => {
+    const {
+      file,
+      handler,
+      userSt: {
+        settings: { mode },
+      },
+    }: FileT = props;
+
+    const link = `${process.env.NEXT_PUBLIC_SERVER_URL}/files/${file.filename}`;
+
+    return (
       <Link
-        sx={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        target='_blank'
         href={link}
+        target='_blank'
+        sx={{
+          m: '8px',
+          p: '16px',
+          width: '298px',
+          height: '312px',
+          display: 'flex',
+          fontWeight: 500,
+          borderRadius: '8px',
+          textDecoration: 'none',
+          flexDirection: 'column',
+          transition: 'background 0.2s ease-in-out',
+          color: mode === 'light' ? 'grayscale.100' : 'grayscale.0',
+          backgroundColor: mode === 'light' ? 'grayscale.0' : 'grayscale.100',
+        }}
       >
-        <Stack
-          alignItems='center'
-          justifyContent='center'
+        <Box position='relative' flex='1 1 auto'>
+          <Box
+            sx={{
+              width: '90%',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              position: 'absolute',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {file.filename}
+          </Box>
+        </Box>
+
+        <IconButton
+          onClick={() => handler(file.id)}
           sx={{
-            width: '100%',
-            height: '100%',
-            minHeight: '300px',
-            backgroundColor: '#333',
+            ml: 'auto',
+            width: '48px',
+            height: '48px',
+            borderRadius: '8px',
+            transition: 'background 0.2s ease-in-out',
+            backgroundColor: mode === 'light' ? '#F5F5F5' : '#202020',
+
+            '&:hover': {
+              backgroundColor: '#cacaca',
+            },
           }}
         >
-          {reg.test(file.filename) ? (
-            <img src={link} width='100%' height='100%' alt={file.filename} />
-          ) : (
-            <AttachFile sx={{ width: '100px', height: '100px' }} />
-          )}
-        </Stack>
-      </Link>
-
-      <Stack
-        direction='row'
-        alignItems='center'
-        justifyContent='space-between'
-        sx={{
-          left: 0,
-          bottom: 0,
-          p: '0 15px',
-          width: '100%',
-          height: '50px',
-          position: 'absolute',
-          backgroundColor: 'rgba(0,0,0,0.7)',
-        }}
-      >
-        <Typography>{file.filename}</Typography>
-
-        <IconButton onClick={() => handler(file.id)}>
-          <Clear />
+          <Image
+            width={16}
+            height={17}
+            quality={100}
+            src='/icons/delete.svg'
+            alt='удалить модератора'
+          />
         </IconButton>
-      </Stack>
-    </Stack>
-  );
-};
+      </Link>
+    );
+  })
+);
 
 export default File;

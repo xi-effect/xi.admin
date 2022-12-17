@@ -1,9 +1,18 @@
-import { Box, Dialog, DialogActions, DialogTitle, IconButton } from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { ManagePageT } from 'pages/manage-mode/moderators';
 import { Close } from '@mui/icons-material';
 import ButtonC from 'kit/common/ButtonC';
+import ManageSt from 'store/manage-mode/manageSt';
+import UserSt from 'store/user/userSt';
+
+type AreYouSureModalT = {
+  title: string;
+  content: string;
+  userSt: UserSt;
+  manageSt: ManageSt;
+  deleteHandler: () => void;
+};
 
 const AreYouSureModal = inject(
   'manageSt',
@@ -11,23 +20,17 @@ const AreYouSureModal = inject(
 )(
   observer((props) => {
     const {
+      title,
+      content,
+      deleteHandler,
       userSt: {
         settings: { mode },
       },
       manageSt: {
         toggleModal,
-        deleteModerator,
-        currentModerator: { id },
         controlModals: { confirmation },
       },
-    }: ManagePageT = props;
-
-    const confirmDeletion = () => {
-      if (id) {
-        deleteModerator(id);
-        toggleModal('confirmation', false);
-      }
-    };
+    }: AreYouSureModalT = props;
 
     return (
       <Dialog
@@ -50,7 +53,7 @@ const AreYouSureModal = inject(
       >
         <DialogTitle>
           <Box
-            mb='32px'
+            mb='16px'
             lineHeight='32px'
             fontSize='24px'
             fontWeight={600}
@@ -58,7 +61,7 @@ const AreYouSureModal = inject(
             position='relative'
             color={mode === 'light' ? '#000' : '#fff'}
           >
-            Удалить модератора
+            {title}
             <IconButton
               sx={{
                 p: 0,
@@ -66,26 +69,33 @@ const AreYouSureModal = inject(
                 right: '-17px',
                 position: 'absolute',
               }}
-              onClick={() => toggleModal('main', false)}
+              onClick={() => toggleModal('confirmation', false)}
             >
               <Close sx={{ color: '#999', height: '24px', width: '24px' }} />
             </IconButton>
           </Box>
         </DialogTitle>
 
+        <DialogContent
+          sx={{
+            color: '#999',
+            fontSize: '16px',
+            mb: '32px',
+            textAlign: 'center',
+          }}
+        >
+          {content}
+        </DialogContent>
+
         <DialogActions sx={{ display: 'flex', flexDirection: 'column' }}>
-          <ButtonC
-            fullWidth
-            onClick={confirmDeletion}
-            sx={{ mb: '8px', backgroundColor: '#F42D2D' }}
-          >
+          <ButtonC fullWidth onClick={deleteHandler} sx={{ mb: '8px', backgroundColor: '#F42D2D' }}>
             Удалить
           </ButtonC>
 
           <ButtonC
             fullWidth
             sx={{
-              m: '0',
+              m: '0 !important',
               border: '2px solid #B8B8B8',
               color: mode === 'light' ? 'grayscale.100' : 'grayscale.0',
               backgroundColor: mode === 'light' ? 'grayscale.0' : 'grayscale.100',

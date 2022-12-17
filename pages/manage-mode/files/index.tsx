@@ -10,11 +10,26 @@ const ManagePage = inject('manageSt')(
   observer((props) => {
     const {
       manageSt: {
-        storage: { files },
         getFiles,
         deleteFiles,
+        toggleModal,
+        storage: { files },
+        rootStore: {
+          userSt: {
+            settings: { mode },
+          },
+        },
       },
     }: ManagePageT = props;
+
+    const filesJsx = files.data.map((f) => (
+      <File
+        file={f}
+        key={f.id}
+        deleteFiles={deleteFiles}
+        toggleModal={() => toggleModal('confirmation', true)}
+      />
+    ));
 
     useEffect(() => {
       getFiles();
@@ -42,9 +57,20 @@ const ManagePage = inject('manageSt')(
               }
             >
               <Stack direction='row' flexWrap='wrap' justifyContent='center'>
-                {files.data.map((f) => (
-                  <File key={f.id} file={f} handler={deleteFiles} />
-                ))}
+                {files.data.length ? (
+                  filesJsx
+                ) : (
+                  <Box
+                    p='20px 0'
+                    width='100%'
+                    fontSize='25px'
+                    fontWeight='500'
+                    textAlign='center'
+                    color={mode === 'light' ? 'grayscale.100' : 'grayscale.0'}
+                  >
+                    Файлы отсутствуют
+                  </Box>
+                )}
               </Stack>
             </InfiniteScroll>
           </Box>

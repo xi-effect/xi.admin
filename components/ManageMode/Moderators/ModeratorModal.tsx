@@ -104,7 +104,7 @@ const ModeratorModal = inject(
         value={p.id}
         text={p.name}
         disabledText='Вам недоступно это действие'
-        disabled={!formatAccessData(sections, true).includes(p.name)}
+        disabled={!formatAccessData(sections).includes(p.name)}
         checked={!!permissions.filter((c) => c.id === p.id)[0]?.name}
       />
     ));

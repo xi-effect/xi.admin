@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Stack, TextField } from '@mui/material';
 import { inject, observer } from 'mobx-react';
-import PageHeader from 'kit/Layout/PageHeader';
 import ManageSt, { ModeratorsT } from 'store/manage-mode/manageSt';
 import Moderator from 'components/ManageMode/Moderators/Moderator';
 import ModeratorModal from 'components/ManageMode/Moderators/ModeratorModal';
@@ -9,7 +8,7 @@ import { Add } from '@mui/icons-material';
 import AreYouSureModal from 'components/ManageMode/Moderators/AreYouSureModal';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { debounce } from 'utils/debounce';
-import MainLayout from 'kit/Layout/MainLayout';
+import Layout from 'kit/Layout/Layout';
 
 export type ManagePageT = {
   manageSt: ManageSt;
@@ -52,9 +51,7 @@ const Moderators = inject('manageSt')(
     }, []);
 
     return (
-      <MainLayout title='Управление модераторами'>
-        <PageHeader title='Управление модераторами' />
-
+      <Layout title='Управление модераторами'>
         <Stack
           m='20px 0'
           direction='row'
@@ -108,7 +105,7 @@ const Moderators = inject('manageSt')(
 
         <ModeratorModal />
         <AreYouSureModal />
-      </MainLayout>
+      </Layout>
     );
   })
 );

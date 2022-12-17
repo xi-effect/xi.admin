@@ -71,6 +71,7 @@ const FormQA = inject('rootStore')(
           p: 2,
           mt: 4,
           width: '100%',
+          height: '100vh',
         }}
       >
         <Stack

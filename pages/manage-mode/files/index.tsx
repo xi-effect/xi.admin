@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
-import PageHeader from 'kit/Layout/PageHeader';
 import { CircularProgress, Stack } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import MainLayout from 'kit/Layout/MainLayout';
+import Layout from 'kit/Layout/Layout';
 import File from 'components/ManageMode/Files/File';
 import { ManagePageT } from '../moderators';
 
@@ -22,9 +21,7 @@ const ManagePage = inject('manageSt')(
     }, []);
 
     return (
-      <MainLayout title='Управление файлами'>
-        <PageHeader title='Управление файлами' />
-
+      <Layout title='Управление файлами'>
         <InfiniteScroll
           next={() => getFiles()}
           hasMore={files['has-next']}
@@ -48,7 +45,7 @@ const ManagePage = inject('manageSt')(
             ))}
           </Stack>
         </InfiniteScroll>
-      </MainLayout>
+      </Layout>
     );
   })
 );

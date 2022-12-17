@@ -51,10 +51,11 @@ const SingInForm = inject('authorizationSt')(
           m: '30px 15px',
           maxWidth: '420px',
           borderRadius: '16px',
+          bgcolor: 'grayscale.0',
           border: '1px solid #E6E6E6',
         }}
       >
-        <Image alt='xilogo' src='/logo.svg' quality={100} width={56} height={56} />
+        <Image alt='логотип xi.admin' src='/icons/logo.svg' quality={100} width={56} height={56} />
 
         <Box fontWeight={600} fontSize='24px' m='24px 0 32px 0'>
           Вход в аккаунт
@@ -98,9 +99,9 @@ const SingInForm = inject('authorizationSt')(
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {!showPassword ? (
-                    <Eyeoff sx={{ color: '#000' }} />
+                    <Eyeoff sx={{ color: 'grayscale.100' }} />
                   ) : (
-                    <Eyeon sx={{ color: '#000' }} />
+                    <Eyeon sx={{ color: 'grayscale.100' }} />
                   )}
                 </Box>
               </InputAdornment>
@@ -119,8 +120,8 @@ const SingInForm = inject('authorizationSt')(
             lineHeight: '22px',
             borderRadius: '8px',
             marginBottom: '16px',
-            backgroundColor: '#445AFF',
             textTransform: 'capitalize',
+            backgroundColor: 'primary.dark',
           }}
         >
           Войти
@@ -128,9 +129,9 @@ const SingInForm = inject('authorizationSt')(
 
         <Box
           sx={{
-            color: '#999',
             fontSize: '14px',
             textAlign: 'center',
+            color: 'grayscale.40',
           }}
         >
           Не удается войти? Напиши своему Lead для&nbsp;восстановления доступа

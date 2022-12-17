@@ -46,10 +46,7 @@ export const formatSectionData = (sections: SectionsT): FormatSectionDataT => {
   return resultSection;
 };
 
-export const formatAccessData = (
-  sections: SectionsDataT,
-  returnArr?: boolean
-): string | string[] => {
+export const formatAccessData = (sections: SectionsDataT): string[] => {
   const result: string[] = [];
 
   for (const i in sections) {
@@ -62,7 +59,5 @@ export const formatAccessData = (
     }
   }
 
-  if (returnArr) return result;
-
-  return result.length ? result.join(', ') : 'Отсутствуют разрешения';
+  return result;
 };

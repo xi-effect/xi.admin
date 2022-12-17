@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import Router from 'next/router';
 import { IconButton, Tooltip, Stack } from '@mui/material';
 import { Group, FileCopy } from '@mui/icons-material';
-import MainLayout from 'kit/Layout/MainLayout';
+import Layout from 'kit/Layout/Layout';
 
 const ManagePage = inject()(
   observer(() => {
@@ -18,7 +18,7 @@ const ManagePage = inject()(
     };
 
     return (
-      <MainLayout title='Управление'>
+      <Layout title='Управление'>
         <Stack
           direction='row'
           alignItems='center'
@@ -51,7 +51,7 @@ const ManagePage = inject()(
             </IconButton>
           </Tooltip>
         </Stack>
-      </MainLayout>
+      </Layout>
     );
   })
 );

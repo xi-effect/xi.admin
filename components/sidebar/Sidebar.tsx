@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Stack, useMediaQuery, Theme, IconButton, Box } from '@mui/material';
-import AboutModerator from 'components/sidebar/AboutModerator';
+import AboutModerator from 'components/manage-mode/Moderators/AboutModerator';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import Link from 'next/link';
 import Image from 'next/image';
 import { inject, observer } from 'mobx-react';
 import UserSt from 'store/user/userSt';
 import ToggleThemeButton from 'kit/common/ToggleThemeButton';
+import MenuC from 'kit/common/MenuC';
+import { formatAccessData } from 'utils/dataFormatting';
 import Nav from './Nav';
-import MenuC from '../../kit/common/MenuC';
 
 type SidebarT = {
   userSt: UserSt;
@@ -18,7 +19,7 @@ const Sidebar = inject('userSt')(
   observer((props) => {
     const {
       userSt: {
-        settings: { mode },
+        settings: { id, sections, username, mode },
       },
     }: SidebarT = props;
 
@@ -37,7 +38,7 @@ const Sidebar = inject('userSt')(
       >
         <Nav />
 
-        <AboutModerator />
+        <AboutModerator username={username} id={id} permissions={formatAccessData(sections)} />
       </Stack>
     ) : (
       <Stack

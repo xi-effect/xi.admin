@@ -1,27 +1,28 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from '@mui/material';
+import { Box, Dialog, DialogActions, DialogTitle, IconButton } from '@mui/material';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ManagePageT } from 'pages/manage-mode/moderators';
+import { Close } from '@mui/icons-material';
+import ButtonC from 'kit/common/ButtonC';
 
-const AreYouSureModal = inject('manageSt')(
+const AreYouSureModal = inject(
+  'manageSt',
+  'userSt'
+)(
   observer((props) => {
     const {
+      userSt: {
+        settings: { mode },
+      },
       manageSt: {
         toggleModal,
         deleteModerator,
-        currentModerator: { current, id },
+        currentModerator: { id },
         controlModals: { confirmation },
       },
     }: ManagePageT = props;
 
-    const onClick = () => {
+    const confirmDeletion = () => {
       if (id) {
         deleteModerator(id);
         toggleModal('confirmation', false);
@@ -29,38 +30,70 @@ const AreYouSureModal = inject('manageSt')(
     };
 
     return (
-      <Dialog open={confirmation} onClose={() => toggleModal('confirmation', false)}>
-        <DialogTitle>Подтверждение</DialogTitle>
-        <DialogContent>
-          <Typography mb={3} variant='body1'>
-            Вы действительно хотите удалить
-            <span style={{ color: '#5F85D8' }}>{` ${current} `}</span>?
-          </Typography>
+      <Dialog
+        sx={{
+          '& .MuiPaper-root,.MuiDialog-paper ': {
+            p: '32px',
+            width: '100%',
+            maxWidth: '420px',
+            borderRadius: '16px',
+            backgroundImage: 'none',
+            backgroundColor: mode === 'light' ? 'grayscale.0' : 'grayscale.100',
+            border: mode === 'light' ? '1px solid #E6E6E6' : '1px solid #666666',
+          },
+          '& .MuiTypography-root,.MuiDialogContent-root,.MuiDialogActions-root ': {
+            p: '0',
+          },
+        }}
+        open={confirmation}
+        onClose={() => toggleModal('confirmation', false)}
+      >
+        <DialogTitle>
+          <Box
+            mb='32px'
+            lineHeight='32px'
+            fontSize='24px'
+            fontWeight={600}
+            textAlign='center'
+            position='relative'
+            color={mode === 'light' ? '#000' : '#fff'}
+          >
+            Удалить модератора
+            <IconButton
+              sx={{
+                p: 0,
+                top: '-17px',
+                right: '-17px',
+                position: 'absolute',
+              }}
+              onClick={() => toggleModal('main', false)}
+            >
+              <Close sx={{ color: '#999', height: '24px', width: '24px' }} />
+            </IconButton>
+          </Box>
+        </DialogTitle>
 
-          <Typography variant='body1' color='error'>
-            Это действие будет невозможно отменить
-          </Typography>
-        </DialogContent>
-        <DialogActions
-          sx={{
-            p: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Button sx={{ width: '40%' }} variant='contained' color='success' onClick={onClick}>
-            Да
-          </Button>
+        <DialogActions sx={{ display: 'flex', flexDirection: 'column' }}>
+          <ButtonC
+            fullWidth
+            onClick={confirmDeletion}
+            sx={{ mb: '8px', backgroundColor: '#F42D2D' }}
+          >
+            Удалить
+          </ButtonC>
 
-          <Button
-            color='error'
-            variant='contained'
-            sx={{ width: '40%' }}
+          <ButtonC
+            fullWidth
+            sx={{
+              m: '0',
+              border: '2px solid #B8B8B8',
+              color: mode === 'light' ? 'grayscale.100' : 'grayscale.0',
+              backgroundColor: mode === 'light' ? 'grayscale.0' : 'grayscale.100',
+            }}
             onClick={() => toggleModal('confirmation', false)}
           >
-            Нет
-          </Button>
+            Отмена
+          </ButtonC>
         </DialogActions>
       </Dialog>
     );

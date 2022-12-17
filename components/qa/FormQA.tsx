@@ -87,6 +87,7 @@ const FormQA = inject(
           fullWidth
           variant='outlined'
           placeholder='useremail'
+          lightTheme={mode === 'light'}
           sx={{ marginBottom: '16px' }}
           error={!!errors.userEmail?.message}
           helperText={errors.userEmail?.message}
@@ -97,6 +98,7 @@ const FormQA = inject(
           fullWidth
           variant='outlined'
           placeholder='testeremail'
+          lightTheme={mode === 'light'}
           sx={{ marginBottom: '16px' }}
           error={!!errors.testerEmail?.message}
           helperText={errors.testerEmail?.message}

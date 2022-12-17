@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Stack, useMediaQuery, Theme, IconButton, Box, Menu } from '@mui/material';
-import AboutModerator from 'components/Sidebar/AboutModerator';
+import { Stack, useMediaQuery, Theme, IconButton, Box } from '@mui/material';
+import AboutModerator from 'components/sidebar/AboutModerator';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import Link from 'next/link';
 import Image from 'next/image';
 import { inject, observer } from 'mobx-react';
 import UserSt from 'store/user/userSt';
+import ToggleThemeButton from 'kit/common/ToggleThemeButton';
 import Nav from './Nav';
-import ToggleThemeButton from '../common/ToggleThemeButton';
+import MenuC from '../../kit/common/MenuC';
 
 type SidebarT = {
   userSt: UserSt;
@@ -94,7 +95,7 @@ const Sidebar = inject('userSt')(
           </IconButton>
         </Stack>
 
-        <Menu
+        <MenuC
           open={!!anchorEl}
           anchorEl={anchorEl}
           onClose={() => setAnchorEl(null)}
@@ -103,10 +104,6 @@ const Sidebar = inject('userSt')(
             horizontal: 'center',
           }}
           sx={{
-            mt: '15px',
-            '& .MuiBackdrop-root': {
-              backgroundColor: 'rgba(0,0,0,0)',
-            },
             '& .MuiMenu-list': {
               p: '8px',
             },
@@ -123,7 +120,7 @@ const Sidebar = inject('userSt')(
           <Stack width='220px'>
             <Nav />
           </Stack>
-        </Menu>
+        </MenuC>
       </Stack>
     );
   })

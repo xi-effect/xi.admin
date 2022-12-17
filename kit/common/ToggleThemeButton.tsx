@@ -1,16 +1,18 @@
 import React from 'react';
-import { IconButton, Stack, SvgIcon } from '@mui/material';
+import { IconButton, Stack, SvgIcon, SxProps, Theme } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import UserSt from 'store/user/userSt';
 import { AnimatePresence, motion } from 'framer-motion';
 
 type ToggleThemeButtonT = {
   userSt: UserSt;
+  sx: SxProps<Theme>;
 };
 
 const ToggleThemeButton = inject('userSt')(
   observer((props) => {
     const {
+      sx,
       userSt: {
         setSettings,
         settings: { mode },
@@ -29,7 +31,7 @@ const ToggleThemeButton = inject('userSt')(
     };
 
     return (
-      <Stack direction='row' justifyContent='flex-end' mb='16px' height='40px'>
+      <Stack direction='row' justifyContent='flex-end' height='40px' sx={sx}>
         <AnimatePresence exitBeforeEnter initial={false}>
           <motion.div
             key={mode}
@@ -37,9 +39,17 @@ const ToggleThemeButton = inject('userSt')(
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.2 }}
             initial={{ y: -20, opacity: 0 }}
-            style={{ display: 'inline-block', position: 'fixed', zIndex: 2, cursor: 'pointer' }}
+            style={{
+              zIndex: 2,
+              position: 'fixed',
+              cursor: 'pointer',
+              display: 'inline-block',
+            }}
           >
-            <IconButton onClick={() => setSettings('mode', mode === 'light' ? 'dark' : 'light')}>
+            <IconButton
+              sx={{ p: 0 }}
+              onClick={() => setSettings('mode', mode === 'light' ? 'dark' : 'light')}
+            >
               {mode === 'light' ? (
                 <SvgIcon sx={IconS}>
                   <svg viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'>

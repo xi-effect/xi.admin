@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { action, makeObservable, observable } from 'mobx';
 import { enableStaticRendering } from 'mobx-react';
 import { useMemo } from 'react';

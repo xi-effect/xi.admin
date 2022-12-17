@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { Stack, Box } from '@mui/material';
 import AuthorizationSt from 'store/user/authorizationSt';
 import UserSt from 'store/user/userSt';
-import NavButton from 'components/Sidebar/NavButton';
+import NavButton from 'components/sidebar/NavButton';
 
 type SidebarT = {
   authorizationSt: AuthorizationSt;
@@ -48,13 +48,13 @@ const Nav = inject(
           Тестирование
         </NavButton>
 
-        <NavButton visibility={!!sections.super?.['manage mods']} href='/manage-mode'>
+        <NavButton href='/manage-mode/moderators' visibility={!!sections.super?.['manage mods']}>
           Модераторы
         </NavButton>
 
         <NavButton
+          href='/manage-mode/files'
           visibility={!!sections['content management']?.['manage files']}
-          href='/manage-mode'
         >
           Файлы
         </NavButton>

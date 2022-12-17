@@ -7,12 +7,24 @@ const Input = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
   return (
     <TextField
       sx={{
+        '& .mui-style-12ks9wv-MuiInputBase-root-MuiOutlinedInput-root:hover': {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#445AFF',
+          },
+        },
+
+        '& .mui-style-12ks9wv-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused': {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#445AFF',
+          },
+        },
+
         '& .MuiInputBase-root': {
-          borderRadius: '8px',
           height: '56px',
           fontWeight: 400,
           fontSize: 16,
           lineHeight: '20px',
+          borderRadius: '8px',
         },
         '& .MuiInputBase-input::placeholder': {
           opacity: 1,

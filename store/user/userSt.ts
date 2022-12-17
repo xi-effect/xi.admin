@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { action, observable, makeObservable } from 'mobx';
 import { FormatSectionDataT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';

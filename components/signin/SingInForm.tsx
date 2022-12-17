@@ -2,15 +2,18 @@ import React from 'react';
 import Image from 'next/image';
 import * as yup from 'yup';
 import { inject, observer } from 'mobx-react';
-import { Stack, InputAdornment, Box, Button } from '@mui/material';
+import { Stack, InputAdornment, Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import AuthorizationSt from 'store/user/authorizationSt';
 import { Eyeoff } from '@xieffect/base.icons.eyeoff';
+import Input from 'kit/common/Input';
 import { Eyeon } from '@xieffect/base.icons.eyeon';
-import Input from '../../kit/common/Input';
+import UserSt from 'store/user/userSt';
+import ButtonC from '../../kit/common/ButtonC';
 
 type SingInFormT = {
+  userSt: UserSt;
   authorizationSt: AuthorizationSt;
 };
 
@@ -24,9 +27,17 @@ const schema = yup.object().shape({
   password: yup.string().min(6).max(100).required('Пароль'),
 });
 
-const SingInForm = inject('authorizationSt')(
+const SingInForm = inject(
+  'authorizationSt',
+  'userSt'
+)(
   observer((props) => {
-    const { authorizationSt }: SingInFormT = props;
+    const {
+      authorizationSt,
+      userSt: {
+        settings: { mode },
+      },
+    }: SingInFormT = props;
 
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
@@ -51,8 +62,9 @@ const SingInForm = inject('authorizationSt')(
           m: '30px 15px',
           maxWidth: '420px',
           borderRadius: '16px',
-          bgcolor: 'grayscale.0',
           border: '1px solid #E6E6E6',
+          transition: 'background 0.2s ease-in-out',
+          bgcolor: mode === 'light' ? 'grayscale.0' : 'grayscale.100',
         }}
       >
         <Image alt='логотип xi.admin' src='/icons/logo.svg' quality={100} width={56} height={56} />
@@ -65,12 +77,11 @@ const SingInForm = inject('authorizationSt')(
           fullWidth
           variant='outlined'
           placeholder='Никнейм'
-          helperText={authorizationSt.login.username}
-          error={!!errors.username?.message || !!authorizationSt.login.username}
+          helperText={authorizationSt.loginErrors.username}
+          error={!!errors.username?.message || !!authorizationSt.loginErrors.username}
           sx={{
             marginBottom: '16px',
             border: ' 1 px solid #E6E6E6',
-            backgroundColor: 'grayscale.0',
           }}
           {...register('username')}
         />
@@ -79,13 +90,12 @@ const SingInForm = inject('authorizationSt')(
           fullWidth
           variant='outlined'
           placeholder='Пароль'
-          helperText={authorizationSt.login.password}
+          helperText={authorizationSt.loginErrors.password}
           type={showPassword ? 'text' : 'password'}
-          error={!!errors.password?.message || !!authorizationSt.login.password}
+          error={!!errors.password?.message || !!authorizationSt.loginErrors.password}
           sx={{
             marginBottom: '32px',
             border: ' 1 px solid #E6E6E6',
-            backgroundColor: 'grayscale.0',
           }}
           {...register('password')}
           InputProps={{
@@ -109,23 +119,9 @@ const SingInForm = inject('authorizationSt')(
           }}
         />
 
-        <Button
-          type='submit'
-          variant='contained'
-          sx={{
-            fontSize: 18,
-            width: '100%',
-            height: '48px',
-            fontWeight: 500,
-            lineHeight: '22px',
-            borderRadius: '8px',
-            marginBottom: '16px',
-            textTransform: 'capitalize',
-            backgroundColor: 'primary.dark',
-          }}
-        >
+        <ButtonC fullWidth type='submit' sx={{ marginBottom: '16px' }}>
           Войти
-        </Button>
+        </ButtonC>
 
         <Box
           sx={{

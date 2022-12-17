@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { Stack } from '@mui/material';
 import { inject, observer } from 'mobx-react';
-import SingInForm from 'components/Signin/SingInForm';
+import SingInForm from 'components/signin/SingInForm';
 
 const SignIn = inject()(
   observer(() => (

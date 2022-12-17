@@ -22,7 +22,7 @@ import { SnackbarProvider, useSnackbar } from 'notistack';
 import { getScheme } from '@xieffect/base.theme.scheme';
 import { Loading } from '@xieffect/base.components.loading';
 import { Box } from '@mui/material';
-import createEmotionCache from '../store/createEmotionCache';
+import createEmotionCache from '../utils/createEmotionCache';
 import RootStore, { useStore } from '../store/rootStore';
 import 'nprogress/nprogress.css';
 import UISt from '../store/ui/uiSt';

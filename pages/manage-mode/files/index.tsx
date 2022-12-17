@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { CircularProgress, Stack } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Layout from 'kit/Layout/Layout';
-import File from 'components/ManageMode/Files/File';
+import Layout from 'kit/layout/Layout';
+import File from 'components/manage-mode/Files/File';
 import { ManagePageT } from '../moderators';
 
 const ManagePage = inject('manageSt')(

@@ -45,7 +45,6 @@ class AuthorizationSt {
       this.rootStore.userSt.settings = {
         ...data,
         auth: true,
-        mode: 'light',
         sections: formatSectionData(data.sections),
       };
     }
@@ -61,6 +60,12 @@ class AuthorizationSt {
     setTimeout(() => {
       this.rootStore.uiSt.setLoading('loading', false);
     }, 1500);
+  };
+
+  @action setSettings = async (mode: 'dark' | 'light') => {
+    await this.rootStore.fetchData(`/mub/my-settings/?mode=${mode}`, 'POST');
+
+    this.rootStore.userSt.settings.mode = mode;
   };
 
   @action loginUser = async (data: DataT) => {

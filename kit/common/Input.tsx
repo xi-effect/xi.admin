@@ -19,6 +19,12 @@ const Input = forwardRef<
         backgroundColor: lightTheme ? 'grayscale.0' : 'grayscale.100',
         transition: 'background 0.2s ease-in-out, border 0.2s ease-in-out,',
 
+        '& .MuiInputBase-input:-webkit-autofill': {
+          backgroundClip: 'content-box !important',
+          backgroundColor: `${lightTheme ? '#fff' : '#000'} !important`,
+          WebkitBoxShadow: `0 0 0 60px ${lightTheme ? '#fff' : '#000'} inset !important`,
+        },
+
         '& .MuiInputBase-input': {
           color: lightTheme ? 'grayscale.100' : 'grayscale.0',
           transition: 'color 0.2s ease-in-out',

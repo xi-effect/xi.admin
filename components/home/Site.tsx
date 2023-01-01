@@ -13,9 +13,17 @@ const Site = () => {
         Сайт
       </Box>
 
-      <ClipboardInput label='Почта' toClipboard='test@test.test' />
+      <ClipboardInput
+        label='Почта'
+        toClipboard='test@test.test'
+        toClipboardLabel='test@test.test'
+      />
 
-      <ClipboardInput label='Пароль' toClipboard='123456' />
+      <ClipboardInput
+        label='Пароль'
+        toClipboardLabel='******'
+        toClipboard={process.env.NEXT_PUBLIC_PASS_ADMIN}
+      />
 
       <Stack direction={sm ? 'row' : 'column'} justifyContent='space-between'>
         <LinkC sx={{ flex: '0 0 49%', mb: sm ? 0 : '8px' }} href='https://xieffect.ru/'>

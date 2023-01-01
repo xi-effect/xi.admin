@@ -10,9 +10,13 @@ const Documentation = () => (
       Документация
     </Box>
 
-    <ClipboardInput label='Логин' toClipboard='reader' />
+    <ClipboardInput label='Логин' toClipboard='reader' toClipboardLabel='reader' />
 
-    <ClipboardInput label='Пароль' toClipboard='5q9f5Kz6qzsj6jxwznSUeugEp8a5BWnd7R4JQb' />
+    <ClipboardInput
+      label='Пароль'
+      toClipboardLabel='****************************'
+      toClipboard={process.env.NEXT_PUBLIC_PASS_READER}
+    />
 
     <LinkC href='https://docs.xieffect.ru/'>Перейти</LinkC>
   </CardLayout>

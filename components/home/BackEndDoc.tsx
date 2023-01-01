@@ -12,8 +12,8 @@ const BackEndDoc = () => {
   };
 
   return (
-    <CardLayout sx={{ m: '0' }}>
-      <Box component='span' mb='32px' fontSize={24} fontWeight={500}>
+    <CardLayout sx={{ m: '0', mb: '32px' }}>
+      <Box component='span' mb={sm ? '24px' : 'auto'} fontSize={24} fontWeight={500}>
         Документация Back-End
       </Box>
 

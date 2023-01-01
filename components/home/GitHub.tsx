@@ -18,12 +18,12 @@ const GitHub = () => {
       </Box>
 
       <Stack m='-4px' direction='row' flexWrap='wrap'>
-        <LinkC sx={LinkCS} href='https://github.com/xi-effect/'>
+        <LinkC sx={LinkCS} href='https://github.com/xi-effect/.github'>
           xi.github
         </LinkC>
 
         <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.backend'>
-          xi.back
+          xi.backend
         </LinkC>
 
         <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.front'>
@@ -35,7 +35,7 @@ const GitHub = () => {
         </LinkC>
 
         <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.land'>
-          xi.lands
+          xi.land
         </LinkC>
 
         <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.docs'>
@@ -55,7 +55,7 @@ const GitHub = () => {
         </LinkC>
 
         <LinkC sx={LinkCS} href='https://github.com/xi-effect/xi.emails'>
-          xi.email
+          xi.emails
         </LinkC>
       </Stack>
     </CardLayout>

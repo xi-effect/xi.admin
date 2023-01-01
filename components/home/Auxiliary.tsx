@@ -12,18 +12,14 @@ const Auxiliary = () => {
   };
 
   return (
-    <CardLayout>
-      <Box component='span' mb='24px' fontSize={24} fontWeight={500}>
+    <CardLayout sx={{ m: '0' }}>
+      <Box component='span' mb={sm ? '24px' : 'auto'} fontSize={24} fontWeight={500}>
         Вспомогательное
       </Box>
 
       <Stack m='-8px' direction='row' flexWrap='wrap'>
-        <LinkC sx={LinkCS} href=''>
-          Kaiten-invite
-        </LinkC>
-
-        <LinkC sx={LinkCS} href=''>
-          Design-system
+        <LinkC sx={LinkCS} href='https://xi.kaiten.ru/'>
+          Kaiten
         </LinkC>
 
         <LinkC sx={LinkCS} href='https://miro.com/app/board/o9J_lV8Vahk=/'>

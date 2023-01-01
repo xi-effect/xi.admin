@@ -42,14 +42,3 @@ a {
 svg {
   pointer-events: none;
 }
-
-/* rgba(79, 79, 79, 1) */
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 60px #ECEFFF inset !important;
-  background-color: #ECEFFF !important;
-  background-clip: content-box !important;
-}

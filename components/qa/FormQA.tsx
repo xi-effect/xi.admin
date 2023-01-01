@@ -23,6 +23,12 @@ type FormQAT = {
 
 type Type = 'confirm' | 'change' | 'password';
 
+const typeLabel = {
+  confirm: 'Подтверждение почты',
+  password: 'Восстановление пароля',
+  change: 'Подтверждение смены почты',
+};
+
 const schema = yup.object().shape({
   userEmail: yup.string().email('Неверный формат').max(100).required('useremail'),
   testerEmail: yup.string().email('Неверный формат').max(100).required('testeremail'),
@@ -86,7 +92,7 @@ const FormQA = inject(
         <Input
           fullWidth
           variant='outlined'
-          placeholder='useremail'
+          placeholder='Почта аккаунта'
           lightTheme={mode === 'light'}
           sx={{ marginBottom: '16px' }}
           error={!!errors.userEmail?.message}
@@ -97,9 +103,9 @@ const FormQA = inject(
         <Input
           fullWidth
           variant='outlined'
-          placeholder='testeremail'
           lightTheme={mode === 'light'}
           sx={{ marginBottom: '16px' }}
+          placeholder='Почта для получения письма'
           error={!!errors.testerEmail?.message}
           helperText={errors.testerEmail?.message}
           {...register('testerEmail')}
@@ -119,7 +125,7 @@ const FormQA = inject(
           }}
         >
           <Stack width='100%' direction='row' justifyContent='space-between'>
-            <Box>{type}</Box>
+            <Box>{typeLabel[type]}</Box>
 
             <KeyboardArrowDownIcon />
           </Stack>
@@ -144,9 +150,9 @@ const FormQA = inject(
             },
           }}
         >
-          <MenuItem onClick={() => setActiveType('confirm')}>Confirm</MenuItem>
-          <MenuItem onClick={() => setActiveType('password')}>Password</MenuItem>
-          <MenuItem onClick={() => setActiveType('change')}>Change</MenuItem>
+          <MenuItem onClick={() => setActiveType('confirm')}>{typeLabel.confirm}</MenuItem>
+          <MenuItem onClick={() => setActiveType('password')}>{typeLabel.password}</MenuItem>
+          <MenuItem onClick={() => setActiveType('change')}>{typeLabel.change}</MenuItem>
         </MenuC>
       </Stack>
     );

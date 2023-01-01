@@ -8,6 +8,7 @@ import UserSt from 'store/user/userSt';
 type ClickBoardInputT = {
   label: string;
   toClipboard: string;
+  toClipboardLabel: string;
   userSt: UserSt;
   rootStore: RootStore;
 };
@@ -18,17 +19,22 @@ const ClipboardInput = inject(
 )(
   observer((props) => {
     const {
+      label,
       rootStore,
       toClipboard,
-      label,
+      toClipboardLabel,
       userSt: {
         settings: { mode },
       },
     }: ClickBoardInputT = props;
 
     const copyToClipboard = (toClipboard: string) => {
-      rootStore.showSnackbar('Скопировано в буфер обмена.', 'success');
-      navigator.clipboard.writeText(toClipboard);
+      if (toClipboard) {
+        rootStore.showSnackbar('Скопировано в буфер обмена.', 'success');
+        navigator.clipboard.writeText(toClipboard);
+      } else {
+        rootStore.showSnackbar('Отсутствует значение, обратитесь к администратору.', 'error');
+      }
     };
 
     return (
@@ -44,28 +50,15 @@ const ClipboardInput = inject(
           direction='row'
           borderRadius='8px'
           position='relative'
+          alignItems='center'
           justifyContent='space-between'
           bgcolor={mode === 'light' ? '#F5F5F5' : '#202020'}
           color={mode === 'light' ? 'grayscale.100' : 'grayscale.0'}
           sx={{ transition: 'background 0.2s ease-in-out, color 0.2s ease-in-out,' }}
         >
-          <Box
-            sx={{
-              pr: '30px',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              position: 'absolute',
-              width: '90%',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {toClipboard}
-          </Box>
+          <Box>{toClipboardLabel}</Box>
 
-          <Box
-            sx={{ cursor: 'pointer', ml: 'auto' }}
-            onClick={() => copyToClipboard('test@test.test')}
-          >
+          <Box sx={{ cursor: 'pointer' }} onClick={() => copyToClipboard(toClipboard)}>
             <Image
               width={24}
               height={24}

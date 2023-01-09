@@ -4,6 +4,7 @@ import { Box, CircularProgress, Stack } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Layout from 'kit/layout/Layout';
 import File from 'components/manage-mode/Files/File';
+import AreYouSureModal from 'components/manage-mode/Moderators/AreYouSureModal';
 import { ManagePageT } from '../moderators';
 
 const ManagePage = inject('manageSt')(
@@ -14,6 +15,7 @@ const ManagePage = inject('manageSt')(
         deleteFiles,
         toggleModal,
         storage: { files },
+        currentFile: { current, id },
         rootStore: {
           userSt: {
             settings: { mode },
@@ -22,14 +24,14 @@ const ManagePage = inject('manageSt')(
       },
     }: ManagePageT = props;
 
-    const filesJsx = files.data.map((f) => (
-      <File
-        file={f}
-        key={f.id}
-        deleteFiles={deleteFiles}
-        toggleModal={() => toggleModal('confirmation', true)}
-      />
-    ));
+    const filesJsx = files.data.map((f) => <File file={f} key={f.id} deleteFiles={deleteFiles} />);
+
+    const deleteFileHandler = () => {
+      if (id) {
+        deleteFiles(id);
+        toggleModal('confirmation', false);
+      }
+    };
 
     useEffect(() => {
       getFiles();
@@ -75,6 +77,12 @@ const ManagePage = inject('manageSt')(
             </InfiniteScroll>
           </Box>
         </Box>
+
+        <AreYouSureModal
+          content={current}
+          title='Удалить файл?'
+          confirmHandler={deleteFileHandler}
+        />
       </Layout>
     );
   })

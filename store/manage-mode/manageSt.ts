@@ -38,6 +38,11 @@ type CurrentModeratorT = {
   permissions: PermissionsT[];
 };
 
+type CurrentFileT = {
+  id: null | number;
+  current: null | string;
+};
+
 export type PermissionsT = {
   id: number;
   name: PermissionsNameT;
@@ -69,6 +74,11 @@ class ManageSt {
       data: [],
       'has-next': false,
     },
+  };
+
+  @observable currentFile: CurrentFileT = {
+    id: null,
+    current: null,
   };
 
   @observable currentModerator: CurrentModeratorT = {
@@ -164,6 +174,10 @@ class ManageSt {
 
   @action changeModalVariant = (variant: VariantT) => {
     this.controlModals.variant = variant;
+  };
+
+  @action changeFile = (current: CurrentFileT) => {
+    this.currentFile = current;
   };
 
   @action changeUser = (current: CurrentModeratorT | null) => {

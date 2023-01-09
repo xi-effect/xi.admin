@@ -1,31 +1,37 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { FilesT } from 'store/manage-mode/manageSt';
+import ManageSt, { FilesT } from 'store/manage-mode/manageSt';
 import { IconButton, Link, Box } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import UserSt from 'store/user/userSt';
 import Image from 'next/image';
-import AreYouSureModal from '../Moderators/AreYouSureModal';
 
 type FileT = {
+  manageSt: ManageSt;
   userSt: UserSt;
   file: FilesT;
-  toggleModal: () => void;
   deleteFiles: (id: number) => void;
 };
 
-const File = inject('userSt')(
+const File = inject(
+  'userSt',
+  'manageSt'
+)(
   observer((props) => {
     const {
       file,
-      deleteFiles,
-      toggleModal,
+      manageSt: { toggleModal, changeFile },
       userSt: {
         settings: { mode },
       },
     }: FileT = props;
 
     const link = `${process.env.NEXT_PUBLIC_SERVER_URL}/files/${file.filename}`;
+
+    const changeFileHandler = () => {
+      toggleModal('confirmation', true);
+      changeFile({ current: file.filename, id: file.id });
+    };
 
     return (
       <Link
@@ -62,7 +68,7 @@ const File = inject('userSt')(
 
         <IconButton
           onClick={(e) => {
-            toggleModal();
+            changeFileHandler();
             e.preventDefault();
           }}
           sx={{
@@ -86,12 +92,6 @@ const File = inject('userSt')(
             alt='удалить модератора'
           />
         </IconButton>
-
-        <AreYouSureModal
-          content={file.filename}
-          title='Удалить файл?'
-          confirmHandler={() => deleteFiles(file.id)}
-        />
       </Link>
     );
   })

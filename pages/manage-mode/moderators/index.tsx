@@ -159,7 +159,7 @@ const Moderators = inject(
           <AreYouSureModal
             content={current}
             title='Удалить модератора?'
-            deleteHandler={deleteModeratorHandler}
+            confirmHandler={deleteModeratorHandler}
           />
         </Box>
       </Layout>

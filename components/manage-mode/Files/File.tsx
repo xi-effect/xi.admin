@@ -90,7 +90,7 @@ const File = inject('userSt')(
         <AreYouSureModal
           content={file.filename}
           title='Удалить файл?'
-          deleteHandler={() => deleteFiles(file.id)}
+          confirmHandler={() => deleteFiles(file.id)}
         />
       </Link>
     );

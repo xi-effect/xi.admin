@@ -1,5 +1,5 @@
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import React from 'react';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import { Close } from '@mui/icons-material';
 import ButtonC from 'kit/common/ButtonC';
@@ -11,7 +11,8 @@ type AreYouSureModalT = {
   content: string;
   userSt: UserSt;
   manageSt: ManageSt;
-  deleteHandler: () => void;
+  confirmLabel: string;
+  confirmHandler: () => void;
 };
 
 const AreYouSureModal = inject(
@@ -22,7 +23,8 @@ const AreYouSureModal = inject(
     const {
       title,
       content,
-      deleteHandler,
+      confirmLabel,
+      confirmHandler,
       userSt: {
         settings: { mode },
       },
@@ -88,8 +90,12 @@ const AreYouSureModal = inject(
         </DialogContent>
 
         <DialogActions sx={{ display: 'flex', flexDirection: 'column' }}>
-          <ButtonC fullWidth onClick={deleteHandler} sx={{ mb: '8px', backgroundColor: '#F42D2D' }}>
-            Удалить
+          <ButtonC
+            fullWidth
+            onClick={confirmHandler}
+            sx={{ mb: '8px', backgroundColor: '#F42D2D' }}
+          >
+            {confirmLabel || 'Удалить'}
           </ButtonC>
 
           <ButtonC

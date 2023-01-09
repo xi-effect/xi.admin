@@ -19,11 +19,7 @@ const Site = () => {
         toClipboardLabel='test@test.test'
       />
 
-      <ClipboardInput
-        label='Пароль'
-        toClipboardLabel='******'
-        toClipboard={process.env.NEXT_PUBLIC_PASS_ADMIN}
-      />
+      <ClipboardInput label='Пароль' toClipboardLabel='123456' toClipboard='123456' />
 
       <Stack direction={sm ? 'row' : 'column'} justifyContent='space-between'>
         <LinkC sx={{ flex: '0 0 49%', mb: sm ? 0 : '8px' }} href='https://xieffect.ru/'>

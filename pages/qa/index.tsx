@@ -1,32 +1,14 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import NotEnoughRights from 'kit/Layout/NotEnoughRights';
-import UserSt from 'store/user/userSt';
-import FormQA from 'components/Email/Form';
-import PageHeader from 'kit/Layout/PageHeader';
-import MainLayout from 'kit/Layout/MainLayout';
+import FormQA from 'components/qa/FormQA';
+import Layout from 'kit/layout/Layout';
+import { Box } from '@mui/material';
 
-type QAPageT = {
-  userSt: UserSt;
-};
-
-const QAPage = inject('userSt')(
-  observer((props) => {
-    const {
-      userSt: {
-        settings: { sections },
-      },
-    }: QAPageT = props;
-
-    return (
-      <MainLayout title='Тестирование'>
-        <PageHeader title='Тестирование' />
-
-        {sections['quality assurance']?.emailing && <FormQA />}
-        {!sections['quality assurance']?.emailing && <NotEnoughRights />}
-      </MainLayout>
-    );
-  })
+const QAPage = () => (
+  <Layout title='Тестирование'>
+    <Box height='100vh'>
+      <FormQA />
+    </Box>
+  </Layout>
 );
 
 export default QAPage;

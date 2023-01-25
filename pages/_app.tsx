@@ -1,4 +1,4 @@
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import React, { FC, useEffect, FunctionComponent } from 'react';
 import Head from 'next/head';
 import {
@@ -17,41 +17,47 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import '../styles/globals.css';
 import AuthorizationSt from 'store/user/authorizationSt';
 import UserSt from 'store/user/userSt';
-import NProgress from 'nprogress'; // nprogress module
-import Loading from 'kit/Loading/Loading';
+import NProgress from 'nprogress';
 import { SnackbarProvider, useSnackbar } from 'notistack';
-import createEmotionCache from '../store/createEmotionCache';
+import { getScheme } from '@xieffect/base.theme.scheme';
+import { Loading } from '@xieffect/base.components.loading';
+import { Box } from '@mui/material';
+import createEmotionCache from '../utils/createEmotionCache';
 import RootStore, { useStore } from '../store/rootStore';
-import { getDesignTokens } from '../theme';
 import 'nprogress/nprogress.css';
-
-config.autoAddCss = false;
-
-// Client-side cache, shared for the whole session of the user in the browser.
-const clientSideEmotionCache = createEmotionCache();
-// Binding events.
-NProgress.configure({ showSpinner: false });
-Router.events.on('routeChangeStart', () => NProgress.start());
-Router.events.on('routeChangeComplete', () => NProgress.done());
-Router.events.on('routeChangeError', () => NProgress.done());
+import UISt from '../store/ui/uiSt';
 
 type InnerAppT = {
   userSt: UserSt;
   rootStore: RootStore;
   authorizationSt: AuthorizationSt;
+  uiSt: UISt;
 };
+
+config.autoAddCss = false;
+
+const clientSideEmotionCache = createEmotionCache();
+
+NProgress.configure({ showSpinner: false });
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 const InnerApp = inject(
   'authorizationSt',
   'userSt',
-  'rootStore'
+  'rootStore',
+  'uiSt'
 )(
   observer((props) => {
     const {
       Component,
       pageProps,
       userSt: {
-        settings: { auth },
+        settings: { auth, mode },
+      },
+      uiSt: {
+        settings: { loading },
       },
       authorizationSt: { getSettings },
       rootStore: {
@@ -70,22 +76,30 @@ const InnerApp = inject(
     }, [auth]);
 
     useEffect(() => {
-      if (show !== null) enqueueSnackbar(message, { variant });
+      if (show !== null) enqueueSnackbar(message, { variant, autoHideDuration: 1000 });
     }, [show]);
 
-    return <C {...pageProps} />;
+    return (
+      <Box
+        sx={{ transition: 'background 0.2s ease-in-out' }}
+        bgcolor={mode === 'light' ? 'primary.pale' : 'grayscale.90'}
+      >
+        <Loading loading={!!loading} />
+
+        <C {...pageProps} />
+      </Box>
+    );
   })
 );
 
 const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
-  const { pageProps, emotionCache = clientSideEmotionCache } = props;
+  const { emotionCache = clientSideEmotionCache } = props;
 
-  const rootStore = useStore(pageProps.initialState);
+  const rootStore = useStore(null);
+
   const theme = React.useMemo(
     () =>
-      responsiveFontSizes(
-        createTheme(getDesignTokens('dark' || rootStore.userSt.settings.mode) as ThemeOptions)
-      ), // Только тёмная тема
+      responsiveFontSizes(createTheme(getScheme(rootStore.userSt.settings.mode) as ThemeOptions)),
     [rootStore.userSt.settings.mode]
   );
 
@@ -107,7 +121,6 @@ const App: FC<AppProps & { emotionCache: EmotionCache }> = (props) => {
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Loading />
           <SnackbarProvider
             anchorOrigin={{
               vertical: 'top',

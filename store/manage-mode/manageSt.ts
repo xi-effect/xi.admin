@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { action, makeObservable, observable } from 'mobx';
 import { PermissionsNameT } from 'utils/dataFormatting';
 import RootStore from '../rootStore';
@@ -39,6 +38,11 @@ type CurrentModeratorT = {
   permissions: PermissionsT[];
 };
 
+type CurrentFileT = {
+  id: null | number;
+  current: null | string;
+};
+
 export type PermissionsT = {
   id: number;
   name: PermissionsNameT;
@@ -70,6 +74,11 @@ class ManageSt {
       data: [],
       'has-next': false,
     },
+  };
+
+  @observable currentFile: CurrentFileT = {
+    id: null,
+    current: null,
   };
 
   @observable currentModerator: CurrentModeratorT = {
@@ -110,7 +119,7 @@ class ManageSt {
     this.storage.moderators['has-next'] = res['has-next'];
 
     if (newSearch) {
-      this.storage.moderators = res.results;
+      this.storage.moderators.data = res.results;
     } else {
       this.storage.moderators.data.push(...res.results);
     }
@@ -165,6 +174,10 @@ class ManageSt {
 
   @action changeModalVariant = (variant: VariantT) => {
     this.controlModals.variant = variant;
+  };
+
+  @action changeFile = (current: CurrentFileT) => {
+    this.currentFile = current;
   };
 
   @action changeUser = (current: CurrentModeratorT | null) => {

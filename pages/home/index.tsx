@@ -1,22 +1,31 @@
 import React from 'react';
 import { Stack } from '@mui/material';
-import { inject, observer } from 'mobx-react';
-import AboutUser from 'components/Home/AboutUser/AboutUser';
-import CardWithLinks from 'components/Home/CardWithLinks/CardWithLinks';
-import PageHeader from 'kit/Layout/PageHeader';
-import MainLayout from 'kit/Layout/MainLayout';
+import Documentation from 'components/home/Documentation';
+import Site from 'components/home/Site';
+import GitHub from 'components/home/GitHub';
+import Design from 'components/home/Design';
+import Auxiliary from 'components/home/Auxiliary';
+import BackEndDoc from 'components/home/BackEndDoc';
+import Layout from 'kit/layout/Layout';
 
-const Home = inject()(
-  observer(() => (
-    <MainLayout title='Главная'>
-      <PageHeader title='Главная Админки' />
+const Home = () => (
+  <Layout title='Главная'>
+    <Stack m='-16px' justifyContent='center' direction='row' flexWrap='wrap'>
+      <Documentation />
 
-      <Stack direction='row' sx={{ width: '100%' }} alignItems='flex-start'>
-        <CardWithLinks />
-        <AboutUser />
+      <Site />
+
+      <GitHub />
+
+      <Stack m='16px' flex='1 1 100%' maxWidth='448px'>
+        <BackEndDoc />
+
+        <Auxiliary />
       </Stack>
-    </MainLayout>
-  ))
+
+      <Design />
+    </Stack>
+  </Layout>
 );
 
 export default Home;

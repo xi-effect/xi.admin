@@ -1,35 +1,46 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, Stack, TextField } from '@mui/material';
+import { Box, Breakpoint, CircularProgress, Stack, Theme, useMediaQuery } from '@mui/material';
 import { inject, observer } from 'mobx-react';
-import PageHeader from 'kit/Layout/PageHeader';
 import ManageSt, { ModeratorsT } from 'store/manage-mode/manageSt';
-import Moderator from 'components/ManageMode/Moderators/Moderator';
-import ModeratorModal from 'components/ManageMode/Moderators/ModeratorModal';
-import { Add } from '@mui/icons-material';
-import AreYouSureModal from 'components/ManageMode/Moderators/AreYouSureModal';
+import ModeratorCard from 'components/manage-mode/Moderators/ModeratorCard';
+import ModeratorModal from 'components/manage-mode/Moderators/ModeratorModal';
+import AreYouSureModal from 'components/manage-mode/Moderators/AreYouSureModal';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { debounce } from 'utils/debounce';
-import MainLayout from 'kit/Layout/MainLayout';
+import Layout from 'kit/layout/Layout';
+import Input from 'kit/common/Input';
+import ButtonC from 'kit/common/ButtonC';
+import UserSt from 'store/user/userSt';
+import Image from 'next/image';
 
 export type ManagePageT = {
   manageSt: ManageSt;
+  userSt: UserSt;
 };
 
-const Moderators = inject('manageSt')(
+const Moderators = inject(
+  'manageSt',
+  'userSt'
+)(
   observer((props) => {
     const {
+      userSt: {
+        settings: { mode },
+      },
       manageSt: {
-        storage: { moderators },
         changeUser,
         toggleModal,
         getModerators,
         getPermissions,
+        deleteModerator,
         changeModalVariant,
+        storage: { moderators },
+        currentModerator: { id, current },
       },
     }: ManagePageT = props;
 
     const [searchQuery, setSearchQuery] = useState<string>('');
-
+    const dl = useMediaQuery((theme: Theme) => theme.breakpoints.up('dl' as Breakpoint));
     const createUser = () => {
       changeUser(null);
       changeModalVariant('creation');
@@ -37,7 +48,7 @@ const Moderators = inject('manageSt')(
     };
 
     const moderatorsJSX = moderators.data.map((u: ModeratorsT) => (
-      <Moderator key={u.id} moderator={u} />
+      <ModeratorCard key={u.id} moderator={u} />
     ));
 
     const searchModerators = debounce((e: ChangeEvent<HTMLInputElement>) => {
@@ -46,69 +57,112 @@ const Moderators = inject('manageSt')(
       getModerators(e.target.value, true);
     });
 
+    const deleteModeratorHandler = () => {
+      if (id) {
+        deleteModerator(id);
+        toggleModal('confirmation', false);
+      }
+    };
+
     useEffect(() => {
       getModerators();
       getPermissions();
     }, []);
 
     return (
-      <MainLayout title='Управление модераторами'>
-        <PageHeader title='Управление модераторами' />
-
-        <Stack
-          m='20px 0'
-          direction='row'
-          alignItems='center'
-          justifyContent='center'
-          flexWrap='wrap'
-          sx={{ width: '100%' }}
-        >
-          <TextField
-            size='small'
-            variant='outlined'
-            label='Поиск модератора'
-            onChange={searchModerators}
-            sx={{ m: '10px 30px', flex: '0 1 500px' }}
-          />
-
-          <Button onClick={createUser} variant='contained' size='large'>
-            Создать модератора
-            <Add sx={{ ml: '10px' }} />
-          </Button>
-        </Stack>
-
-        <Box sx={{ width: '100%' }}>
-          <InfiniteScroll
-            next={() => getModerators(searchQuery)}
-            hasMore={moderators['has-next']}
-            dataLength={moderators.data.length}
-            loader={
-              <CircularProgress
-                sx={{
-                  top: '50%',
-                  left: '50%',
-                  zIndex: '100',
-                  position: 'fixed',
-                  transform: 'translate(-50%,-50%)',
-                }}
-                size={80}
-              />
-            }
+      <Layout title='Управление модераторами'>
+        <Box height='100vh'>
+          <Stack
+            mb='32px'
+            direction='row'
+            alignItems='center'
+            justifyContent='center'
+            flexWrap={dl ? 'nowrap' : 'wrap'}
           >
-            <Stack
-              direction='row'
-              flexWrap='wrap'
-              justifyContent='space-around'
-              sx={{ m: '0 auto', maxWidth: '900px' }}
-            >
-              {moderatorsJSX}
-            </Stack>
-          </InfiniteScroll>
-        </Box>
+            <Input
+              fullWidth
+              variant='outlined'
+              placeholder='Поиск модератора'
+              lightTheme={mode === 'light'}
+              onChange={searchModerators}
+              sx={{
+                flex: '1 1 614px',
+                mr: dl ? '16px' : 0,
+                mb: dl ? 0 : '16px',
+              }}
+            />
 
-        <ModeratorModal />
-        <AreYouSureModal />
-      </MainLayout>
+            <ButtonC
+              onClick={createUser}
+              sx={{
+                p: '0 26px',
+                height: '56px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '20px !important',
+                flex: dl ? '0 0 298px' : '1 1 100%',
+              }}
+            >
+              <Box height='22px' mr='21px'>
+                <Image
+                  width={23}
+                  height={22}
+                  quality={100}
+                  src='/icons/add.svg'
+                  alt='создать модератора'
+                />
+              </Box>
+              Создать модератора
+            </ButtonC>
+          </Stack>
+
+          <Box sx={{ m: '-8px' }}>
+            <InfiniteScroll
+              next={() => getModerators(searchQuery)}
+              hasMore={moderators['has-next']}
+              dataLength={moderators.data.length}
+              loader={
+                <CircularProgress
+                  sx={{
+                    top: '50%',
+                    left: '50%',
+                    zIndex: '100',
+                    position: 'fixed',
+                    transform: 'translate(-50%,-50%)',
+                  }}
+                  size={80}
+                />
+              }
+            >
+              <Stack direction='row' flexWrap='wrap' justifyContent='center'>
+                {moderatorsJSX.length ? (
+                  moderatorsJSX
+                ) : (
+                  <Box
+                    p='20px 0'
+                    width='100%'
+                    fontSize='25px'
+                    fontWeight='500'
+                    textAlign='center'
+                    color={mode === 'light' ? 'grayscale.100' : 'grayscale.0'}
+                  >
+                    Модераторы отсутствуют
+                  </Box>
+                )}
+              </Stack>
+            </InfiniteScroll>
+          </Box>
+
+          <ModeratorModal />
+
+          <AreYouSureModal
+            content={current}
+            title='Удалить модератора?'
+            confirmHandler={deleteModeratorHandler}
+          />
+        </Box>
+      </Layout>
     );
   })
 );

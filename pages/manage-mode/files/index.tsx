@@ -39,7 +39,7 @@ const ManagePage = inject('manageSt')(
 
     return (
       <Layout title='Управление файлами'>
-        <Box height='100vh'>
+        <Box>
           <Box m='-8px'>
             <InfiniteScroll
               next={() => getFiles()}

@@ -21,7 +21,6 @@ import NProgress from 'nprogress';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import { getScheme } from '@xieffect/base.theme.scheme';
 import { Loading } from '@xieffect/base.components.loading';
-import { Box } from '@mui/material';
 import createEmotionCache from '../utils/createEmotionCache';
 import RootStore, { useStore } from '../store/rootStore';
 import 'nprogress/nprogress.css';
@@ -79,15 +78,17 @@ const InnerApp = inject(
       if (show !== null) enqueueSnackbar(message, { variant, autoHideDuration: 1000 });
     }, [show]);
 
+    useEffect(() => {
+      document.body.style.transition = 'background 0.2s ease-in-out';
+      document.body.style.backgroundColor = mode === 'light' ? '#ECEFFF' : '#202020';
+    }, [mode]);
+
     return (
-      <Box
-        sx={{ transition: 'background 0.2s ease-in-out' }}
-        bgcolor={mode === 'light' ? 'primary.pale' : 'grayscale.90'}
-      >
+      <>
         <Loading loading={!!loading} />
 
         <C {...pageProps} />
-      </Box>
+      </>
     );
   })
 );

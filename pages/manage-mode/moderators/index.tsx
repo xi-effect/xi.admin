@@ -71,7 +71,7 @@ const Moderators = inject(
 
     return (
       <Layout title='Управление модераторами'>
-        <Box height='100vh'>
+        <Box>
           <Stack
             mb='32px'
             direction='row'

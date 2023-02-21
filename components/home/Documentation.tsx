@@ -4,6 +4,8 @@ import { Box } from '@mui/material';
 import LinkC from 'kit/common/LinkC';
 import ClipboardInput from 'kit/common/ClipboardInput';
 
+const VARIABLE_NAME: string = 'NEXT_PUBLIC_PASS_READER';
+
 const Documentation = () => (
   <CardLayout>
     <Box component='span' mb='24px' fontSize={24} fontWeight={500}>
@@ -15,7 +17,7 @@ const Documentation = () => (
     <ClipboardInput
       label='Пароль'
       toClipboardLabel='****************************'
-      toClipboard={process.env.NEXT_PUBLIC_PASS_READER}
+      toClipboard={process.env[VARIABLE_NAME]}
     />
 
     <LinkC href='https://docs.xieffect.ru/'>Перейти</LinkC>

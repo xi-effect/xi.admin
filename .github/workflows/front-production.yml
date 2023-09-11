@@ -1,0 +1,51 @@
+name: Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  # prepare:
+  #   if: contains(fromJSON('["niqzart", "unknownproperty"]'), github.triggering_actor)
+
+  build:
+    # needs: prepare
+    if: contains(fromJSON('["niqzart", "unknownproperty"]'), github.triggering_actor)
+
+    uses: xi-effect/xi.actions/.github/workflows/docker-build.yml@main
+    with:
+      tag: admin-main
+    secrets: inherit
+
+  deploy:
+    needs:
+      # - prepare
+      - build
+    if: contains(fromJSON('["niqzart", "unknownproperty"]'), github.triggering_actor)
+
+    runs-on: ubuntu-latest
+    environment: xi-production
+
+    env:
+      pull_image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_USERNAME }}:admin-main
+      deploy_image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_USERNAME }}:${{ secrets.DEPLOY_TAG }}
+
+    steps:
+      - name: Run SSH commands
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          username: ${{ secrets.SSH_USER }}
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
+          script: |-
+            cd ~/xieffect-core
+            docker pull ${{ env.pull_image }}
+            docker tag ${{ env.pull_image }} ${{ env.deploy_image }}
+            docker tag ${{ env.pull_image }} ${{ env.deploy_image }}-backup
+            docker compose up -d
+            docker image prune -f
+          script_stop: true
